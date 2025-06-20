@@ -1,0 +1,56 @@
+
+#main-header{
+    height: 80px;
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid #091e422e;
+    position: fixed;
+    z-index: 9;
+}
+
+#main-header .logo{
+    width: 181px;
+    height: 69px;
+    cursor: pointer;
+}
+
+#main-header .right{
+    display: flex;
+    align-items: center;
+}
+
+#main-header .alert{
+    width: 20px;
+    height: 22px;
+    margin-right: 24px;
+    cursor: pointer;
+}
+#main-header .user .name{
+    font-size: 18px;
+    font-weight: 500;
+    margin-right: 12px;
+    cursor: pointer;
+}
+#main-header .user{
+    display: flex;
+    align-items: center;
+}
+
+#main-header .user .profile{
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #D9D9D9;
+    border-radius: 50%;
+    cursor: pointer;
+}
+#main-header .user .profile > img{
+    width: 30px;
+    height: 30px;
+}
