@@ -1,13 +1,20 @@
 import { useState } from 'react'
-import CalenderTest from './components/calendar/DemoApp'
+import { Routes, Route } from 'react-router-dom'
+import './reset.css'
+import Header from './includes/header/Header'
+import Side from './includes/side/Side'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <CalenderTest />
-    </>
+    <main id='main'>
+      <Header />
+      <Side />
+      <Routes>
+        <Route path='/' element={<h1>메인</h1>}></Route>
+      </Routes>
+    </main>
   )
 }
 
