@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import './reset.css'
 import Header from './includes/header/Header'
 import Side from './includes/side/Side'
+import TeamComponent from './pages/team/TeamComponent'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,7 +13,7 @@ function App() {
       <Header/>
       <Side/>
       <Routes>
-        <Route path='/' element={<h1>메인</h1>}></Route>
+        <Route path='/' element={<TeamComponent/>}></Route>
       </Routes>
     </main>
   )

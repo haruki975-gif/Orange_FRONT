@@ -1,0 +1,138 @@
+
+#team-page{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+#team-page .left{
+    display: flex;
+    flex-direction: column;
+    width: calc(50% - 20px);
+}
+#team-page .right{
+    width: calc(50% - 20px);
+}
+#team-page .host-team{
+    width: 100%;
+    margin-bottom: 40px;
+}
+#team-page .title{
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+#team-page .title > h2{
+    font-size: 20px;
+    font-weight: 500;
+}
+#team-page .title .categorys{
+    display: flex;
+    align-items: center;
+}
+#team-page .title > .wall{
+    width: 2px;
+    height: 24px;
+    background-color: #B7B7B7;
+    margin: 0 16px;
+}
+#team-page .title .categorys > p{
+    font-size: 18px;
+    font-weight: 400;
+    color: #B7B7B7;
+    margin-right: 24px;
+    cursor: pointer;
+}
+#team-page .title .categorys > p.active{
+    font-weight: 500;
+    color: #4584ea;
+}
+#team-page .container{
+    width: 100%;
+    border: 1px solid #BCBCBC;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+#team-page .column-name{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    border-bottom: 1px solid #BCBCBC;
+    height: 50px;
+    padding-left: 6px;
+}
+#team-page .column-name > p{
+    display: flex;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+#team-page .column-name .leader{
+    width: 20%;
+}
+#team-page .column-name .team-name{
+    width: 45%;
+}
+#team-page .column-name .team-category{
+    width: 15%;
+}
+#team-page .column-name .max-member{
+    width: 10%;
+}
+
+#team-page .team-list{
+    display: flex;
+    padding: 20px 0px 0px 6px;
+    flex-direction: column;
+    width: 100%;
+}
+#team-page .team-list .team-row{
+    display: flex;
+    height: 37px;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-bottom: 20px;
+}
+#team-page .team-row .user{
+    width: 20%;
+    display: flex;
+    align-items: center;
+}
+#team-page .team-row .user .profile{
+    width: 30px;
+    height: 30px;
+    background-color: #D9D9D9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+#team-page .team-row .user .profile > img{
+    width: 16px;
+    height: 16px;
+}
+#team-page .team-row .user .user-name{
+    font-size: 16px;
+    font-weight: 400;
+}
+
+#team-page .team-row .team-info{
+    width: 45%;
+}
+#team-page .team-row .category{
+    width: 15%;
+    display: flex;
+    justify-content: center;
+}
+#team-page .team-row .people{
+    width: 10%;
+    display: flex;
+    justify-content: center;
+}

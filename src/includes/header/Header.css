@@ -10,6 +10,8 @@
     border-bottom: 1px solid #091e422e;
     position: fixed;
     z-index: 9;
+    top: 0;
+    left: 0;
 }
 
 #main-header .logo{
