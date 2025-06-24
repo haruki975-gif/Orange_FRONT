@@ -1,0 +1,81 @@
+
+#team-room{
+    margin-top: -50px;
+    margin-left: -210px;
+    width: calc(100% + 420px);
+    border-bottom: 1px solid #DCDFE4;
+}
+#team-room .header{
+    width: 100%;
+    padding: 24px 20px 0;
+}
+#team-room .category{
+    font-size: 14px;
+    font-weight: 400;
+}
+#team-room .team-info{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 26px;
+}
+#team-room .team-info .left{
+    display: flex;
+    align-items: center;
+}
+#team-room .team-info .left > img{
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+}
+#team-room .team-info .left .team-name{
+    font-size: 16px;
+    font-weight: 600;
+}
+#team-room .team-info .profile-list{
+    display: flex;
+    align-items: center;
+}
+#team-room .team-info .member-profile{
+    margin-left: 6px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #D9D9D9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#team-room .team-info .member-profile > img{
+    width: 20px;
+    height: 20px;
+}
+#team-room .tab-menu{
+    display: flex;
+    height: 30px;
+    margin-bottom: -1px;
+}
+#team-room .tab-menu > div{
+    display: flex;
+    height: 100%;
+    margin-right: 16px;
+    cursor: pointer;
+}
+#team-room .tab-menu > div.active{
+    border-bottom: 2px solid #FF8C00;
+}
+#team-room .tab-menu > div > img{
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+}
+
+#team-room .tab-menu > div.active > h3{
+        color: #FF8C00;
+}
+#team-room .tab-menu > div > h3{
+    font-size: 16px;
+    font-weight: 600;
+    color: #434343;
+}
