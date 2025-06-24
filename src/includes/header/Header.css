@@ -10,6 +10,8 @@
     border-bottom: 1px solid #091e422e;
     position: fixed;
     z-index: 9;
+    top: 0;
+    left: 0;
 }
 
 #main-header .logo{
@@ -54,3 +56,111 @@
     width: 30px;
     height: 30px;
 }
+
+#alert-component{
+    width: 447px;
+    position: absolute;
+    top: 90px;
+    right: -467px;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 16px 10px;
+    transition: 0.2s;
+}
+#alert-component.active{
+    right: 20px;
+}
+#alert-component .container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+#alert-component .request{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    border-bottom: 1px solid #949494;
+    padding: 0 10px;
+}
+#alert-component .request:last-of-type{
+    border-bottom: 0;
+}
+#alert-component .request .request-type{
+    font-size: 14px;
+    font-weight: 500;
+    color: #111111;
+    margin-right: 30px;
+}
+#alert-component .request .request-content{
+    width: 60%;
+}
+#alert-component .request .request-content .team-name{
+    font-size: 14px;
+    font-weight: 500;
+    color: #111111;
+    margin-bottom: 4px;
+}
+#alert-component .request .request-content .request-user-info{
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+}
+#alert-component .request .request-content .request-user-info > img{
+    width: 16px;
+    height: 14px;
+    align-self: flex-start;
+    margin-right: 9px;
+}
+#alert-component .request .request-content .user-profile{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #D9D9D9;
+    margin-right: 10px;
+}
+#alert-component .request .request-content .user-profile > img{
+    width: 10px;
+    height: 10px;
+}
+#alert-component .request .request-content .user-name{
+    font-size: 14px;
+    font-weight: 400;
+    color: #111111;
+}
+
+#alert-component .request > button{
+    border-radius: 6px;
+    color: #ffffff;
+    padding: 4px 10px;
+}
+
+#alert-component .request .accept-btn{
+    justify-self: flex-end;
+    background-color: #1D65D9;
+    margin-right: 10px;
+}
+
+#alert-component .request .cancle-btn{
+    background-color: #8C8C8C;
+}
+#alert-component .close-btn{
+    position: absolute;
+    left: -16px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 70px;
+    width: 16px;
+    background-color: #adadad;
+    border-radius: 4px 0 0 4px;
+    cursor: pointer;
+}
+#alert-component .close-btn > img{
+    width: 16px;
+    height: 16px;
+}
+
