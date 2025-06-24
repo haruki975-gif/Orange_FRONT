@@ -37,7 +37,7 @@ const Side = () =>{
                 "icon" : "/img/icon/journal-frame.png",
             }
         ],
-        "path" : "/"
+        "path" : "/team-room"
     };
 
     const findTeam = {
