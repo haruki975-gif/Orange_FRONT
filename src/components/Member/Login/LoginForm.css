@@ -6,6 +6,10 @@
   align-items: center;
 }
 
+.title {
+  margin-bottom: 30px;
+}
+
 .login-form {
   width: 400px;
   display: flex;
