@@ -19,7 +19,8 @@ const Side = () =>{
                 "name" : "대시보드", 
                 "icon" : "/img/icon/journal-frame.png",
             }
-        ]
+        ],
+        "path" : "/"
     };
 
     const myTeam = {
@@ -35,21 +36,33 @@ const Side = () =>{
                 "name" : "팀2", 
                 "icon" : "/img/icon/journal-frame.png",
             }
-        ]
+        ],
+        "path" : "/"
+    };
+
+    const findTeam = {
+        "main" : 
+            {"name" : "팀 찾기", 
+            "icon" : "/img/icon/journal-frame.png"},
+        "subMenu" : [],
+        "path" : "/find-team"
     };
 
     const challenges = {
         "main" : 
                 {"name" : "챌린지방", 
                 "icon" : "/img/icon/journal-frame.png"},
-        "subMenu" : []
+        "subMenu" : [],
+        "path" : "/"
     }
+    
 
     const admin = {
         "main" : 
                 {"name" : "관리자 페이지", 
                 "icon" : "/img/icon/journal-frame.png"},
-        "subMenu" : []
+        "subMenu" : [],
+        "path" : "/"
     }
 
     return(
@@ -58,6 +71,7 @@ const Side = () =>{
 
                 <Tab menu={myCalendar}/>
                 <Tab menu={myTeam}/>
+                <Tab menu={findTeam}/>
                 <Tab menu={challenges}/>
                 <Tab menu={admin}/>
 

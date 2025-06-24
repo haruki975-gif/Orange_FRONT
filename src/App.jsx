@@ -13,7 +13,8 @@ function App() {
       <Header/>
       <Side/>
       <Routes>
-        <Route path='/' element={<TeamComponent/>}></Route>
+        <Route path='/' element={<h1 style={{margin : "400px"}}>메인페이지</h1>}></Route>
+        <Route path='/find-team' element={<TeamComponent/>}></Route>
       </Routes>
     </main>
   )
