@@ -96,8 +96,15 @@
 }
 
 .error-msg {
+  margin-top: 4px;
   color: red;
-  font-size: 12px;
-  text-align: left;
-  line-height: 1.4;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.success-msg {
+  margin-top: 4px;
+  color: green;
+  font-size: 13px;
+  font-weight: 400;
 }
