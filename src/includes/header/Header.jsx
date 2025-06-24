@@ -1,6 +1,11 @@
+import { useState } from "react";
 import "./header.css";
+import AlertComponent from "./components/AlertComponent";
 
 const Header = () =>{
+
+    const [openAlertModal, setOpenAlertModal] = useState(false);
+
     return(
 
         <header id="main-header">
@@ -8,7 +13,7 @@ const Header = () =>{
                 <img src="/img/로고.png" alt="로고" />
             </div>
             <div className="right">
-                <div className="alert">
+                <div className="alert" onClick={() => setOpenAlertModal(true)}>
                     <img src="/img/icon/bell.png" alt="" />
                 </div>
                 <div className="user">
@@ -18,6 +23,9 @@ const Header = () =>{
                     </div>
                 </div>
             </div>
+            <AlertComponent 
+                setOpenAlertModal={setOpenAlertModal} openAlertModal={openAlertModal}/>
+
         </header>
 
     )
