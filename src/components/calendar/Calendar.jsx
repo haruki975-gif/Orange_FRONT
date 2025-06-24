@@ -1,0 +1,207 @@
+import React, { useState } from "react";
+import "./Calendar.css";
+import TabNav from "../../includes/side/components/tab/TabNav";
+import EventDetailModal from "../modal/EventDetailModal";
+
+import {
+    useFloating,    /*
+                       떠 있는 UI(팝업, 툴팁 등등)의 위치를 계산하고 제어하는 핵심 훅
+                       기준 요소(ref)와 떠 있는 요소(ref)를 연결
+                       위치 좌표 x, y, strategy, refs 등을 반환
+                       middleware 옵션으로 세부 동작 조정 가능
+                    */
+
+    offset,         // 기준 요소와 떠 있는 요소 사이 간격 설정
+    flip,           // 공간이 부족하면 방향을 자동으로 뒤집음 ex) bottom이 공간 부족하면 top으로 변경
+    shift,          // 요소가 화면 밖으로 나가지 않도록 미세 조정, 팝업이 뷰포트 밖으로 밀리는 것 방지
+    autoUpdate,     // 창 크기 변경, 스크롤 등 변화 감지 시 자동 위치 업데이트
+    useDismiss,     // 바깥 클릭, ESC 키 등으로 팝업을 닫게 해주는 기능
+    FloatingPortal  // 떠 있는 요소를 body 밖, 별도 DOM 계층에 렌더링
+} from "@floating-ui/react";
+
+import FullCalendar from "@fullcalendar/react";             // jsx에서 <FullCalendar /> 처럼 사용할 수 있게 해줌
+// FullCalendar의 React 컴포넌트 버전을 불러옴
+// 해당 컴포넌트로 실제 캘린더 렌더링
+
+import dayGridPlugin from "@fullcalendar/daygrid";          // 월간 뷰(Month View)를 구현하기 위한 "일정 그리드" 플러그인
+// 기본 달력에서 많이 쓰는 "칸형 달력 UI"을 사용하게 해줌
+
+import interactionPlugin from "@fullcalendar/interaction";  // 마우스로 날짜 클릭, 드래그 앤 드롭, 일정 생성 등의 상호작용 기능을 가능하게 해줌
+// dateClick, select, eventDragStart, eventDrop 등의 이벤트를 사용할 수 있게 됨
+import PopupForm from "./PopupForm";
+
+const Calender = () => {
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const [scheduleTitle, setScheduleTitle] = useState([]);
+
+    // 이벤트 클릭 모달 상태 추가
+    const [selectedEvent, setSelectEvent] = useState(null);
+    const [isEventModalOpen, setIsEventModalOpen] = useState(false);
+
+    const { x, y, refs, strategy, context } = useFloating({
+        open: isOpen,
+        onOpenChange: setIsOpen,
+        middleware: [offset(10), flip(), shift({ padding: 5 })],
+        placement: "bottom-start",
+        whileElementsMounted: autoUpdate,
+    });
+
+    // 팝업 외부 클릭 시 닫기
+    const dismiss = useDismiss(context);
+
+    const handleDateClick = (info) => {
+        setSelectedDate(info.dateStr);
+
+        // 클릭된 날짜 셀의 위치를 기준으로 Virtual Element 생성
+        const cellRect = info.dayEl.getBoundingClientRect();
+
+        const virtualElement = {
+            getBoundingClientRect: () => ({
+                x: cellRect.left,
+                y: cellRect.top,
+                width: cellRect.width,
+                height: cellRect.height,
+                top: cellRect.top,
+                left: cellRect.left,
+                right: cellRect.right,
+                bottom: cellRect.bottom,
+            }),
+        };
+
+        refs.setReference(virtualElement);
+        setIsOpen(true);
+    };
+
+
+    // 이벤트 클릭 핸들러
+    const handleEventClick = (info) => {
+        const eventData = scheduleTitle.find(event => event.id === parseInt(info.event.id));
+        setSelectEvent(eventData || {
+            id: info.event.id,
+            title: info.event.title,
+            content: '',
+            startDate: info.event.startStr,
+            dueDate: info.event.startStr,
+        });
+        setIsEventModalOpen(true);
+    };
+
+    // 이벤트 모달 닫기
+    const handleEventModalClose = () => {
+        setIsEventModalOpen(false);
+        setSelectEvent(null);
+    }
+
+    // 이벤트 모달 업데이트
+    const handleUpdateEvent = (updateEvent) => {
+        setScheduleTitle(prevEvents =>
+            prevEvents.map(event =>
+                event.id === updateEvent.id ? updateEvent : event
+            )
+        );
+        setIsEventModalOpen(false);
+        setSelectEvent(null);
+    };
+
+    // 이벤트 삭제 핸들러
+    const handleDeleteEvent = (eventId) => {
+        console.log("Deleting event: ", eventId);
+        setScheduleTitle(prevEvents =>
+            prevEvents.filter(event => event.id !== parseInt(eventId))
+        );
+        setIsEventModalOpen(false);
+        setSelectEvent(null);
+    };
+
+    const handleEventDrop = (info) => {
+        const updatedEvents = events.map((event) =>
+            event.id === info.event.id
+                ? {
+                    ...event,
+                    start: info.event.startDate,
+                }
+                : event
+        );
+        setEvents(updatedEvents);
+        console.log("이동된 날짜: ", info.event.startStr);
+    };
+
+
+
+    const handleAddScheduleTitle = (eventDate) => {
+
+        const NewEvent = {
+            title: eventDate.task,
+            date: eventDate.date,
+            id: Date.now(),
+            content: eventDate.date,
+            startDate: eventDate.startDate,
+            dueDate: selectedDate,
+        };
+
+        console.log("새로 추가된 일정:", NewEvent); // 디버깅용
+
+
+        setScheduleTitle(prevEvents => [...prevEvents, NewEvent]);
+    }
+
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+
+    const handleDayCellContent = (arg) => {
+        return arg.dayNumberText.replace("일", "");
+    };
+
+    return (
+        <div className="MainContainer">
+            <TabNav />
+            <FullCalendar
+                plugins={[dayGridPlugin, interactionPlugin]}
+                initialView="dayGridMonth"
+                locale="ko"
+                dayCellContent={handleDayCellContent}
+                dateClick={handleDateClick}
+                eventClick={handleEventClick}
+                selectable={true}
+                selectMirror={false}
+                editable={true}
+                eventDrop={handleEventDrop}
+                events={scheduleTitle.map(event => ({
+                    ...event,
+                    start: event.startDate,
+                    end: event.dueDate,
+                }))}
+
+            />
+
+            {/* 날짜 클릭 시 팝업 */}
+            {isOpen && (
+                <FloatingPortal>
+                    <PopupForm
+                        ref={refs.setFloating}
+                        selectedDate={selectedDate}
+                        x={x}
+                        y={y}
+                        strategy={strategy}
+                        onClose={handleClose}
+                        onAddEvent={handleAddScheduleTitle}
+                    />
+                </FloatingPortal>
+            )}
+
+            {/* 이벤트 클릭 시 모달 */}
+            {isEventModalOpen && selectedEvent && (
+                <EventDetailModal
+                    event={selectedEvent}
+                    onClose={handleEventModalClose}
+                    onUpdate={handleUpdateEvent}
+                    onDelete={handleDeleteEvent}
+                />
+            )}
+        </div>
+    );
+};
+
+export default Calender;
