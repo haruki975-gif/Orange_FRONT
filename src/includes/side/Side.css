@@ -5,6 +5,8 @@
     border-right: 1px solid #091e422e;
     padding-top: 80px;
     position: fixed;
+    top: 0;
+    left: 0;
 }
 
 #side .menus{
