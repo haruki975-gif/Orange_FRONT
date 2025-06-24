@@ -54,6 +54,8 @@
     background-color: #ffffff;
     border-radius: 10px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 #team-page .column-name{
     display: flex;
@@ -82,6 +84,17 @@
 }
 #team-page .column-name .max-member{
     width: 10%;
+}
+#team-page .host-team .create-team-btn{
+    align-self: center;
+    padding: 8px 26px;
+    border-radius: 10px;
+    background-color: #FF8C00;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 20px 0;
+    cursor: pointer;
 }
 
 #team-page .team-list{
@@ -126,13 +139,147 @@
 #team-page .team-row .team-info{
     width: 45%;
 }
+#team-page .team-row .team-info .team-name{
+    font-size: 16px;
+    font-weight: 400;
+}
+#team-page .team-row .team-info .team-content{
+    font-size: 16px;
+    font-weight: 400;
+    color: #8F8F8F;
+}
 #team-page .team-row .category{
     width: 15%;
     display: flex;
     justify-content: center;
+    font-size: 15px;
+    font-weight: 400;
 }
 #team-page .team-row .people{
     width: 10%;
     display: flex;
     justify-content: center;
+}
+#team-page .team-row .people > p{
+    font-size: 15px;
+    font-weight: 400;
+}
+#team-page .team-row .join-team{
+    padding: 6px 12px;
+    border-radius: 6px;
+    background-color: #FF8C00;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+#team-page .create-team-modal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99;
+
+    background-color: #0000004b;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+#team-page .create-team-modal .container{
+    width: 922px;
+    padding: 60px 80px;
+    border-radius: 30px;
+    background-color: #ffffff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: none;
+}
+#team-page .create-team-modal .title{
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 44px;
+}
+#team-page .create-team-modal .team-name{
+    margin-bottom: 30px;
+}
+#team-page .create-team-modal label{
+    font-size: 18px;
+    font-weight: 400;
+}
+#team-page .create-team-modal #team-name{
+    width: 100%;
+    height: 44px;
+    padding: 0px 20px;
+    border-radius: 10px;
+    border: 1px solid #BCBCBC;
+    margin-top: 6px;
+}
+#team-page .create-team-modal .team-content{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+#team-page .create-team-modal #team-content{
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #BCBCBC;
+    margin-top: 6px;
+    width: 100%;
+    height: 300px;
+    resize: none;
+}
+#team-page .create-team-modal .team-category > h3{
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+#team-page .create-team-modal .categories{
+    display: flex;
+    align-items: center;
+}
+#team-page .create-team-modal .categories > button{
+    margin-right: 16px;
+    padding: 6px 16px;
+    border-radius: 10px;
+    border: 1px solid #BCBCBC;
+    color: #717171;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+}
+#team-page .create-team-modal .categories > button.active{
+    border: 1px solid #9DC2FF;
+    color: #1D65D9;
+}
+#team-page .create-team-modal .create-request-btn{
+    margin-top: 10px;
+    align-self: flex-end;
+    padding: 8px 26px;
+    border-radius: 10px;
+    background-color: #FF8C00;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 18px;
+}
+#team-page .create-team-modal .close-btn{
+    position: absolute;
+    top: 80px;
+    right: 80px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #EBEBEB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+#team-page .create-team-modal .close-btn > img{
+    width: 16px;
+    height: 16px;
 }

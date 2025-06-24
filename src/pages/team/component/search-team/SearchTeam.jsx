@@ -4,13 +4,14 @@ import SearchTeamRow from "../team-row/searchTeamRow";
 const SearchTeam = () =>{
 
     const [chooseCategory, setChooseCategory] = useState("all");
-    
+
     const categories = [
         {key : "all", label : "전체"},
         {key : "study", label : "스터디"},
         {key : "project", label : "프로젝트"},
         {key : "free", label : "자유"}
     ];
+    
 
     const [teamList, setTeamList] = useState([
             {
@@ -82,6 +83,8 @@ const SearchTeam = () =>{
             setChooseCategory(key);
         }
 
+        
+
     return(
         <div className="search-team">
             <div className="title">
@@ -103,7 +106,8 @@ const SearchTeam = () =>{
                 </div>
                 <div className="team-list">
                     {teamList.map(team => (
-                        <SearchTeamRow team={team}/>
+                        <SearchTeamRow 
+                            team={team} />
                     ))}
                 </div>
                 

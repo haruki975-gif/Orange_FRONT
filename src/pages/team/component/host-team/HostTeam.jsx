@@ -1,7 +1,9 @@
 import { useState } from "react";
 import MyTeamRow from "../team-row/myTeamRow";
 
-const HostTeam = () =>{
+const HostTeam = ({setOpenModal}) =>{
+
+    
 
     const [teamList, setTeamList] = useState([
         {
@@ -69,6 +71,11 @@ const HostTeam = () =>{
         
     ]);
 
+    const openCreateTeamModal = () =>{
+        setOpenModal(true);
+    }
+
+
     return(
         <div className="host-team">
             <h2 className="title">내가 생성한 팀</h2>
@@ -84,7 +91,9 @@ const HostTeam = () =>{
                         <MyTeamRow team={team}/>
                     ))}
                 </div>
-                
+                {teamList.length < 5 &&
+                    <button className="create-team-btn" onClick={()=>openCreateTeamModal()}>팀 추가</button>
+                }
             </div>
         </div>
     )

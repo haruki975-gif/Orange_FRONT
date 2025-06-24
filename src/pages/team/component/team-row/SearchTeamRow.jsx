@@ -1,10 +1,13 @@
+import { useState } from "react";
 
-const SearchTeamRow = (props) =>{
+const SearchTeamRow = ({team}) =>{
 
-    const team = props.team;
+    const [openRequestBtn, setOpenRequestBtn] = useState(false);
 
     return(
-        <div className="team-row">
+        <div className="team-row" 
+            onMouseEnter={() => {setOpenRequestBtn(true)}}onMouseLeave={() => {setOpenRequestBtn(false)}}
+        >
             <div className="user">
                 <div className="profile">
                     <img src="/img/icon/person-fill.png" alt="" />
@@ -16,7 +19,14 @@ const SearchTeamRow = (props) =>{
                 <p className="team-content">{team.teamContent}</p>
             </div>
             <p className="category">스터디</p>
-            <p className="people">{team.teamMemberList.length}/4</p>
+            <div className="people">
+                {openRequestBtn 
+                    ? <button className="join-team">신청</button>
+                    : <p>{team.teamMemberList.length}/4</p>
+            }
+            </div>
+            
+            
         </div>
     )
 }
