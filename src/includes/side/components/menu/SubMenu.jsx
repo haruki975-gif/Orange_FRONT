@@ -1,12 +1,17 @@
+import { useNavigate } from "react-router-dom";
 
-const Menu = (props) =>{
+const SubMenu = (props) =>{
+
+    const navi = useNavigate();
 
     const name = props.name;
     const icon = props.icon;
+    const path = props.path;
+
 
     return(
         <>
-            <div className="menu" onClick={props.onClick}>
+            <div className="menu" onClick={() => {console.log(path); navi(path)}}>
                 <div className="icon">
                     <img src={icon} alt=""/>
                 </div>
@@ -16,4 +21,4 @@ const Menu = (props) =>{
     )
 }
 
-export default Menu;
+export default SubMenu;

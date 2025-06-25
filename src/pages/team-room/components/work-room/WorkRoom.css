@@ -1,0 +1,109 @@
+
+.work-room{
+    min-height: calc(100vh - 270px);
+    padding: 50px 210px;
+    display: flex;
+}
+
+.work-room .work-status-container{
+    display: flex;
+    flex-direction: column;
+    padding-top: 16px;
+    border-radius: 10px;
+    background-color: #fff;
+    width: 297px;
+    margin-right: 24px;
+    padding: 16px 20px 0;
+    position: relative;
+        height: fit-content;
+}
+.work-room .work-status-container:last-of-type{
+    margin-right: 0;
+}
+.work-room .work-status{
+    font-size: 16px;
+    font-weight: 500;
+}
+.work-room .work-container{
+    margin: 10px 0 65px;
+    padding: 14px 10px 12px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 6px;
+    background-color: #f3f3f3;
+    box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.16);
+    position: relative;
+    cursor: pointer;
+}
+.work-room .work-title{
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 14px;
+}
+.work-room .assignee-info{
+    display: flex;
+    align-items: center;
+}
+.work-room .assignee-info > span{
+    font-size: 12px;
+    font-weight: 400;
+    margin-right: 14px;
+    color: #8C8C8C;
+}
+.work-room .assignee-info .assignee-name{
+    font-size: 14px;
+    font-weight: 400;
+}
+.work-room .assignee-info .assignee-profile{
+    margin-left: auto;
+    width: 24px;
+    height: 24px;
+    background-color: #D9D9D9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.work-room .assignee-info .assignee-profile > img{
+    width: 16px;
+    height: 16px;
+}
+.work-room .options-btn{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: 14px;
+    right: 14px;
+    cursor: pointer;
+    height: 10px;
+}
+.work-room .options-btn > span{
+    display: block;
+    width: 3px;
+    height: 3px;
+    background-color: #343434;
+    border-radius: 50%;
+    margin-left: 2px;
+}
+.work-room .work-create-btn{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    display: flex;
+    padding-left: 18px;
+    align-items: center;
+    background-color: #FFB55B;
+    color: #fff;
+    border-radius: 0 0 10px 10px;
+    font-weight: 400;
+    cursor: pointer;
+}
+.work-room .work-create-btn > svg{
+    width: 20px;
+    height: 20px;
+    fill: #ffffff;
+    margin-right: 6px;
+}

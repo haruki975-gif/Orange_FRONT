@@ -33,6 +33,6 @@ input::placeholder {
 
 #main {
   position: relative;
-  padding: 130px 210px 50px 450px;
-  overflow: hidden;
+  padding: 130px 210px 0px 450px;
+  /* overflow: hidden; */
 }

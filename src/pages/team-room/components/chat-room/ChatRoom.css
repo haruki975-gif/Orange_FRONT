@@ -1,0 +1,83 @@
+.chat-room{
+    padding: 40px 210px 64px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 270px);
+    overflow-y: auto;
+    position: relative;
+}
+.chat-room .message{
+    display: flex;
+    margin-bottom: 24px;
+}
+.chat-room .message .sender-profile{
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #D9D9D9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+}
+.chat-room .message .sender-profile > img{
+    width: 30px;
+    height: 30px;
+}
+
+.chat-room .message .txt-box{
+    display: flex;
+    flex-direction: column;
+}
+.chat-room .message .sender{
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 8px;
+}
+.chat-room .message .sender .sender-name{
+    font-size: 18px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+.chat-room .message .sender .sent-date{
+    font-size: 14px;
+    font-weight: 400;
+    color: #8A8A8A;
+}
+.chat-room .message .message-content{
+    font-size: 16px;
+    font-weight: 400;
+}
+.chat-room .input-message{
+    position: fixed;
+    width: 1260px;
+    height: 60px;
+    bottom: 64px;
+    display: flex;
+}
+.chat-room .textarea-wrapper {
+  position: relative;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: flex-end; 
+}
+.chat-room .input-message .input-textarea{
+    width: 100%;
+    height: 100%;
+    border: 1px solid #B4B4B4;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 18px 24px;
+    resize: none;
+    align-items: flex-end;
+    font-size: 16px;
+}
+.chat-room .input-message .input-textarea::placeholder{
+    font-size: 16px;
+}
+.chat-room .textarea-wrapper .submit-btn{
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+}

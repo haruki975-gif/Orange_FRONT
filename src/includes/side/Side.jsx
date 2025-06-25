@@ -14,13 +14,15 @@ const Side = () =>{
             {
                 "name" : "캘린더", 
                 "icon" : "/img/icon/journal-frame.png",
+                "path" : "/"
             },
             {
                 "name" : "대시보드", 
                 "icon" : "/img/icon/journal-frame.png",
+                "path" : "/"
             }
         ],
-        "path" : "/"
+        "path" : null
     };
 
     const myTeam = {
@@ -31,13 +33,15 @@ const Side = () =>{
             {
                 "name" : "오렌지조", 
                 "icon" : "/img/icon/journal-frame.png",
+                "path" : "/team-room"
             },
             {
                 "name" : "팀2", 
                 "icon" : "/img/icon/journal-frame.png",
+                "path" : "/team-room"
             }
         ],
-        "path" : "/team-room"
+        "path" : null
     };
 
     const findTeam = {
