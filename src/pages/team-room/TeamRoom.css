@@ -3,11 +3,14 @@
     margin-top: -50px;
     margin-left: -210px;
     width: calc(100% + 420px);
-    border-bottom: 1px solid #DCDFE4;
+    background-color: rgba(244, 198, 90, 0.35);
+    padding-bottom: 64px;
 }
 #team-room .header{
     width: 100%;
     padding: 24px 20px 0;
+    background-color: #ffffff;
+    border-bottom: 1px solid #DCDFE4;
 }
 #team-room .category{
     font-size: 14px;

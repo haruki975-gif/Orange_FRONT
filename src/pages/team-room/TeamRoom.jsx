@@ -1,8 +1,17 @@
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import "./TeamRoom.css";
 
 const TeamRoom = () =>{
 
+    const path = String(window.location.href).split("/")
+    
+    const currentPath = path[path.length - 1];
+
+    console.log(currentPath);
+
     const profileList = [1,2,3];
+
+    const navi = useNavigate();
 
     return(
         <div id="team-room">
@@ -23,16 +32,19 @@ const TeamRoom = () =>{
                 </div>
 
                 <div className="tab-menu">
-                    <div className={`chat-room active`}>
+                    <div className={`chat-room-tab ${currentPath === "chat-room" && "active"}`} 
+                        onClick={() => navi("chat-room")}>
                         <img src="/img/icon/view-stacked.png" alt="" />
                         <h3>채팅방</h3>
                     </div>
-                    <div className={`work-room`}>
+                    <div className={`work-room-tab ${currentPath === "work-room" && "active"}`}
+                        onClick={() => navi("work-room")}>
                         <img src="/img/icon/view-stacked.png" alt="" />
                         <h3>일정관리</h3>
                     </div>
                 </div>
             </div>
+            <Outlet/>
         </div>
     )
 }
