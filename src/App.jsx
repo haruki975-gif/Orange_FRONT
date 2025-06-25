@@ -17,7 +17,8 @@ function App() {
     <main id='main'>
       <Header />
       <Side />
-      <Routes>
+      {/*       <div id='display'>
+ */}        <Routes>
         <Route path='/' element={<h1>메인</h1>}></Route>
         <Route path='/' element={<h1 style={{ margin: "400px" }}>메인페이지</h1>}></Route>
         <Route path='/find-team' element={<TeamComponent />} />
@@ -26,6 +27,7 @@ function App() {
         <Route path='/calendar' element={<Calender />} />
         <Route path='/dashboard' element={<DashBoard />} />
       </Routes>
+      {/* </div> */}
     </main>
   )
 }

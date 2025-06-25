@@ -7,7 +7,7 @@ const PopupForm = forwardRef(({ selectedDate, x, y, strategy, onClose, onAddEven
     e.preventDefault();
     if (taskText.trim()) {
       // 여기서 일정 저장 로직 추가
-      onAddEvent({ date: selectedDate, task: taskText });
+      onAddEvent({ task: taskText });
       setTaskText("");
       onClose();
     }

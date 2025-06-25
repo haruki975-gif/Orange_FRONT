@@ -1,11 +1,7 @@
 import Menu from "./components/menu/Menu";
 import Tab from "./components/tab/Tab";
 import "./side.css";
-
-
-
 const Side = () => {
-
     const myCalendar = {
         "main":
         {
@@ -24,8 +20,8 @@ const Side = () => {
                 "path": "/dashboard"
             }
         ],
+        "path": null
     };
-
     const myTeam = {
         "main":
         {
@@ -36,15 +32,16 @@ const Side = () => {
             {
                 "name": "오렌지조",
                 "icon": "/img/icon/journal-frame.png",
+                "path": "/team-room"
             },
             {
                 "name": "팀2",
                 "icon": "/img/icon/journal-frame.png",
+                "path": "/team-room"
             }
         ],
-        "path": "/team-room"
+        "path": null
     };
-
     const findTeam = {
         "main":
         {
@@ -54,7 +51,6 @@ const Side = () => {
         "subMenu": [],
         "path": "/find-team"
     };
-
     const challenges = {
         "main":
         {
@@ -64,8 +60,6 @@ const Side = () => {
         "subMenu": [],
         "path": "/"
     }
-
-
     const admin = {
         "main":
         {
@@ -75,21 +69,16 @@ const Side = () => {
         "subMenu": [],
         "path": "/"
     }
-
     return (
         <side id="side">
             <div className="menus">
-
                 <Tab menu={myCalendar} />
                 <Tab menu={myTeam} />
                 <Tab menu={findTeam} />
                 <Tab menu={challenges} />
                 <Tab menu={admin} />
-
             </div>
         </side>
     )
 }
-
-
 export default Side;

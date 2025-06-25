@@ -1,13 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './EventDetailModal.css';
 
 const EventDetailModal = ({ event, onClose, onUpdate, onDelete }) => {
+
     const [formData, setFormData] = useState({
         title: '',
         content: '',
         startDate: '',
         dueDate: '',
     });
+
+    const [modalDropDown, setModalDropDown] = useState(false);
+
+    const ref = useRef(null);
+
+    const toggleDropdown = () => {
+        setModalDropDown(!modalDropDown);
+    };
+
+    const isPastDue = (date) => {
+        if (!date) return false;
+        const today = new Date().toISOString().split('T')[0];
+        return date < today;
+    };
+
+
+    useEffect(() => {
+        const handleClickOutSide = (event) => {
+            if (ref.current && !ref.current.contains(event.target)) {
+                setModalDropDown(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutSide);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutSide);
+        };
+    }, [ref]);
 
     useEffect(() => {
         if (event) {
@@ -40,7 +69,6 @@ const EventDetailModal = ({ event, onClose, onUpdate, onDelete }) => {
         const submitData = {
             ...event,
             ...formData,
-            date: formData.startDate
         };
         console.log('제출할 데이터:', submitData); // 디버깅용
         onUpdate(submitData);
@@ -52,10 +80,8 @@ const EventDetailModal = ({ event, onClose, onUpdate, onDelete }) => {
         }
     };
 
-    const openModalMenu = () => {
 
 
-    }
 
     return (
         <div className="modal-overlay" onClick={onClose}>
@@ -73,8 +99,15 @@ const EventDetailModal = ({ event, onClose, onUpdate, onDelete }) => {
                                 required
                             />
                         </div>
-                        <div className="modal-actions">
-                            <button type="button" className="menu-button" >⋯</button>
+                        <div className="modal-actions" ref={ref}>
+                            <button type="button" className="menu-button" onClick={toggleDropdown} >⋯</button>
+                            {modalDropDown && (
+                                <ul className='modalDropDownWrap' >
+                                    <li className='dropDownMenu'>이동</li>
+                                    <li className='dropDownMenu' onClick={handleDelete}>삭제</li>
+                                </ul>
+                            )}
+
                             <button type="button" className="close-button" onClick={onClose}>×</button>
                         </div>
                     </div>
@@ -85,7 +118,7 @@ const EventDetailModal = ({ event, onClose, onUpdate, onDelete }) => {
                             <input
                                 type="date"
                                 name="startDate"
-                                value={formData.startDate}
+                                value={formData.startDate || ''}
                                 onChange={handleInputChange}
                                 className="date-input"
                                 required

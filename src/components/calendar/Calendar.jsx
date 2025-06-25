@@ -115,15 +115,18 @@ const Calender = () => {
     };
 
     const handleEventDrop = (info) => {
-        const updatedEvents = events.map((event) =>
-            event.id === info.event.id
+        const movedEvent = parseInt(info.event.id, 10);
+        const newDate = info.event.startStr;
+
+        const updatedEvents = scheduleTitle.map((event) =>
+            event.id === movedEvent
                 ? {
                     ...event,
-                    start: info.event.startDate,
+                    dueDate: newDate
                 }
                 : event
         );
-        setEvents(updatedEvents);
+        setScheduleTitle(updatedEvents);
         console.log("이동된 날짜: ", info.event.startStr);
     };
 
@@ -133,10 +136,9 @@ const Calender = () => {
 
         const NewEvent = {
             title: eventDate.task,
-            date: eventDate.date,
             id: Date.now(),
-            content: eventDate.date,
-            startDate: eventDate.startDate,
+            content: "",
+            startDate: "",
             dueDate: selectedDate,
         };
 
@@ -159,6 +161,7 @@ const Calender = () => {
             <TabNav />
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
+                height={900}
                 initialView="dayGridMonth"
                 locale="ko"
                 dayCellContent={handleDayCellContent}
@@ -169,9 +172,9 @@ const Calender = () => {
                 editable={true}
                 eventDrop={handleEventDrop}
                 events={scheduleTitle.map(event => ({
-                    ...event,
-                    start: event.startDate,
-                    end: event.dueDate,
+                    id: event.id,
+                    title: event.title,
+                    start: event.dueDate,
                 }))}
 
             />

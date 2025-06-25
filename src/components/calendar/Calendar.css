@@ -1,18 +1,13 @@
-.MainContainer{
-  margin-left: 240px;
-  padding-top: 80px;
-  background-color: #FFF6EA;
-
-}
 
 .fc-toolbar-chunk{
     margin-top: 5px;
     margin-right: 20px;
+    margin-left: 20px;
 }
 
 /* 년, 월 제목 */
 .fc .fc-toolbar-title{
-    margin-left: 20px;
+    margin-left: 0px;
 }
 
 .fc .fc-daygrid-day-top {
@@ -59,4 +54,10 @@
 
 .fc-daygrid-event {
     margin-bottom: 2px;
+}
+
+.fc.fc-media-screen.fc-direction-ltr.fc-theme-standard {
+    margin-left: -211px;
+    margin-top: 15px;
+    margin-right: -210px;
 }

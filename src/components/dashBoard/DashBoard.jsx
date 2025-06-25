@@ -1,4 +1,5 @@
 import TabNav from "../../includes/side/components/tab/TabNav";
+import Board from "./Board";
 
 const DashBoard = () => {
 
@@ -6,10 +7,9 @@ const DashBoard = () => {
 
 
     return (
-        <div className="MainContainer">
+        <div>
             <TabNav />
-
-
+            <Board />
         </div>
     )
 }
