@@ -9,7 +9,7 @@ import ChatRoom from './pages/team-room/components/chat-room/ChatRoom'
 import WorkRoom from './pages/team-room/components/work-room/WorkRoom'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <main id='main'>
