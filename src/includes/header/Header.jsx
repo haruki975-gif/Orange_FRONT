@@ -1,34 +1,115 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./header.css";
 import AlertComponent from "./components/AlertComponent";
+import axios from "axios";
+import {
+  checkAuthStatus,
+  getUserData,
+  logout,
+} from "../../components/Member/Login/js/authService";
 
-const Header = () =>{
+const Header = () => {
+  const [openAlertModal, setOpenAlertModal] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  const [userName, setUserName] = useState("");
+  const navi = useNavigate();
 
-    const [openAlertModal, setOpenAlertModal] = useState(false);
+  // 로그인 상태 확인
+  const checkLoginStatus = () => {
+    const isLoggedIn = checkAuthStatus();
+    const user = getUserData();
 
-    return(
+    if (isLoggedIn && user.name) {
+      setIsLogin(true);
+      setUserName(user.name);
+    } else {
+      setIsLogin(false);
+      setUserName("");
+    }
+  };
 
-        <header id="main-header">
-            <div className="logo">
-                <img src="/img/로고.png" alt="로고" />
+  // 로그아웃 처리
+  const handleLogout = () => {
+    logout()
+      .then(() => {
+        alert("로그아웃 되었습니다.");
+        checkLoginStatus();
+        navi("/");
+      })
+      .catch((err) => {
+        console.log("로그아웃 실패", err);
+        alert("로그아웃 중 오류가 발생했습니다.");
+      });
+  };
+
+  // 페이지 로드 시 로그인 상태 확인
+  useEffect(() => {
+    checkLoginStatus();
+
+    // 로그인 상태 변화 감지용 이벤트
+    const handleLoginChange = () => {
+      checkLoginStatus();
+    };
+
+    window.addEventListener("loginStateChanged", handleLoginChange);
+
+    return () => {
+      window.removeEventListener("loginStateChanged", handleLoginChange);
+    };
+  }, []);
+
+  return (
+    <header id="main-header">
+      <div className="logo">
+        <img src="/img/로고.png" alt="로고" onClick={() => navi("/")} />
+      </div>
+
+      {/* 로그인하면 바뀌는 부분 */}
+      <div className="right">
+        {isLogin ? (
+          // 로그인 됨
+          <>
+            <div className="alert" onClick={() => setOpenAlertModal(true)}>
+              <img src="/img/icon/bell.png" alt="" />
             </div>
-            <div className="right">
-                <div className="alert" onClick={() => setOpenAlertModal(true)}>
-                    <img src="/img/icon/bell.png" alt="" />
-                </div>
-                <div className="user">
-                    <a className="name">홍길동</a>
-                    <div className="profile">
-                        <img src="/img/icon/person-fill.png" alt="" />
-                    </div>
-                </div>
+            <div className="user">
+              <a className="name">{userName}</a>
+              <div className="profile">
+                <img
+                  src="/img/icon/person-fill.png"
+                  alt=""
+                  onClick={() => navi("/mypage")}
+                />
+              </div>
+              <div className="logout">
+                <a className="logout" onClick={handleLogout}>
+                  로그아웃
+                </a>
+              </div>
             </div>
-            <AlertComponent 
-                setOpenAlertModal={setOpenAlertModal} openAlertModal={openAlertModal}/>
+          </>
+        ) : (
+          // 로그아웃 됨
+          <>
+            <div className="header-menu">
+              <a className="login" onClick={() => navi("/login")}>
+                로그인
+              </a>
+              <a className="signup" onClick={() => navi("/signup")}>
+                회원가입
+              </a>
+            </div>
+          </>
+        )}
+      </div>
 
-        </header>
-
-    )
-}
+      <AlertComponent
+        setOpenAlertModal={setOpenAlertModal}
+        openAlertModal={openAlertModal}
+      />
+    </header>
+  );
+};
 
 export default Header;
