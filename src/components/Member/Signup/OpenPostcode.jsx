@@ -1,3 +1,5 @@
+// kakao 주소 api
+
 import DaumPostcode from "react-daum-postcode";
 
 function OpenPostcode({ onClose, onComplete }) {
@@ -29,13 +31,22 @@ function OpenPostcode({ onClose, onComplete }) {
         zIndex: 100,
         border: "1px solid #000",
         background: "#fff",
-        width: "500px",
+        width: "450px",
         overflow: "auto",
-        marginLeft: "50px",
       }}
     >
       <DaumPostcode onComplete={handleComplete} />
-      <button onClick={onClose}>닫기</button>
+      <div
+        style={{
+          padding: "5px",
+          marginRight: "20px",
+          backgroundColor: "#ddd",
+          margin: "auto",
+          textAlign: "center",
+        }}
+      >
+        <button onClick={onClose}>닫기</button>
+      </div>
     </div>
   );
 }

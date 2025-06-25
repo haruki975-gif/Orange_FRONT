@@ -128,7 +128,8 @@ function SignupInput({
             placeholder="주소"
             value={formData.userAddress1}
             onChange={handleChange}
-            required
+            disabled
+            style={{ backgroundColor: "#ddd" }}
           />
           <button
             type="button"
@@ -139,6 +140,9 @@ function SignupInput({
             <span>검색</span>
           </button>
         </div>
+        {validationErrors.userAddress1 && (
+          <p className="error-msg">{validationErrors.userAddress1}</p>
+        )}
 
         <input
           type="text"

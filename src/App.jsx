@@ -7,6 +7,8 @@ import TeamComponent from "./pages/team/TeamComponent";
 import TeamRoom from "./pages/team-room/TeamRoom";
 import Signup from "./components/Member/Signup/Signup";
 import LoginForm from "./components/Member/Login/LoginForm";
+import FindUserId from "./components/Member/Find/FindUserId";
+import FindPassword from "./components/Member/Find/FindPassword";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -19,6 +21,8 @@ function App() {
         <Route path="/" element={<h1>메인</h1>}></Route>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/find-id" element={<FindUserId />} />
+        <Route path="/find-pw" element={<FindPassword />} />
         <Route
           path="/"
           element={<h1 style={{ margin: "400px" }}>메인페이지</h1>}

@@ -31,6 +31,12 @@
   color: #ff8c00;
 }
 
+.logout {
+  margin-left: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
 #main-header .logo {
   width: 181px;
   height: 69px;

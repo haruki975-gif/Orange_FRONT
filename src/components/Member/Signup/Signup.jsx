@@ -3,6 +3,13 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SignupInput from "./SignupInput";
 import "./Signup.css";
+// 정규식 모음
+import { validationRules } from "./js/validationRules";
+// validateField, validateForm
+import { validateForm } from "./js/validationUtils";
+// 아이디, 이메일, 연락처 중복체크용 커스텀 훅
+import { useDuplicateCheck } from "./js/useDuplicateCheck";
+import { validateField } from "./js/validationUtils";
 
 function Signup() {
   const navi = useNavigate();
@@ -21,65 +28,36 @@ function Signup() {
 
   const [successMessages, setSuccessMessages] = useState({});
   const [validationErrors, setValidationErrors] = useState({});
+
+  // 중복 확인 여부
   const [isDuplicateChecked, setIsDuplicateChecked] = useState({
     userId: false,
     userEmail: false,
     userPhone: false,
   });
 
+  // 비밀번호 보기/끄기
   const [showPassword, setShowPassword] = useState(false);
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
+  // input값 변경되면 실행, 에러메시지 업데이트
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
-    validateField(name, value);
-  };
 
-  const validationRules = {
-    userId: {
-      regex: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]{6,15}$/,
-      message: "아이디는 영문+숫자 6~15자여야 합니다.",
-    },
-    userPw: {
-      regex: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@._^])[a-zA-Z\d!@._^]{8,20}$/,
-      message: "비밀번호는 8~20자 영문+숫자+특수문자를 포함해야 합니다.",
-    },
-    userName: {
-      regex: /^[a-zA-Z가-힣]{2,10}$/,
-      message: "이름은 2~10자 한글/영문이어야 합니다.",
-    },
-    userEmail: {
-      regex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      message: "올바른 이메일 형식이 아닙니다.",
-    },
-    userPhone: {
-      regex: /^[0-9]{11}$/,
-      message: "연락처는 숫자 11자리여야 합니다.",
-    },
-  };
-
-  const validateField = (name, value) => {
-    let error = "";
-
-    if (name === "userPwConfirm") {
-      if (value !== formData.userPw) {
-        error = "비밀번호가 일치하지 않습니다.";
-      }
-    } else if (validationRules[name]) {
-      if (!validationRules[name].regex.test(value)) {
-        error = validationRules[name].message;
-      }
-    }
-
-    setValidationErrors((prevErrors) => ({
-      ...prevErrors,
+    const error = validateField(name, value, formData);
+    setValidationErrors((prev) => ({
+      ...prev,
       [name]: error,
     }));
   };
 
+  // 중복확인 결과 상태 업데이트
   const setFieldStatus = (
     field,
     error = "",
@@ -100,90 +78,36 @@ function Signup() {
     }));
   };
 
-  // 아이디 중복확인
-  useEffect(() => {
-    if (formData.userId.length >= 6) {
-      const idRegex = validationRules.userId.regex;
-      if (!idRegex.test(formData.userId)) {
-        setFieldStatus("userId", validationRules.userId.message);
-        return;
-      }
-
-      axios
-        .get(`${apiUrl}/api/members/check-id/${formData.userId}`)
-        .then((res) => {
-          if (res.data?.message === "사용 가능한 아이디입니다.") {
-            setFieldStatus("userId", "", "사용 가능한 아이디입니다.", true);
-          } else {
-            setFieldStatus("userId", "이미 사용중인 아이디입니다.");
-          }
-        })
-        .catch((err) => {
-          console.error("아이디 중복 확인 에러", err);
-        });
-    }
-  }, [formData.userId]);
-
-  // 이메일 중복확인
-  useEffect(() => {
-    if (formData.userEmail.length > 5) {
-      const emailRegex = validationRules.userEmail.regex;
-      if (!emailRegex.test(formData.userEmail)) {
-        setFieldStatus("userEmail", validationRules.userEmail.message);
-        return;
-      }
-
-      axios
-        .get(`${apiUrl}/api/members/check-email/${formData.userEmail}`)
-        .then((res) => {
-          if (res.data?.message === "사용 가능한 이메일입니다.") {
-            setFieldStatus("userEmail", "", "사용 가능한 이메일입니다.", true);
-          } else {
-            setFieldStatus("userEmail", "이미 사용중인 이메일입니다.");
-          }
-        })
-        .catch((err) => {
-          console.error("이메일 중복 확인 에러", err);
-        });
-    }
-  }, [formData.userEmail]);
-
-  // 연락처 중복확인
-  useEffect(() => {
-    if (formData.userPhone.length === 11) {
-      const phoneRegex = validationRules.userPhone.regex;
-      if (!phoneRegex.test(formData.userPhone)) {
-        setFieldStatus("userPhone", validationRules.userPhone.message);
-        return;
-      }
-
-      axios
-        .get(`${apiUrl}/api/members/check-phone/${formData.userPhone}`)
-        .then((res) => {
-          if (res.data?.message === "사용 가능한 연락처입니다.") {
-            setFieldStatus("userPhone", "", "사용 가능한 연락처입니다.", true);
-          } else {
-            setFieldStatus("userPhone", "이미 사용중인 연락처입니다.");
-          }
-        })
-        .catch((err) => {
-          console.error("연락처 중복 확인 에러", err);
-        });
-    }
-  }, [formData.userPhone]);
-
-  const validateForm = () => {
-    Object.keys(formData).forEach((field) => {
-      validateField(field, formData[field]);
-    });
-
-    return Object.values(validationErrors).every((error) => !error);
-  };
+  // 아이디, 이메일, 연락처 중복체크
+  useDuplicateCheck(
+    "userId",
+    formData.userId,
+    apiUrl,
+    validationRules,
+    setFieldStatus
+  );
+  useDuplicateCheck(
+    "userEmail",
+    formData.userEmail,
+    apiUrl,
+    validationRules,
+    setFieldStatus
+  );
+  useDuplicateCheck(
+    "userPhone",
+    formData.userPhone,
+    apiUrl,
+    validationRules,
+    setFieldStatus
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    const errors = validateForm(formData, validationRules);
+    setValidationErrors(errors);
+
+    if (Object.values(errors).some((error) => error)) {
       alert("입력한 정보를 다시 확인해주세요.");
       return;
     }
@@ -209,10 +133,6 @@ function Signup() {
         console.error("회원가입 실패:", error);
         alert("회원가입에 실패했습니다.");
       });
-  };
-
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
   };
 
   return (

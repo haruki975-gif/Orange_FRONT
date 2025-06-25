@@ -1,78 +1,104 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { login } from "./js/authService";
 
 function Login() {
-  const [form, setForm] = useState({
-    userId: "",
-    password: "",
-  });
+  const [userId, setUserId] = useState("");
+  const [userPw, setUserPw] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navi = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
-
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    console.log("로그인 데이터:", form);
+
+    if (!userId.trim() || !userPw.trim()) {
+      setErrorMsg("아이디와 비밀번호를 모두 입력해주세요.");
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMsg("");
+
+    login(userId, userPw)
+      .then((data) => {
+        //console.log(data);
+        const response = data.items;
+
+        sessionStorage.setItem("accessToken", response.accessToken);
+        sessionStorage.setItem("refreshToken", response.refreshToken);
+        sessionStorage.setItem("userNo", response.userNo);
+        sessionStorage.setItem("userId", response.userId);
+        sessionStorage.setItem("userName", response.userName);
+        sessionStorage.setItem("userRole", response.userRole);
+
+        // 로그인 상태 변경 이벤트
+        window.dispatchEvent(new Event("loginStateChanged"));
+        alert(`${response.userName}님 환영합니다.`);
+
+        if (response.userRole === "ADMIN") {
+          navi("/admin");
+        } else {
+          navi("/");
+        }
+      })
+      .catch((error) => {
+        console.log("로그인 오류", error);
+        let message =
+          "로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.";
+
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.error
+        ) {
+          message = error.response.data.error;
+        }
+
+        setErrorMsg(message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
     <div className="login-wrapper">
       <h2 className="title">로그인</h2>
-      <form onSubmit={handleSubmit} className="login-form">
+      <form onSubmit={handleLogin} className="login-form">
         <input
           type="text"
           name="userId"
           placeholder="아이디를 입력해주세요."
-          value={form.userId}
-          onChange={handleChange}
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
+          disabled={isLoading}
         />
-        <p className="error-msg">아이디를 확인해 주세요.</p>
-
         <div className="password-field">
           <input
-            type={showPassword ? "text" : "password"}
-            name="password"
+            type="password"
+            name="userPw"
             placeholder="비밀번호를 입력해주세요."
-            value={form.password}
-            onChange={handleChange}
+            value={userPw}
+            onChange={(e) => setUserPw(e.target.value)}
+            disabled={isLoading}
           />
-          <button
-            type="button"
-            className="toggle-btn"
-            onClick={toggleShowPassword}
-          >
-            {showPassword ? (
-              <FiEyeOff size="24" color="#FF8C00" />
-            ) : (
-              <FiEye size="24" color="#FF8C00" />
-            )}
-          </button>
         </div>
-        <p className="error-msg">비밀번호를 확인해 주세요.</p>
 
-        <button type="submit" className="login-btn">
+        {errorMsg && <p className="error-msg">{errorMsg}</p>}
+
+        <button type="submit" className="login-btn" disabled={isLoading}>
           로그인
         </button>
       </form>
 
       <div className="login-links">
-        <a href="#">비밀번호 찾기</a>
+        <a href="/find-pw">비밀번호 찾기</a>
         <span>|</span>
-        <a href="#">아이디 찾기</a>
+        <a href="/find-id">아이디 찾기</a>
         <span>|</span>
-        <a href="#">회원가입</a>
+        <a href="/signup">회원가입</a>
       </div>
     </div>
   );
