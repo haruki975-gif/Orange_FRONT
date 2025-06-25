@@ -17,7 +17,7 @@ const Tab = (props) =>{
 
     const openTabHandler = () =>{
         setOpenTab(!openTab);
-        navi(path)
+        navi(path);
     }
 
     return(
