@@ -1,25 +1,25 @@
 import { useState } from "react";
 
-const CreateWorkModal = ({setOpenCreateModal, modalBackground}) =>{
+const UpdateWorkModal = ({setOpenUpdateModal, modalBackground, prevWorkTitle}) =>{
 
     const memberList = ["홍길동", "철수", "짱구"];
 
     const [chooseMember, setChooseMember] = useState();
 
-    const closeCreateTeamModal = (e) =>{
-        setOpenCreateModal(false);
+    const closeUpdateTeamModal = (e) =>{
+        setOpenUpdateModal(false);
     }
 
     return( 
-        <div className="create-work-modal" ref={modalBackground} onClick={(e) => {
+        <div className="work-modal" ref={modalBackground} onClick={(e) => {
             if(modalBackground.current === e.target)
-                closeCreateTeamModal(e);
+                closeUpdateTeamModal(e);
         }}>
             <form className="container">
-                <h2 className="title">업무명</h2>
+                <h2 className="title">업무 수정</h2>
                 <div className="team-name">
-                    <label htmlFor="team-name" className="name">팀명</label>
-                    <input type="text" id="team-name" placeholder="업무명(최대100자)"/>
+                    <label htmlFor="team-name" className="name">업무명</label>
+                    <input type="text" id="team-name" placeholder="업무명(최대100자)" value={prevWorkTitle}/>
                 </div>
                 <div className="team-content">
                     <label htmlFor="team-content" className="content">업무 설명</label>
@@ -39,7 +39,7 @@ const CreateWorkModal = ({setOpenCreateModal, modalBackground}) =>{
                 </div>
 
                 <button className="create-request-btn">업무 생성</button>
-                <button className="close-btn" type="button" onClick={() => closeCreateTeamModal()}>
+                <button className="close-btn" type="button" onClick={() => closeUpdateTeamModal()}>
                     <img src="/img/icon/x-lg.png" alt="" />
                 </button>
             </form>
@@ -47,4 +47,4 @@ const CreateWorkModal = ({setOpenCreateModal, modalBackground}) =>{
     )
 }
 
-export default CreateWorkModal;
+export default UpdateWorkModal;

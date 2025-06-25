@@ -1,10 +1,17 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 
-const WorkCard = ({id, workTitle, assigneeName}) =>{
+const WorkCard = ({id, workTitle, assigneeName, openUpdateModalHandler, openDetailModalHandler}) =>{
 
-    const ref = useRef(null);
     
+    const optionBtn = useRef();
+
+    const [openOptionModal, setOpenOptionModal] = useState(false);
+    
+
+    // 드래그 관련 코드
+    const ref = useRef(null);
+
     const [{ isDragging }, drag] = useDrag({
       type: "ITEM",
       item: { id },
@@ -13,7 +20,7 @@ const WorkCard = ({id, workTitle, assigneeName}) =>{
       }),
     });
 
-    drag(ref)
+    drag(ref);
 
     return(
         <div className="work-card" ref={ref}>
@@ -25,10 +32,21 @@ const WorkCard = ({id, workTitle, assigneeName}) =>{
                     <img src="/img/icon/person-fill.png" alt="" />
                 </div>
             </div>
-            <div className="options-btn">
+            <div className="options-btn" ref={optionBtn} 
+                onClick={() => {setOpenOptionModal(true)}} 
+                onMouseLeave={() => {setOpenOptionModal(false)}}
+            >
                 <span></span>
                 <span></span>
                 <span></span>
+                {openOptionModal && 
+                    <div className="option-modal">
+                        <div className="update-option"
+                            onClick={() => openDetailModalHandler(workTitle)}>상세보기</div>
+                        <div className="detail-option"
+                            onClick={() => openUpdateModalHandler(workTitle)}>수정하기</div>
+                    </div>
+                }
             </div>
         </div>
     )

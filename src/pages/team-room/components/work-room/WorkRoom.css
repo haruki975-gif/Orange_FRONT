@@ -34,7 +34,7 @@
     flex-direction: column;
     width: 100%;
     border-radius: 6px;
-    background-color: #f3f3f3;
+    background-color: #f6fcdf;
     box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.16);
     position: relative;
     cursor: pointer;
@@ -84,6 +84,7 @@
     right: 14px;
     cursor: pointer;
     height: 10px;
+
 }
 .work-room .options-btn > span{
     display: block;
@@ -92,6 +93,29 @@
     background-color: #343434;
     border-radius: 50%;
     margin-left: 2px;
+}
+
+.work-room .options-btn .option-modal{
+    position: absolute;
+    width: 100px;
+    left: -100px;
+    top: -6px;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.work-room .option-modal > div{
+    width: 100%;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    background-color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 400;
+}
+.work-room .option-modal > div:hover{
+    background-color: #efefef;
 }
 .work-room .work-create-btn{
     position: absolute;
@@ -115,7 +139,7 @@
     margin-right: 6px;
 }
 
-#team-room .create-work-modal{
+#team-room .work-modal{
     position: absolute;
     top: 0;
     left: 0;
@@ -130,7 +154,7 @@
     justify-content: center;
 
 }
-#team-room .create-work-modal .container{
+#team-room .work-modal .container{
     width: 922px;
     padding: 60px 80px;
     border-radius: 30px;
@@ -140,19 +164,27 @@
     flex-direction: column;
     border: none;
 }
-#team-room .create-work-modal .title{
+#team-room .work-modal .title{
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 44px;
 }
-#team-room .create-work-modal .team-name{
+#team-room .work-modal .team-name{
     margin-bottom: 30px;
 }
-#team-room .create-work-modal label{
+#team-room .work-modal label{
     font-size: 18px;
     font-weight: 400;
 }
-#team-room .create-work-modal #team-name{
+#team-room .work-modal .container > div > h3{
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+#team-room .work-modal .container > div > p{
+    padding: 0 8px;
+}
+#team-room .work-modal #team-name{
     width: 100%;
     height: 44px;
     padding: 0px 20px;
@@ -160,12 +192,12 @@
     border: 1px solid #BCBCBC;
     margin-top: 6px;
 }
-#team-room .create-work-modal .team-content{
+#team-room .work-modal .team-content{
     display: flex;
     flex-direction: column;
     margin-bottom: 30px;
 }
-#team-room .create-work-modal #team-content{
+#team-room .work-modal #team-content{
     padding: 20px;
     border-radius: 10px;
     border: 1px solid #BCBCBC;
@@ -174,16 +206,16 @@
     height: 300px;
     resize: none;
 }
-#team-room .create-work-modal .team-category > h3{
+#team-room .work-modal .team-category > h3{
     font-size: 18px;
     font-weight: 400;
     margin-bottom: 10px;
 }
-#team-room .create-work-modal .categories{
+#team-room .work-modal .categories{
     display: flex;
     align-items: center;
 }
-#team-room .create-work-modal .categories > button{
+#team-room .work-modal .categories > button{
     margin-right: 16px;
     padding: 6px 16px;
     border-radius: 10px;
@@ -193,11 +225,32 @@
     font-size: 16px;
     font-weight: 500;
 }
-#team-room .create-work-modal .categories > button.active{
+#team-room .work-modal .categories > button.active{
     border: 1px solid #9DC2FF;
     color: #1D65D9;
 }
-#team-room .create-work-modal .create-request-btn{
+#team-room .work-modal .end-date{
+    margin-bottom: 30px;
+}
+#team-room .work-modal .assignee .assignee-info{
+    display: flex;
+    align-items: center;
+}
+#team-room .work-modal .assignee .user-profile{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 8px;
+    background-color: #D9D9D9;
+}
+#team-room .work-modal .assignee .user-profile > img{
+    width: 20px;
+    height: 20px;
+}
+#team-room .work-modal .create-request-btn{
     margin-top: 10px;
     align-self: flex-end;
     padding: 8px 26px;
@@ -207,7 +260,7 @@
     font-weight: 500;
     font-size: 18px;
 }
-#team-room .create-work-modal .close-btn{
+#team-room .work-modal .close-btn{
     position: absolute;
     top: 80px;
     right: 80px;
@@ -220,7 +273,7 @@
     justify-content: center;
     cursor: pointer;
 }
-#team-room .create-work-modal .close-btn > img{
+#team-room .work-modal .close-btn > img{
     width: 16px;
     height: 16px;
 }

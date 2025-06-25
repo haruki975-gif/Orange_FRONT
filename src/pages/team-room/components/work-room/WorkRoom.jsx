@@ -6,14 +6,17 @@ import Plus from "/img/icon/plus.svg";
 
 import { DndProvider} from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import CreateWorkModal from "./components/CreateWorkModal";
+import UpdateWorkModal from "./components/UpdateWorkModal";
+import DetailWorkModal from "./components/DetailWorkModal";
 
 
 
 const WorkRoom = () =>{
 
-    const [openCreateModal, setOpenCreateModal] = useState(false);
-    const modalBackground = useRef();
+    const [openUpdateModal, setOpenUpdateModal] = useState(false);
+    const [openDetailModal, setOpenDetailModal] = useState(false);
+    const updateModalBackground = useRef();
+    const detailModalBackground = useRef();
 
     const [columnList, setColumnList] = useState([
         {
@@ -34,16 +37,36 @@ const WorkRoom = () =>{
         },
     ]);
 
+    const [prevWorkTitle, setPrevWorkTitle] = useState(""); 
+    const [workTitle, setWorkTitle] = useState(""); 
+
+    const openUpdateModalHandler = (workTitle) =>{
+        setOpenUpdateModal(true);
+        setPrevWorkTitle(workTitle);
+    }
+
+    const openDetailModalHandler = (workTitle) =>{
+        setOpenDetailModal(true);
+        setWorkTitle(workTitle);
+    }
+
 
     return(
         <DndProvider backend={HTML5Backend}>
             <div className="work-room">
                 {columnList.map(column => (
-                    <WorkContainer column={column} setOpenCreateModal={setOpenCreateModal}/>
+                    <WorkContainer 
+                        column={column} 
+                        openUpdateModalHandler={openUpdateModalHandler}
+                        openDetailModalHandler={openDetailModalHandler}
+                    />
                 ))}
             </div>
-            {openCreateModal && 
-                <CreateWorkModal setOpenCreateModal={setOpenCreateModal} modalBackground={modalBackground}/>
+            {openUpdateModal && 
+                <UpdateWorkModal setOpenUpdateModal={setOpenUpdateModal} modalBackground={updateModalBackground} prevWorkTitle={prevWorkTitle}/>
+            }
+            {openDetailModal &&
+                <DetailWorkModal setOpenDetailModal={setOpenDetailModal} modalBackground={detailModalBackground} workTitle={workTitle}/>
             }
         </DndProvider>
         

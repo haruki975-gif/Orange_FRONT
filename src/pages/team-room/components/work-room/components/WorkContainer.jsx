@@ -3,7 +3,7 @@ import WorkCard from "./WorkCard";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 
 
-const WorkContainer = ({column, setOpenCreateModal}) => {
+const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler}) => {
 
     const [workList, setWorkList] = useState([]); 
 
@@ -20,13 +20,7 @@ const WorkContainer = ({column, setOpenCreateModal}) => {
 
     useEffect(()=>{
         getWorkList(column.columnNo);
-    }, [])
-
-
-    const openCreateWorkModal = () =>{
-        setOpenCreateModal(true);
-    }
-
+    }, []);
 
     const getWorkList = (columnNo) =>{
 
@@ -103,12 +97,16 @@ const WorkContainer = ({column, setOpenCreateModal}) => {
             <h3 className="work-status">{column.workStatus}</h3>
             <div className="work-container">
                 {workList.map(work =>(
-                    <WorkCard id={work.workNo} workTitle={work.workTitle} assigneeName={work.assigneeName}/>
+                    <WorkCard 
+                        id={work.workNo} 
+                        workTitle={work.workTitle}
+                        assigneeName={work.assigneeName} 
+                        openUpdateModalHandler={openUpdateModalHandler}
+                        openDetailModalHandler={openDetailModalHandler}/>
                 ))}
             </div>
             
-            <div className="work-create-btn"
-                onClick={() => openCreateWorkModal()}>
+            <div className="work-create-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg> 만들기
             </div>
         </div>
