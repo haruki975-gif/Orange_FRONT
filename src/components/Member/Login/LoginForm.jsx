@@ -24,7 +24,7 @@ function Login() {
     login(userId, userPw)
       .then((data) => {
         //console.log(data);
-        const response = data.items;
+        const response = data.items[0];
 
         sessionStorage.setItem("accessToken", response.accessToken);
         sessionStorage.setItem("refreshToken", response.refreshToken);

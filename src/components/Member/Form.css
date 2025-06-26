@@ -113,7 +113,8 @@
   cursor: pointer;
 }
 .go-login-btn:hover {
-  background-color: #ffeacf;
+  background-color: #ff8c00;
+  color: white;
 }
 
 /* 비밀번호 찾기 title 아래 설명 */

@@ -37,10 +37,12 @@ const Step1UserCheck = ({
         if (
           response.data &&
           response.data.items &&
-          response.data.items.userId
+          response.data.items.length > 0 &&
+          response.data.items[0].userId
         ) {
           // 성공 시 step 2로 이동
           setStep(2);
+          setErrorMsg("");
         } else {
           setErrorMsg("존재하지 않는 아이디입니다.");
         }
