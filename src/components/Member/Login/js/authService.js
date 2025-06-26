@@ -47,6 +47,7 @@ export const logout = () => {
     )
     .then(() => {
       clearAuthData();
+      window.location.replace("/");
     });
 };
 
@@ -83,7 +84,7 @@ export const refreshToken = () => {
 
   // 서버에 갱신 요청
   return axios
-    .post(`${apiUrl}/auth/refresh`, {
+    .post(`${apiUrl}/api/auth/refresh`, {
       refreshToken: refreshToken,
     })
     .then((response) => {

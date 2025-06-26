@@ -34,12 +34,16 @@ const Header = () => {
     logout()
       .then(() => {
         alert("로그아웃 되었습니다.");
+        sessionStorage.clear();
         checkLoginStatus();
         navi("/");
       })
       .catch((err) => {
-        console.log("로그아웃 실패", err);
-        alert("로그아웃 중 오류가 발생했습니다.");
+        console.log("로그아웃 실패 또는 토큰 만료", err);
+        sessionStorage.clear();
+        alert("로그아웃 되었습니다.");
+        checkLoginStatus();
+        navigate("/");
       });
   };
 
@@ -79,7 +83,7 @@ const Header = () => {
                 <img
                   src="/img/icon/person-fill.png"
                   alt=""
-                  onClick={() => navi("/mypage")}
+                  onClick={() => navi("/mypage-main")}
                 />
               </div>
               <div className="logout">

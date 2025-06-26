@@ -1,13 +1,21 @@
+/* 1. 전체 페이지를 가운데 정렬 */
+.page-container {
+  display: flex;
+  justify-content: center;
+  padding: 30px 0;
+}
+
 .login-wrapper {
-  margin-left: auto;
-  padding: 0px 40px 40px 20%;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
+  width: 400px;
 }
 
 .title {
   margin-bottom: 30px;
+  text-align: left;
+  width: 100%;
 }
 
 .login-form {
@@ -92,4 +100,49 @@
   color: red;
   font-size: 13px;
   font-weight: 400;
+}
+
+/* 아이디 찾기 - 로그인으로 button */
+.go-login-btn {
+  padding: 14px;
+  border: 2px solid #ff8c00;
+  color: #ff8c00;
+  font-weight: bold;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.go-login-btn:hover {
+  background-color: #ffeacf;
+}
+
+/* 비밀번호 찾기 title 아래 설명 */
+.subtitle {
+  font-size: 17px;
+  margin-top: -20px;
+  margin-bottom: 30px;
+}
+
+/* 이메일 필드 */
+.email-field {
+  display: flex;
+  gap: 8px;
+}
+
+.email-field input {
+  flex: 1;
+}
+
+.email-btn {
+  padding: 12px 16px;
+  color: #ff8c00;
+  font-weight: bold;
+  border: 2px solid #ff8c00;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.email-btn:hover {
+  background-color: #ffeacf;
 }
