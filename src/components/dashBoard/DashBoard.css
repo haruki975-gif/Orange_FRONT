@@ -90,3 +90,213 @@
   height: 35px;
   display: flex;
 }
+
+.dashBoard {
+    display: inline-block;
+    height: auto;
+}
+
+
+.dashBoard .work-status-container{
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: #fff;
+    border: #cdcdcd 0.5px solid;
+    width: 297px;
+    padding: 16px 20px 0;
+    position: relative;
+    height: auto;
+}
+.dashBoard .work-status-container:last-of-type{
+    margin-right: 0;
+}
+.dashBoard .work-status{
+    font-size: 16px;
+    font-weight: 500;
+}
+.dashBoard .work-container{
+    margin: 10px 0 10px;
+    padding: 14px 10px 12px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 6px;
+    background-color: #f3f3f3;
+    box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.16);
+    position: relative;
+    cursor: pointer;
+    border: solid 0.5px #e5e5e5;
+}
+
+.dashBoard .work-container:hover{
+      background-color: #ebeaea;
+}
+
+
+.dashBoard .work-title{
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 14px;
+}
+.dashBoard .assignee-info{
+    display: flex;
+    align-items: center;
+}
+.dashBoard .assignee-info > span{
+    font-size: 12px;
+    font-weight: 400;
+    margin-right: 14px;
+    color: #8C8C8C;
+}
+.dashBoard .assignee-info .assignee-name{
+    font-size: 14px;
+    font-weight: 400;
+}
+.dashBoard .assignee-info .assignee-profile{
+    margin-left: auto;
+    width: 24px;
+    height: 24px;
+    background-color: #D9D9D9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dashBoard .assignee-info .assignee-profile > img{
+    width: 16px;
+    height: 16px;
+}
+
+.dashBoard .options-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    top: -30px;
+    right: -240px;
+    cursor: pointer;
+    height: 25px;
+    width: 25px;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.dashBoard .options-btn:hover{
+  background-color: #D9D9D9;
+
+}
+
+.dashBoard .options-btn > span{
+    display: block;
+    width: 3px;
+    height: 3px;
+    background-color: #343434;
+    border-radius: 50%;
+    margin-left: 2px;
+}
+.dashBoard .work-create-btn {
+    position: relative;
+    width: 100%;
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    background-color: #FFB55B;
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 400;
+    cursor: pointer;
+    margin-bottom: 10px;
+    box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.16);
+}
+.dashBoard .work-create-btn > svg{
+    width: 20px;
+    height: 20px;
+    fill: #ffffff;
+    margin-right: 6px;
+}
+
+.dashBoard .work-create-btn:hover{
+      background-color: #ffad49;
+}
+
+.dashBoard .addSectionBtn{
+  position: relative;
+  width: 35px;
+  height: 35px;
+  border-radius: 5px;
+  border: solid 1px rgb(209, 208, 208);
+  top: 40px;
+  left: 305px;
+  cursor: pointer;
+}
+
+
+.dashBoard .addSectionBtn:hover{
+  background-color: #dddbdb;
+}
+
+
+.makeBtn{
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.plusWrap {
+    display: flex;
+    position: relative;
+    right: -12px;
+}
+
+.create-input{
+    resize: none;
+    width: 100%;
+    overflow: hidden;
+    padding: 10px 12px;
+    font-size: 14px;
+    line-height: 20px;
+    border: 3px solid #ffca8a;
+    outline: none;
+    resize: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    box-shadow: 4688ec;
+    position: relative;
+    top: 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.create-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.create-input {
+  width: 100%;
+  resize: none;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 20px;
+  border: 3px solid #ffca89;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.submit-btn {
+  position: absolute;
+  right: 10px;
+  top: 73px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #ffad49;
+}
+
+.submit-btn:hover {
+  color: #ffad49;
+}

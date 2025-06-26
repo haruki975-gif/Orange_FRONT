@@ -3,48 +3,48 @@ import { useEffect, useRef } from "react";
 import "./ChatRoom.css";
 import TextareaAutosize from 'react-textarea-autosize';
 
-const ChatRoom = () =>{
+const ChatRoom = () => {
 
     const chatList = [
         {
-            sender : "홍길동",
-            date : "06/19 20:32",
-            content : "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
+            sender: "홍길동",
+            date: "06/19 20:32",
+            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
         },
         {
-            sender : "홍길동",
-            date : "06/19 20:32",
-            content : "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
+            sender: "홍길동",
+            date: "06/19 20:32",
+            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
         },
         {
-            sender : "홍길동",
-            date : "06/19 20:32",
-            content : "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
+            sender: "홍길동",
+            date: "06/19 20:32",
+            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
         },
         {
-            sender : "홍길동",
-            date : "06/19 20:32",
-            content : "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
+            sender: "홍길동",
+            date: "06/19 20:32",
+            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
         },
         {
-            sender : "홍길동",
-            date : "06/19 20:32",
-            content : "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
+            sender: "홍길동",
+            date: "06/19 20:32",
+            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
         },
         {
-            sender : "홍길동",
-            date : "06/19 20:32",
-            content : "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
+            sender: "홍길동",
+            date: "06/19 20:32",
+            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
         },
         {
-            sender : "홍길동",
-            date : "06/19 20:32",
-            content : "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
+            sender: "홍길동",
+            date: "06/19 20:32",
+            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
         },
         {
-            sender : "홍길동",
-            date : "06/19 20:32",
-            content : "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
+            sender: "홍길동",
+            date: "06/19 20:32",
+            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
         },
     ]
 
@@ -52,11 +52,11 @@ const ChatRoom = () =>{
 
     useEffect(() => {
         if (scrollRef.current) {
-        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, []);
 
-    return(
+    return (
         <div className="chat-room" ref={scrollRef}>
             {chatList.map(chat => (
                 <div className="message">

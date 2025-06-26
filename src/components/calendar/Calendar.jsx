@@ -115,20 +115,45 @@ const Calender = () => {
     };
 
     const handleEventDrop = (info) => {
-        const movedEvent = parseInt(info.event.id, 10);
-        const newDate = info.event.startStr;
+        const movedEventId = parseInt(info.event.id, 10);
+        const newStartDateStr = info.event.startStr;  // 드래그 후 새 시작일
 
-        const updatedEvents = scheduleTitle.map((event) =>
-            event.id === movedEvent
-                ? {
+        // 기존 이벤트 찾기
+        const movedEvent = scheduleTitle.find(event => event.id === movedEventId);
+        if (!movedEvent) return;
+
+        // 이벤트가 며칠짜리 일정인지 계산 (dueDate - startDate)
+        const oldStart = new Date(movedEvent.startDate || movedEvent.dueDate);
+        const oldEnd = new Date(movedEvent.dueDate);
+        const diffTime = oldEnd.getTime() - oldStart.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // 일수 차이
+
+        // 새 시작일 Date 객체
+        const newStart = new Date(newStartDateStr);
+
+        // 새 종료일 = 새 시작일 + 기간 길이
+        const newEnd = new Date(newStart);
+        newEnd.setDate(newStart.getDate() + diffDays);
+
+        // 날짜 포맷 함수 (YYYY-MM-DD)
+        const formatDate = (date) => date.toISOString().split('T')[0];
+
+        // 상태 업데이트
+        const updatedEvents = scheduleTitle.map(event => {
+            if (event.id === movedEventId) {
+                return {
                     ...event,
-                    dueDate: newDate
-                }
-                : event
-        );
+                    startDate: formatDate(newStart),
+                    dueDate: formatDate(newEnd),
+                };
+            }
+            return event;
+        });
+
         setScheduleTitle(updatedEvents);
-        console.log("이동된 날짜: ", info.event.startStr);
+        console.log("이동된 일정 시작:", newStartDateStr);
     };
+
 
 
 
@@ -138,7 +163,7 @@ const Calender = () => {
             title: eventDate.task,
             id: Date.now(),
             content: "",
-            startDate: "",
+            startDate: null,
             dueDate: selectedDate,
         };
 
@@ -156,8 +181,17 @@ const Calender = () => {
         return arg.dayNumberText.replace("일", "");
     };
 
+    const getNextDate = (dateStr) => {
+        if (!dateStr) return null;
+        const date = new Date(dateStr);
+        date.setDate(date.getDate() + 1);
+        return date.toISOString().split("T")[0];
+    };
+
+
+
     return (
-        <div className="MainContainer">
+        <>
             <TabNav />
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
@@ -174,7 +208,8 @@ const Calender = () => {
                 events={scheduleTitle.map(event => ({
                     id: event.id,
                     title: event.title,
-                    start: event.dueDate,
+                    start: event.startDate || event.dueDate,
+                    end: getNextDate(event.dueDate),
                 }))}
 
             />
@@ -203,7 +238,7 @@ const Calender = () => {
                     onDelete={handleDeleteEvent}
                 />
             )}
-        </div>
+        </>
     );
 };
 

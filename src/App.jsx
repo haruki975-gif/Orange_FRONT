@@ -17,32 +17,19 @@ function App() {
 
   return (
     <main id='main'>
-<<<<<<< HEAD
       <Header />
       <Side />
-      {/*       <div id='display'>
- */}        <Routes>
-        <Route path='/' element={<h1>메인</h1>}></Route>
+      <Routes>
         <Route path='/' element={<h1 style={{ margin: "400px" }}>메인페이지</h1>}></Route>
         <Route path='/find-team' element={<TeamComponent />} />
-        <Route path='/team-room' element={<TeamRoom />}></Route>
-
+        <Route path='/team-room' element={<TeamRoom />}>
+          <Route index element={<Navigate to="chat-room" replace />} />
+          <Route path='chat-room' element={<ChatRoom />} />
+          <Route path='work-room' element={<WorkRoom />} />
+        </Route>
         <Route path='/calendar' element={<Calender />} />
         <Route path='/dashboard' element={<DashBoard />} />
-=======
-      <Header/>
-      <Side/>
-      <Routes>
-        <Route path='/' element={<h1 style={{margin : "400px"}}>메인페이지</h1>}></Route>
-        <Route path='/find-team' element={<TeamComponent/>}/>
-        <Route path='/team-room' element={<TeamRoom/>}>
-          <Route index element={<Navigate to="chat-room" replace />} />
-          <Route path='chat-room' element={<ChatRoom/>}/>
-          <Route path='work-room' element={<WorkRoom/>}/>
-        </Route>
->>>>>>> 7bcb7848162dfd91271796fa8d66e8dcc8e62183
       </Routes>
-      {/* </div> */}
     </main>
   )
 }

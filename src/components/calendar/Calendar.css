@@ -58,6 +58,22 @@
 
 .fc.fc-media-screen.fc-direction-ltr.fc-theme-standard {
     margin-left: -211px;
-    margin-top: 15px;
+    margin-top: -58px;
     margin-right: -210px;
+}
+
+.fc .fc-view-harness {
+    flex-grow: 1;
+    position: relative;
+    top: -12px;
+}
+
+
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 1.5em;
+    background-color: white;
+    height: 64px;
+    position: relative;
+    top: -6px;
+    left: 1px;
 }
