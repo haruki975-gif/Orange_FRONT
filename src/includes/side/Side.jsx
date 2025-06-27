@@ -70,9 +70,8 @@ const Side = () =>{
     }
 
     return(
-        <side id="side">
+        <div id="side">
             <div className="menus">
-
                 <Tab menu={myCalendar}/>
                 <Tab menu={myTeam}/>
                 <Tab menu={findTeam}/>
@@ -80,7 +79,7 @@ const Side = () =>{
                 <Tab menu={admin}/>
 
             </div>
-        </side>
+        </div>
     )
 }
 

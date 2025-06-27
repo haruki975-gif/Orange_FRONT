@@ -1,50 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MyTeamRow from "../team-row/myTeamRow";
+import axios from "axios";
 
 const AffiliatedTeam = () =>{
 
-    const [teamList, setTeamList] = useState([
-            {
-                "teamNo" : "12",
-                "teamName" : "공부하자",
-                "teamContent" : "매일 공부하는 방입니다.",
-                "leaderNo" : "32",
-                "leaderName" : "짱구",
-                "category" : "스터디",
-                "teamMemberList" : [
-                    {
-                        "memberNo" : "7",
-                        "memberName" : "호돌이"
-                    },
-                    {
-                         "memberNo" : "251",
-                         "memberName" : "최윤서"
-                    }
-                ]
-            },
-            {
-                "teamNo" : "12",
-                "teamName" : "공부하자",
-                "teamContent" : "매일 공부하는 방입니다.",
-                "leaderNo" : "32",
-                "leaderName" : "짱구",
-                "category" : "스터디",
-                "teamMemberList" : [
-                    {
-                        "memberNo" : "25",
-                        "memberName" : "홍길동"
-                    },
-                    {
-                        "memberNo" : "7",
-                        "memberName" : "호돌이"
-                    },
-                    {
-                         "memberNo" : "251",
-                         "memberName" : "최윤서"
-                    }
-                ]
+    const apiUrl = URL_CONFIG.API_URL;
+
+    const [teamList, setTeamList] = useState([]);
+
+    useEffect(()=>{
+        let accessToken = sessionStorage.getItem("accessToken");
+
+        if(!accessToken){
+            return;
+        }
+
+        axios.get(`${apiUrl}/api/teams/my-team`,{
+            headers : {
+                Authorization : `Bearer ${accessToken}`,
             }
-        ]);
+        }).then((response)=>{
+            console.log(response.data.items);
+            setTeamList(response.data.items);
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }, [])
 
     return(
         <div className="affiliated-team">
@@ -57,9 +38,15 @@ const AffiliatedTeam = () =>{
                     <p className="max-member">인원수</p>
                 </div>
                 <div className="team-list">
-                    {teamList.map(team => (
-                        <MyTeamRow team={team}/>
-                    ))}
+                    {teamList.length !== 0 ? (
+                        teamList.map((team, index) => (
+                            <MyTeamRow team={team} key={index}/>
+                        ))
+                    ) : (
+                        <div className="not-found-team">
+                            <h2>팀이 존재하지 않습니다.</h2>
+                        </div>
+                    )}
                 </div>
                 
             </div>
