@@ -30,12 +30,10 @@ const FindUserId = () => {
       })
       .then((response) => {
         //console.log(response);
-        if (
-          response.data &&
-          response.data.items &&
-          response.data.items.userId
-        ) {
-          setFoundUserId(response.data.items.userId);
+        const items = response.data.items;
+
+        if (Array.isArray(items) && items.length > 0 && items[0].userId) {
+          setFoundUserId(items[0].userId);
         } else {
           setErrorMsg("아이디를 찾을 수 없습니다.");
           setFoundUserId("");
@@ -44,6 +42,7 @@ const FindUserId = () => {
       .catch((error) => {
         console.log(error);
         alert("아이디 조회에 실패했습니다.");
+        setErrorMsg("아이디를 찾을 수 없습니다.");
         setFoundUserId("");
       });
   };
@@ -59,6 +58,7 @@ const FindUserId = () => {
             name="userName"
             placeholder="이름을 입력해주세요."
             value={userName}
+            required
             onChange={(e) => setUserName(e.target.value)}
           />
 
@@ -67,6 +67,7 @@ const FindUserId = () => {
             name="userEmail"
             placeholder="이메일을 입력해주세요."
             value={userEmail}
+            required
             onChange={(e) => setUserEmail(e.target.value)}
           />
 

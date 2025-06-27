@@ -31,17 +31,13 @@ const Step1UserCheck = ({
     }
 
     axios
-      .get(`${apiUrl}/api/members/find-pw/${userId}`)
+      .get(`${apiUrl}/api/members/find-pw/step1/${userId}`)
       .then((response) => {
         console.log("아이디 조회 성공", response);
-        if (
-          response.data &&
-          response.data.items &&
-          response.data.items.length > 0 &&
-          response.data.items[0].userId
-        ) {
-          // 성공 시 step 2로 이동
-          setStep(2);
+        const items = response.data.items;
+
+        if (Array.isArray(items) && items.length > 0 && items[0].userId) {
+          setStep(2); // 성공하면 다음 스텝으로 이동
           setErrorMsg("");
         } else {
           setErrorMsg("존재하지 않는 아이디입니다.");
@@ -55,7 +51,6 @@ const Step1UserCheck = ({
           error.response.data &&
           error.response.data.message
         ) {
-          // 서버에서 내려준 메시지 출력
           setErrorMsg(error.response.data.message);
         } else {
           setErrorMsg("아이디 조회에 실패했습니다.");
@@ -74,6 +69,7 @@ const Step1UserCheck = ({
           name="userId"
           placeholder="아이디를 입력해주세요."
           value={userId}
+          required
           onChange={(e) => setUserId(e.target.value)}
         />
 

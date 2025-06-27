@@ -145,5 +145,14 @@
 }
 
 .email-btn:hover {
-  background-color: #ffeacf;
+  background-color: #ff8c00;
+  color: white;
+}
+
+/* 이메일 인증 타이머 텍스트 */
+.timer-text {
+  margin-top: 4px;
+  color: red;
+  font-size: 13px;
+  font-weight: 400;
 }

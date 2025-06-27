@@ -116,6 +116,7 @@
   font-weight: bold;
 }
 
+/* 확인 버튼 */
 .common-btn {
   margin-top: 10px;
   padding: 14px;
@@ -129,6 +130,7 @@
   width: 100%;
 }
 
+/* 뒤로가기 */
 .back-btn {
   margin-top: 10px;
   padding: 14px;
