@@ -6,10 +6,10 @@ import "./Signup.css";
 // 정규식 모음
 import { validationRules } from "./js/validationRules";
 // validateField, validateForm
+import { validateField } from "./js/validationUtils";
 import { validateForm } from "./js/validationUtils";
 // 아이디, 이메일, 연락처 중복체크용 커스텀 훅
 import { useDuplicateCheck } from "./js/useDuplicateCheck";
-import { validateField } from "./js/validationUtils";
 
 function Signup() {
   const navi = useNavigate();
