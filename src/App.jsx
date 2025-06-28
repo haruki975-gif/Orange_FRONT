@@ -16,39 +16,57 @@ import ProfileImage from "./components/Mypage/Profile/ProfileImage";
 import InfoForm from "./components/Mypage/Info/InfoForm";
 import PasswordForm from "./components/Mypage/Password/PasswordForm";
 import DeleteUser from "./components/Mypage/Delete/DeleteUser";
+import { ToastContainer, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { AlertProvider } from "./components/context/AlertContext";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <main id="main">
-      <Header />
-      <Side />
-      <Routes>
-        <Route
-          path="/"
-          element={<h1 style={{ margin: "400px" }}>메인페이지</h1>}
-        ></Route>
-        {/* member */}
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/find-id" element={<FindUserId />} />
-        <Route path="/find-pw" element={<FindPassword />} />
-        {/* mypage */}
-        <Route path="/mypage-main" element={<MypageMain />} />
-        <Route path="/info-form" element={<InfoForm />} />
-        <Route path="/profile-image" element={<ProfileImage />} />
-        <Route path="/password-form/" element={<PasswordForm />} />
-        <Route path="/delete-user" element={<DeleteUser />} />
+    <AlertProvider>
+      <main id="main">
+        <Header />
+        <Side />
+        <Routes>
+          <Route
+            path="/"
+            element={<h1 style={{ margin: "400px" }}>메인페이지</h1>}
+          ></Route>
+          {/* member */}
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/find-id" element={<FindUserId />} />
+          <Route path="/find-pw" element={<FindPassword />} />
+          {/* mypage */}
+          <Route path="/mypage-main" element={<MypageMain />} />
+          <Route path="/info-form" element={<InfoForm />} />
+          <Route path="/profile-image" element={<ProfileImage />} />
+          <Route path="/password-form/" element={<PasswordForm />} />
+          <Route path="/delete-user" element={<DeleteUser />} />
 
-        <Route path="/find-team" element={<TeamComponent />} />
-        <Route path="/team-room" element={<TeamRoom />}>
-          <Route index element={<Navigate to="chat-room" replace />} />
-          <Route path="chat-room" element={<ChatRoom />} />
-          <Route path="work-room" element={<WorkRoom />} />
-        </Route>
-      </Routes>
-    </main>
+          <Route path="/find-team" element={<TeamComponent />} />
+          <Route path="/team-room" element={<TeamRoom />}>
+            <Route index element={<Navigate to="chat-room" replace />} />
+            <Route path="chat-room" element={<ChatRoom />} />
+            <Route path="work-room" element={<WorkRoom />} />
+          </Route>
+        </Routes>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          transition={Bounce}
+        />
+      </main>
+    </AlertProvider>
   );
 }
 

@@ -186,3 +186,13 @@
   width: 16px;
   height: 16px;
 }
+#alert-component .not-found-applicant{
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#alert-component .not-found-applicant > h2{
+  font-size: 20px;
+  font-weight: 600;
+}
