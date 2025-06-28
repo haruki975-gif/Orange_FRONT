@@ -2,15 +2,11 @@ import axios from "axios";
 import { useState } from "react";
 import { toast, Bounce } from "react-toastify";
 
-const CreateTeamModal = ({setOpenModal, modalBackground, setUpdateTeamList}) =>{
+const CreateTeamModal = ({setOpenModal, modalBackground, setUpdateTeamList, categories}) =>{
 
     const apiUrl = URL_CONFIG.API_URL;
 
-    const categories = [
-        {key : "study", label : "스터디"},
-        {key : "project", label : "프로젝트"},
-        {key : "free", label : "자유"}
-    ];
+
 
     const [chooseCategory, setChooseCategory] = useState("");
     const [title, setTitle] = useState("");
@@ -103,8 +99,8 @@ const CreateTeamModal = ({setOpenModal, modalBackground, setUpdateTeamList}) =>{
                 <div className="team-category">
                     <h3>팀 카테고리</h3>
                     <div className="categories">
-                        {categories.map(category => (
-                            <button type="button" 
+                        {categories.map((category, index) => (
+                            <button type="button" key={index}
                                 className={`category ${chooseCategory === category.key ? "active" : ""}`} 
                                 onClick={() => setChooseCategory(category.key)}>
                                 {category.label}

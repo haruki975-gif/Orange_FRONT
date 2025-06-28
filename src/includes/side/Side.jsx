@@ -1,10 +1,17 @@
+import { useEffect, useState } from "react";
 import Menu from "./components/menu/Menu";
 import Tab from "./components/tab/Tab";
 import "./side.css";
+import axios from "axios";
 
 
 
 const Side = () =>{
+
+    const accessToken = sessionStorage.getItem("accessToken");
+
+    const apiUrl = URL_CONFIG.API_URL;
+
 
     const myCalendar = {
         "main" : 
@@ -25,24 +32,34 @@ const Side = () =>{
         "path" : null
     };
 
-    const myTeam = {
-        "main" : 
-            {"name" : "팀 관리", 
-            "icon" : "/img/icon/journal-frame.png"},
-        "subMenu" : [
-            {
-                "name" : "오렌지조", 
-                "icon" : "/img/icon/journal-frame.png",
-                "path" : "/team-room"
-            },
-            {
-                "name" : "팀2", 
-                "icon" : "/img/icon/journal-frame.png",
-                "path" : "/team-room"
+    const [myTeam, setMyTeam] = useState({
+        main: {
+            name: "팀 관리",
+            icon: "/img/icon/journal-frame.png"
+        },
+        subMenu: [],
+        path: null
+    });
+
+    useEffect(()=>{
+
+        if(!accessToken){
+            return;
+        }
+
+        axios.get(`${apiUrl}/api/teams/my-team`,{
+            headers : {
+                Authorization : `Bearer ${accessToken}`,
             }
-        ],
-        "path" : null
-    };
+        }).then((response)=>{
+            setMyTeam(prev => ({
+                ...prev,
+                subMenu : [...response.data.items]
+            }))
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }, [accessToken])
 
     const findTeam = {
         "main" : 

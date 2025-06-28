@@ -162,11 +162,19 @@
 #team-page .team-row .team-info .team-name{
     font-size: 16px;
     font-weight: 400;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #team-page .team-row .team-info .team-content{
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     color: #8F8F8F;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #team-page .team-row .category{
     width: 15%;

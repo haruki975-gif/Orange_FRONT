@@ -46,7 +46,7 @@ function App() {
           <Route path="/delete-user" element={<DeleteUser />} />
 
           <Route path="/find-team" element={<TeamComponent />} />
-          <Route path="/team-room" element={<TeamRoom />}>
+          <Route path="/team-room/:id" element={<TeamRoom />}>
             <Route index element={<Navigate to="chat-room" replace />} />
             <Route path="chat-room" element={<ChatRoom />} />
             <Route path="work-room" element={<WorkRoom />} />

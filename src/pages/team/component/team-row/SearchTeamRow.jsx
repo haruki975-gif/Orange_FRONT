@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { AlertContext } from '../../../../components/context/AlertContext';
 import axios from "axios";
 
-const SearchTeamRow = ({team, categories, setUpdateSearchTeamList}) =>{
+const SearchTeamRow = ({team, setUpdateSearchTeamList, findCategoryLabel}) =>{
 
     const apiUrl = URL_CONFIG.API_URL;
     const { errorAlert, successAlert } = useContext(AlertContext);
@@ -66,7 +66,7 @@ const SearchTeamRow = ({team, categories, setUpdateSearchTeamList}) =>{
                 <p className="team-name">{team.title}</p>
                 <p className="team-content">{team.content}</p>
             </div>
-            <p className="category">{categories[team.category]}</p>
+            <p className="category">{findCategoryLabel(team.category)}</p>
             <div className="people">
                 {openRequestBtn 
                     ? <button

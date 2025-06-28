@@ -2,18 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import SearchTeamRow from "../team-row/searchTeamRow";
 import axios from "axios";
 
-const SearchTeam = ({updateTeamList}) =>{
+const SearchTeam = ({updateTeamList, categories, findCategoryLabel}) =>{
 
     const apiUrl = URL_CONFIG.API_URL;
 
+    const scrollEnabledRef = useRef(false);
+
     const [updateSearchTeamList, setUpdateSearchTeamList] = useState(true);
 
-    const categories = [
-        {key : "all", label : "전체"},
-        {key : "study", label : "스터디"},
-        {key : "project", label : "프로젝트"},
-        {key : "free", label : "자유"}
-    ];
+
     const [chooseCategory, setChooseCategory] = useState("all");
     const [teamList, setTeamList] = useState([]);
     const [lastTimeStamp, setLastTimeStamp] = useState(null);
@@ -30,6 +27,7 @@ const SearchTeam = ({updateTeamList}) =>{
 
         axios.get(`${apiUrl}/api/teams?category=${chooseCategory}&userNo=${userNo}&lastTimeStamp=${lastTimeStamp}`
         ).then((response)=>{
+            
             setTeamList([...teamList, ...response.data.items]);
             setLastTimeStamp(response.data.items.pop().currentDate);
         }).catch((error)=>{
@@ -44,6 +42,8 @@ const SearchTeam = ({updateTeamList}) =>{
         const element = scrollRef.current;
 
         const handleScroll = () => {
+            if (!scrollEnabledRef.current) return;
+
             const { scrollTop, scrollHeight, clientHeight } = element;
 
             if (scrollHeight - scrollTop - clientHeight < 1) {
@@ -59,18 +59,23 @@ const SearchTeam = ({updateTeamList}) =>{
     useEffect(()=>{
         let userNo = sessionStorage.getItem("userNo");
 
+        scrollEnabledRef.current = false;
+
         if(userNo == null){
             userNo = -1;
         }
 
         axios.get(`${apiUrl}/api/teams?category=${chooseCategory}&userNo=${userNo}&lastTimeStamp=${null}`
         ).then((response)=>{
+            
             setTeamList(response.data.items);
             setLastTimeStamp(response.data.items.pop().currentDate);
-            console.log(response.data.items);
         }).catch((error)=>{
             console.log(error);
         })
+        .finally(() => {
+            setTimeout(() => scrollEnabledRef.current = true, 100);
+        });
             
     }, [chooseCategory, updateTeamList, updateSearchTeamList]);
 
@@ -107,7 +112,7 @@ const SearchTeam = ({updateTeamList}) =>{
                             <SearchTeamRow 
                                 key={team.teamId}
                                 team={team}
-                                categories={categories} 
+                                findCategoryLabel={findCategoryLabel} 
                                 setUpdateSearchTeamList={setUpdateSearchTeamList}
                             />
                         ))

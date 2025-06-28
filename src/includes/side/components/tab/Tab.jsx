@@ -25,7 +25,7 @@ const Tab = (props) =>{
             <Menu name={menu.name} icon={menu.icon} onClick={openTabHandler}/>
             <div className={`sub-menus ${openTab ? 'active' : ''}`}>
                 {subMenu && subMenu.map((menu, index) => (
-                    <SubMenu key={index} name={menu.name} icon={menu.icon} path={menu.path}/>
+                    <SubMenu key={index} menu={menu} name={menu.name ? menu.name : menu.title} icon={menu.icon} path={menu.path}/>
                 ))}
             </div>
         </div>

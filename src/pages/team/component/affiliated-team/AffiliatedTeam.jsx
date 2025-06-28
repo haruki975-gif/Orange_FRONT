@@ -2,30 +2,30 @@ import { useEffect, useState } from "react";
 import MyTeamRow from "../team-row/myTeamRow";
 import axios from "axios";
 
-const AffiliatedTeam = () =>{
+const AffiliatedTeam = ({updateTeamList, findCategoryLabel}) =>{
 
     const apiUrl = URL_CONFIG.API_URL;
 
     const [teamList, setTeamList] = useState([]);
+    const [updateSearchTeamList, setUpdateSearchTeamList] = useState(true);
 
     useEffect(()=>{
-        let accessToken = sessionStorage.getItem("accessToken");
+        const accessToken = sessionStorage.getItem("accessToken");
 
         if(!accessToken){
             return;
         }
 
-        axios.get(`${apiUrl}/api/teams/my-team`,{
+        axios.get(`${apiUrl}/api/teams/affiliated`,{
             headers : {
                 Authorization : `Bearer ${accessToken}`,
             }
         }).then((response)=>{
-            console.log(response.data.items);
             setTeamList(response.data.items);
         }).catch((error)=>{
             console.log(error);
         })
-    }, [])
+    }, [updateSearchTeamList])
 
     return(
         <div className="affiliated-team">
@@ -40,7 +40,8 @@ const AffiliatedTeam = () =>{
                 <div className="team-list">
                     {teamList.length !== 0 ? (
                         teamList.map((team, index) => (
-                            <MyTeamRow team={team} key={index}/>
+                            <MyTeamRow team={team} key={index} teamViewType={"member"} 
+                                setUpdateSearchTeamList={setUpdateSearchTeamList} findCategoryLabel={findCategoryLabel}/>
                         ))
                     ) : (
                         <div className="not-found-team">

@@ -117,13 +117,17 @@
   margin-right: 30px;
 }
 #alert-component .request .request-content {
-  width: 60%;
+  width: 50%;
 }
 #alert-component .request .request-content .team-name {
   font-size: 14px;
   font-weight: 500;
   color: #111111;
   margin-bottom: 4px;
+  width: 100%;
+  white-space: nowrap;        
+  overflow: hidden;        
+  text-overflow: ellipsis;
 }
 #alert-component .request .request-content .request-user-info {
   display: flex;
@@ -160,10 +164,11 @@
   border-radius: 6px;
   color: #ffffff;
   padding: 4px 10px;
+  cursor: pointer;
 }
 
 #alert-component .request .accept-btn {
-  justify-self: flex-end;
+  margin-left: auto;
   background-color: #1d65d9;
   margin-right: 10px;
 }
@@ -187,6 +192,7 @@
   height: 16px;
 }
 #alert-component .not-found-applicant{
+  width: 447px;
   height: 200px;
   display: flex;
   align-items: center;

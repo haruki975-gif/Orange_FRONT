@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import MyTeamRow from "../team-row/myTeamRow";
 import axios from "axios";
 
-const HostTeam = ({setOpenModal}) =>{
+const HostTeam = ({setOpenModal, updateTeamList, findCategoryLabel}) =>{
 
     const apiUrl = URL_CONFIG.API_URL;
 
     const [teamList, setTeamList] = useState([]);
+    const [updateSearchTeamList, setUpdateSearchTeamList] = useState(true);
 
     useEffect(()=>{
-        let accessToken = sessionStorage.getItem("accessToken");
+        const accessToken = sessionStorage.getItem("accessToken");
 
         if(!accessToken){
             return;
@@ -20,12 +21,11 @@ const HostTeam = ({setOpenModal}) =>{
                 Authorization : `Bearer ${accessToken}`,
             }
         }).then((response)=>{
-            console.log(response.data.items);
             setTeamList(response.data.items);
         }).catch((error)=>{
             console.log(error);
         })
-    }, [])
+    }, [updateSearchTeamList, updateTeamList])
 
     const openCreateTeamModal = () =>{
         setOpenModal(true);
@@ -45,7 +45,8 @@ const HostTeam = ({setOpenModal}) =>{
                 <div className="team-list">
                     {teamList.length !== 0 ? (
                         teamList.map((team, index) => (
-                        <MyTeamRow key={index} team={team}/>
+                        <MyTeamRow key={index} team={team} teamViewType={"host"} 
+                            setUpdateSearchTeamList={setUpdateSearchTeamList} findCategoryLabel={findCategoryLabel}/>
                         ))
                     ) : (
                         <div className="not-found-team">
