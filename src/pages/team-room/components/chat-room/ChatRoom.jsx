@@ -1,9 +1,47 @@
 
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import "./ChatRoom.css";
 import TextareaAutosize from 'react-textarea-autosize';
+import { useParams } from "react-router-dom";
+import useWebSocket from "react-use-websocket";
+import { AlertContext } from "../../../../components/context/AlertContext";
 
 const ChatRoom = () =>{
+
+    const {id} = useParams("id");
+    const wsUrl = URL_CONFIG.WS_URL + "/ws/chat/" + id;
+    const { errorAlert, successAlert } = useContext(AlertContext);
+
+    const accessToken = sessionStorage.getItem("accessToken");
+
+    const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+        wsUrl,
+        {
+            onOpen: () => console.log("채팅방 연결에 성공하였습니다."),
+            onClose: () => console.log("채팅방 연결이 종료되었습니다."),
+            shouldReconnect: (closeEvent) => true,
+            reconnectAttempts: 3,
+            reconnectInterval: 3000,
+            onBeforeOpen: (instance) => {
+                if(!accessToken){
+                    instance.close();
+                    return false;
+                }
+                return true;
+            },
+        }
+    );
+
+    const status = {
+        [WebSocket.CONNECTING]: "연결 중...",
+        [WebSocket.OPEN]: "연결됨",
+        [WebSocket.CLOSING]: "연결 종료 중...",
+        [WebSocket.CLOSED]: "연결 종료됨"
+    }[readyState]
+
+    useEffect(()=>{
+        console.log(status);
+    },[readyState])
 
     const chatList = [
         {
