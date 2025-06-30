@@ -106,6 +106,14 @@
   margin-bottom: 15px;
 }
 
+/* 에러메시지 */
+.error-msg {
+  margin-top: 4px;
+  color: red;
+  font-size: 13px;
+  font-weight: 400;
+}
+
 /* 회원탈퇴 안내 문구 */
 .delete-warning {
   font-size: 16px;
