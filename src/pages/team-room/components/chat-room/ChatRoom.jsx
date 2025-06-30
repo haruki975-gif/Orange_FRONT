@@ -6,6 +6,7 @@ import { useOutletContext, useParams } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import { AlertContext } from "../../../../components/context/AlertContext";
 import axios from "axios";
+import Message from "./components/Message";
 
 const ChatRoom = () =>{
 
@@ -27,6 +28,9 @@ const ChatRoom = () =>{
 
     const scrollRef = useRef();
 
+    const [openOptionModal, setOpenOptionModal] = useState(false);
+    
+    // 메시지 조회 요청 함수
     const findMessages = () =>{
         if(!accessToken){
             return;
@@ -48,13 +52,14 @@ const ChatRoom = () =>{
         })
     }
 
+    // 페이지 로드 시 메시지 조회 함수 호출
     useEffect(()=>{
         findMessages();
 
         setIsMine(true);
     }, [id]);
 
-
+    // WebSocket 연결 
     const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
         wsUrl,
         {
@@ -82,7 +87,7 @@ const ChatRoom = () =>{
         [WebSocket.CLOSED]: "연결 종료됨"
     }[readyState]
 
-    
+    // 메시지 전송
     const sendMessageHandler = () =>{
 
         const sendMessageRequest ={
@@ -99,18 +104,48 @@ const ChatRoom = () =>{
         
     };
 
+    // WebSocket 메시지 응답 받았을 시 
     useEffect(()=>{
         if(!lastJsonMessage){
             return;
         }
-        console.log(lastJsonMessage);
 
-        const subMessage = {...lastJsonMessage};
-        delete subMessage.type;
+        console.log(lastJsonMessage.type);
 
-        setMessages(prev => [...prev, subMessage]);
+        switch(lastJsonMessage.type){
+            case "send" :
+                const subMessage = {...lastJsonMessage};
+                delete subMessage.type;
+
+                setMessages(prev => [...prev, subMessage]);
+                break;
+            case "update" :
+                setMessages(prev => 
+                    prev.map(msg =>
+                        msg.messageId === lastJsonMessage.messageId
+                        ? { ...msg, content: lastJsonMessage.content }
+                        : msg
+                    )
+                );
+                break;
+            case "delete" :
+                setMessages(prev =>
+                    prev.filter(msg => 
+                        msg.messageId !== lastJsonMessage.messageId
+                    )
+                );
+                break;
+            default :
+                if(lastJsonMessage.senderNo == userNo){
+                    errorAlert(lastJsonMessage.type);
+                }
+                break;
+        }
+
+        
     }, [lastJsonMessage]);
 
+    // 메시지 응답시 + 페이지 첫 로드시 => 스크롤 맨 아래로 이동
     useEffect(()=>{
         const element = scrollRef.current;
 
@@ -128,15 +163,14 @@ const ChatRoom = () =>{
     }, [messages])
 
     
-    
-
+    // 무한 스크롤 (메시지 조회 함수 호출)
     useEffect(() => {
 
         const element = scrollRef.current;
 
         const handleScroll = () => {
 
-            const { scrollTop, scrollHeight, clientHeight } = element;
+            const { scrollTop } = element;
 
             if (scrollTop == 0) {
                 findMessages();
@@ -147,26 +181,13 @@ const ChatRoom = () =>{
         return () => element.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const changeDate = (date) =>{
-        return date.replace("T", " ").slice(0, 16);
-        
-    }
 
     return(
         <div className="chat-room" ref={scrollRef}>
             {messages.map(message => (
-                <div className="message">
-                    <div className="sender-profile">
-                        <img src="/img/icon/person-fill.png" alt="" />
-                    </div>
-                    <div className="txt-box">
-                        <div className="sender">
-                            <p className="sender-name">{message.senderName}</p>
-                            <p className="sent-date">{changeDate(message.sentDate)}</p>
-                        </div>
-                        <pre className="message-content">{message.content}</pre>
-                    </div>
-                </div>
+                <Message message={message} 
+                    id={id} userNo={userNo} 
+                    sendJsonMessage={sendJsonMessage} />
             ))}
             <form className="input-message">
                 <div className="textarea-wrapper">
