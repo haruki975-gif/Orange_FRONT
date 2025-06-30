@@ -3,16 +3,21 @@ import "./DashBoard.css"
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from "react";
 import TextareaAutosize from '@mui/material/TextareaAutosize';
+import WorkModal from "./WorkModal";
 
 
 const DashBoard = () => {
+
+    const [sectionList, setSectionList] = useState([]);
+    const [newSectionTitle, setNewSectionTitle] = useState();
+    const [isAddingSection, setIsAddingSection] = useState(false);
 
     const [scheduleTitleList, setScheduleTitleList] = useState([]);
     const [scheduleTitle, setScheduleTitle] = useState();
     const [isCreating, setIsCreating] = useState(false);
 
-    const [sectionList, setSectionList] = useState([]);
-    const [sectionTitle, setSectionTitle] = useState();
+    const [openWorkModal, setOpenWorkModal] = useState(false);
+
 
     const handleCreateClick = () => {
         setIsCreating(true);
@@ -40,7 +45,6 @@ const DashBoard = () => {
 
 
 
-
     return (
         <>
             <TabNav />
@@ -55,11 +59,15 @@ const DashBoard = () => {
                     </div>
 
                     {scheduleTitleList.map((title, index) => (
-                        <div key={index} className="work-container">
+                        <div key={index}
+                            className="work-container"
+                            onClick={() => setOpenWorkModal(true)}
+                        >
                             <h4 className="work-title">{title}</h4>
                             <div className="assignee-info"></div>
                         </div>
                     ))}
+
 
                     <div className="work-create-btn" onClick={handleCreateClick}>
                         {isCreating ? (
@@ -93,6 +101,7 @@ const DashBoard = () => {
 
                 </div>
             </div>
+            {openWorkModal && <WorkModal setOpenModal={setOpenWorkModal} />}
         </>
     )
 }
