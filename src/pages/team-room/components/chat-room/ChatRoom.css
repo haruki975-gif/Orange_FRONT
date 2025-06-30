@@ -5,6 +5,7 @@
     height: calc(100vh - 270px);
     overflow-y: auto;
     position: relative;
+    
 }
 .chat-room .message{
     display: flex;

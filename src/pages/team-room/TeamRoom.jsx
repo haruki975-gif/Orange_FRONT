@@ -19,6 +19,7 @@ const TeamRoom = () =>{
 
     const [teamInfo, setTeamInfo] = useState();
     const [openOptionModal, setOpenOptionModal] = useState("");
+    const [memberString, setMemberString] = useState("");
 
     useEffect(()=>{
 
@@ -33,7 +34,11 @@ const TeamRoom = () =>{
                 Authorization : `Bearer ${accessToken}`,
             }
         }).then((response)=>{
-            setTeamInfo(response.data.items[0]);
+            const teamInfo = response.data.items[0];
+            setTeamInfo(teamInfo);
+            setMemberString(
+                teamInfo.teamMemberList.map(member => member.memberName).join(', ') || ''
+            );
         }).catch((error)=>{
             console.log(error);
         })
@@ -75,7 +80,6 @@ const TeamRoom = () =>{
     const findCategoryLabel = (key) =>{
         return categories.find(category => category.key === key)?.label;
     }
-
 
 
     if(!teamInfo) return null;
@@ -124,7 +128,7 @@ const TeamRoom = () =>{
                     </div>
                 </div>
             </div>
-            <Outlet/>
+            <Outlet context={{memberString}}/>
         </div>
     )
 }

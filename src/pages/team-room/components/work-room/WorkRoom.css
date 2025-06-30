@@ -3,6 +3,7 @@
     min-height: calc(100vh - 270px);
     padding: 50px 210px;
     display: flex;
+    
 }
 
 .work-room .work-status-container{
