@@ -1,0 +1,148 @@
+.page-container {
+  display: flex;
+  justify-content: center;
+  padding: 30px 0;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 400px;
+}
+
+.title {
+  margin-bottom: 30px;
+  text-align: left;
+  width: 100%;
+}
+
+.mypage-container {
+  width: 620px;
+  margin: 80px auto;
+  font-family: "Pretendard", sans-serif;
+}
+
+.mypage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-id {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.user-welcome {
+  font-size: 1.4rem;
+  white-space: nowrap;
+}
+
+.highlight {
+  color: #ff8c00;
+  font-weight: bold;
+}
+
+.logout-btn {
+  background-color: white;
+  border: 1px solid #ff8c00;
+  color: #ff8c00;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.logout-btn:hover {
+  background-color: #ff8c00;
+  color: white;
+}
+
+/* 아래부터 마이페이지 메뉴 */
+
+.mypage-menu {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.menu-card {
+  width: 140px;
+  height: 140px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  padding-top: 25px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-card svg {
+  margin-bottom: 15px;
+  font-size: 30px;
+}
+
+.menu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.menu-card > p {
+  margin-bottom: 15px;
+}
+
+/* 회원탈퇴 안내 문구 */
+.delete-warning {
+  font-size: 16px;
+  color: rgb(255, 15, 15);
+  line-height: 1.6;
+  margin-bottom: 30px;
+  white-space: pre-line;
+  font-weight: bold;
+}
+
+/* 확인 버튼 */
+.common-btn {
+  margin-top: 10px;
+  padding: 14px;
+  background-color: #ff8c00;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* 뒤로가기 */
+.back-btn {
+  margin-top: 10px;
+  padding: 14px;
+  color: #ff8c00;
+  font-weight: bold;
+  border: 1px solid #ff8c00;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+}
+.back-btn:hover {
+  background-color: #ff8c00;
+  color: white;
+}

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import "./reset.css";
 import Header from "./includes/header/Header";
 import Side from "./includes/side/Side";
@@ -12,6 +11,11 @@ import FindUserId from "./components/Member/Find/FindUserId";
 import FindPassword from "./components/Member/Find/FindPassword";
 import ChatRoom from "./pages/team-room/components/chat-room/ChatRoom";
 import WorkRoom from "./pages/team-room/components/work-room/WorkRoom";
+import MypageMain from "./components/Mypage/MypageMain";
+import ProfileImage from "./components/Mypage/Profile/ProfileImage";
+import InfoForm from "./components/Mypage/Info/InfoForm";
+import PasswordForm from "./components/Mypage/Password/PasswordForm";
+import DeleteUser from "./components/Mypage/Delete/DeleteUser";
 
 
 // 대시보드, 캘린더
@@ -35,6 +39,12 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/find-id" element={<FindUserId />} />
         <Route path="/find-pw" element={<FindPassword />} />
+        {/* mypage */}
+        <Route path="/mypage-main" element={<MypageMain />} />
+        <Route path="/info-form" element={<InfoForm />} />
+        <Route path="/profile-image" element={<ProfileImage />} />
+        <Route path="/password-form/" element={<PasswordForm />} />
+        <Route path="/delete-user" element={<DeleteUser />} />
 
         <Route path="/find-team" element={<TeamComponent />} />
         <Route path="/team-room" element={<TeamRoom />}>

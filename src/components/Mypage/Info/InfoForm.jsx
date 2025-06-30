@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { FiEye, FiEyeOff, FiSearch } from "react-icons/fi";
-import "./Signup.css";
-import OpenPostcode from "./OpenPostcode";
+import { FiSearch } from "react-icons/fi";
+import OpenPostcode from "../../Member/Signup/OpenPostcode";
+import "../../Member/Signup/Signup.css";
 
-function SignupInput({
+function InfoEditInput({
   formData,
   setFormData,
   validationErrors,
   successMessages,
-  toggleShowPassword,
-  showPassword,
   handleChange,
   handleSubmit,
 }) {
@@ -25,86 +23,22 @@ function SignupInput({
   return (
     <div className="page-container">
       <div className="signup-wrapper">
-        <h2 className="title">회원가입</h2>
+        <h2 className="title">내 정보 수정</h2>
         <form onSubmit={handleSubmit} className="signup-form">
           <input
             type="text"
             name="userId"
-            placeholder="아이디"
             value={formData.userId}
-            onChange={handleChange}
-            required
+            disabled
+            style={{ backgroundColor: "#ddd" }}
           />
-          {validationErrors.userId && (
-            <p className="error-msg">{validationErrors.userId}</p>
-          )}
-          {successMessages.userId && (
-            <p className="success-msg">{successMessages.userId}</p>
-          )}
-
-          <div className="password-field">
-            <input
-              type={showPassword ? "text" : "password"}
-              name="userPw"
-              placeholder="비밀번호"
-              value={formData.userPw}
-              onChange={handleChange}
-              required
-            />
-            <button
-              type="button"
-              className="toggle-btn"
-              onClick={toggleShowPassword}
-            >
-              {showPassword ? (
-                <FiEyeOff color="#FF8C00" size="24" />
-              ) : (
-                <FiEye color="#FF8C00" size="24" />
-              )}
-            </button>
-          </div>
-          {validationErrors.userPw && (
-            <p className="error-msg">{validationErrors.userPw}</p>
-          )}
-
-          <input
-            type="password"
-            name="userPwConfirm"
-            placeholder="비밀번호 확인"
-            value={formData.userPwConfirm}
-            onChange={handleChange}
-            required
-          />
-          {validationErrors.userPwConfirm && (
-            <p className="error-msg">{validationErrors.userPwConfirm}</p>
-          )}
-
           <input
             type="text"
             name="userName"
-            placeholder="이름"
             value={formData.userName}
-            onChange={handleChange}
-            required
+            disabled
+            style={{ backgroundColor: "#ddd" }}
           />
-          {validationErrors.userName && (
-            <p className="error-msg">{validationErrors.userName}</p>
-          )}
-
-          <input
-            type="text"
-            name="userEmail"
-            placeholder="이메일"
-            value={formData.userEmail}
-            onChange={handleChange}
-            required
-          />
-          {validationErrors.userEmail && (
-            <p className="error-msg">{validationErrors.userEmail}</p>
-          )}
-          {successMessages.userEmail && (
-            <p className="success-msg">{successMessages.userEmail}</p>
-          )}
 
           <input
             type="text"
@@ -120,6 +54,21 @@ function SignupInput({
           )}
           {successMessages.userPhone && (
             <p className="success-msg">{successMessages.userPhone}</p>
+          )}
+
+          <input
+            type="text"
+            name="userEmail"
+            placeholder="이메일"
+            value={formData.userEmail}
+            onChange={handleChange}
+            required
+          />
+          {validationErrors.userEmail && (
+            <p className="error-msg">{validationErrors.userEmail}</p>
+          )}
+          {successMessages.userEmail && (
+            <p className="success-msg">{successMessages.userEmail}</p>
           )}
 
           <div className="address-field">
@@ -155,7 +104,7 @@ function SignupInput({
           />
 
           <button type="submit" className="signup-btn">
-            가입하기
+            수정하기
           </button>
         </form>
 
@@ -170,4 +119,4 @@ function SignupInput({
   );
 }
 
-export default SignupInput;
+export default InfoEditInput;
