@@ -57,7 +57,7 @@ const Side = () =>{
                 {"name" : "챌린지방", 
                 "icon" : "/img/icon/journal-frame.png"},
         "subMenu" : [],
-        "path" : "/"
+        "path" : "/challenge/list"
     }
     
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./reset.css";
+import { ToastContainer } from "react-toastify";
 import Header from "./includes/header/Header";
 import Side from "./includes/side/Side";
 import TeamComponent from "./pages/team/TeamComponent";
@@ -19,6 +20,9 @@ import ProfileImage from "./components/Mypage/Profile/ProfileImage";
 import InfoForm from "./components/Mypage/Info/InfoForm";
 import PasswordForm from "./components/Mypage/Password/PasswordForm";
 import DeleteUser from "./components/Mypage/Delete/DeleteUser";
+import Challenge from "./pages/Admin/challenge/Challenge";
+import Log from "./pages/Admin/log/Log";
+import ManageLog from "./pages/Admin/log/ManageLog";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -51,12 +55,17 @@ function App() {
           <Route path="work-room" element={<WorkRoom />} />
         </Route>
 
+        {/* Admin Page */}
         <Route path="/admin/user" element={<User />} />
         <Route path="/admin/user/list" element={<FindUser />} />
         <Route path="/admin/user/manage" element={<ManageUser />} />
-        <Route path="/admin/challenge" element={<h1>챌린지방관리</h1>} />
-        <Route path="/admin/log" element={<h1>로그관리</h1>} />
+        <Route path="/admin/challenge" element={<Challenge />} />
+        <Route path="/admin/log" element={<Log />} />
+        <Route path="/admin/log/list" element={<ManageLog />} />
       </Routes>
+
+        {/* 토스트 메시지 띄우는 곳 */}
+        <ToastContainer position="top-center" autoClose={2000} />
     </main>
   );
 }
