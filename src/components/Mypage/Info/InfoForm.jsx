@@ -1,122 +1,108 @@
 import React, { useState, useEffect } from "react";
-import { FiSearch } from "react-icons/fi";
-import OpenPostcode from "../../Member/Signup/OpenPostcode";
-import "../../Member/Signup/Signup.css";
+import { useNavigate } from "react-router-dom";
+import UserPhoneInfo from "./UserPhoneInfo";
+import UserEmailInfo from "./UserEmailInfo";
+import UserAddressInfo from "./UserAddressInfo";
 
-function InfoEditInput({
-  formData,
-  setFormData,
-  validationErrors,
-  successMessages,
-  handleChange,
-  handleSubmit,
-}) {
-  const [showPostcode, setShowPostcode] = useState(false);
+const InfoEditInput = () => {
+  const userNo = sessionStorage.getItem("userNo");
+  const userId = sessionStorage.getItem("userId");
+  const userName = sessionStorage.getItem("userName");
+  const navi = useNavigate();
+  const apiUrl = URL_CONFIG.API_URL;
 
-  const handleAddressComplete = (address) => {
-    setFormData((prev) => ({
-      ...prev,
-      userAddress1: address,
-    }));
+  const [formData, setFormData] = useState({
+    userEmail: "",
+    userPhone: "",
+    userAddress1: "",
+    userAddress2: "",
+  });
+
+  const [validationErrors, setValidationErrors] = useState({});
+
+  // 정보 수정 요청
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (
+      validationErrors.userPhone ||
+      validationErrors.userEmail ||
+      validationErrors.userAddress1
+    ) {
+      alert("입력값을 확인해주세요.");
+      return;
+    }
+
+    axios
+      .put(`${apiUrl}/api/info/${userNo}`, formData)
+      .then(() => alert("수정이 완료되었습니다."))
+      .catch(() => alert("수정 중 오류가 발생했습니다."));
   };
 
   return (
     <div className="page-container">
       <div className="signup-wrapper">
         <h2 className="title">내 정보 수정</h2>
-        <form onSubmit={handleSubmit} className="signup-form">
+        <form className="signup-form" onSubmit={handleSubmit}>
           <input
             type="text"
             name="userId"
-            value={formData.userId}
+            value={userId}
             disabled
             style={{ backgroundColor: "#ddd" }}
           />
           <input
             type="text"
             name="userName"
-            value={formData.userName}
+            value={userName}
             disabled
             style={{ backgroundColor: "#ddd" }}
           />
 
-          <input
-            type="text"
-            name="userPhone"
-            placeholder="연락처 (숫자 11자리)"
-            maxLength={11}
-            value={formData.userPhone}
-            onChange={handleChange}
-            required
+          <UserPhoneInfo
+            userId={userId}
+            formData={formData}
+            setFormData={setFormData}
+            setValidationErrors={setValidationErrors}
           />
           {validationErrors.userPhone && (
             <p className="error-msg">{validationErrors.userPhone}</p>
           )}
-          {successMessages.userPhone && (
-            <p className="success-msg">{successMessages.userPhone}</p>
-          )}
 
-          <input
-            type="text"
-            name="userEmail"
-            placeholder="이메일"
-            value={formData.userEmail}
-            onChange={handleChange}
-            required
+          <UserEmailInfo
+            userId={userId}
+            formData={formData}
+            setFormData={setFormData}
+            setValidationErrors={setValidationErrors}
           />
           {validationErrors.userEmail && (
             <p className="error-msg">{validationErrors.userEmail}</p>
           )}
-          {successMessages.userEmail && (
-            <p className="success-msg">{successMessages.userEmail}</p>
-          )}
 
-          <div className="address-field">
-            <input
-              type="text"
-              name="userAddress1"
-              placeholder="주소"
-              value={formData.userAddress1}
-              onChange={handleChange}
-              disabled
-              style={{ backgroundColor: "#ddd" }}
-            />
-            <button
-              type="button"
-              className="search-btn"
-              onClick={() => setShowPostcode(true)}
-            >
-              <FiSearch size="20" color="#FF8C00" />
-              <span>검색</span>
-            </button>
-          </div>
+          <UserAddressInfo
+            userId={userId}
+            formData={formData}
+            setFormData={setFormData}
+            setValidationErrors={setValidationErrors}
+          />
           {validationErrors.userAddress1 && (
             <p className="error-msg">{validationErrors.userAddress1}</p>
           )}
 
-          <input
-            type="text"
-            name="userAddress2"
-            placeholder="상세주소"
-            value={formData.userAddress2}
-            onChange={handleChange}
-            required
-          />
-
           <button type="submit" className="signup-btn">
             수정하기
           </button>
+          <button
+            type="button"
+            className="info-back-btn"
+            onClick={() => navi("/mypage-main")}
+          >
+            뒤로가기
+          </button>
         </form>
-
-        {showPostcode && (
-          <OpenPostcode
-            onClose={() => setShowPostcode(false)}
-            onComplete={handleAddressComplete}
-          />
-        )}
       </div>
     </div>
   );
-}
+};
 
 export default InfoEditInput;
