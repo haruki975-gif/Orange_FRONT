@@ -1,0 +1,108 @@
+.tab-buttons {
+    display: flex;
+    top: 50px;
+    width: 50%;
+    justify-content: space-between;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+/* 회원 관리 */
+.tab-buttons .tab,
+.user-subtabs .tab{
+  flex: none;
+  width: 140px;
+  padding: 12px 24px;
+  margin: 0 5px;
+  background-color: #eee;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 12px;
+  transition: background-color 0.2s;
+}
+
+.tab-buttons .tab:hover,
+.user-subtabs .tab:hover {
+  background-color: #ddd;
+}
+
+.tab-buttons .tab.active,
+.user-subtabs .tab.active {
+  color: red;
+  background-color: #ddd;
+}
+
+.user-subtabs{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* 챌린지방 관리 */
+.challenge-tabs {
+    display: flex;                /* flex 지정 추가 필수! */
+    justify-content: center;     /* 수평 가운데 정렬 */
+    align-items: center;         /* 수직 가운데 정렬 (선택사항) */
+    gap: 16px;
+    margin-top: 30px;            /* 필요시 여백 추가 */
+    width: auto;             /* ✅ 넓이 자동 */
+  max-width: 100%;
+}
+
+.tab-buttons .tab,
+.challenge-tabs .tab{
+  flex: none;
+  width: 140px;
+  padding: 12px 24px;
+  margin: 0 5px;
+  background-color: #eee;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 12px;
+  transition: background-color 0.2s;
+}
+
+.tab-buttons .tab:hover,
+.challenge-tabs .tab:hover {
+  background-color: #ddd;
+}
+
+.tab-buttons .tab.active,
+.challenge-tabs .tab.active {
+  color: red;
+  background-color: #ddd;
+}
+
+/* 로그 관리 */
+.logList-table-wrapper {
+  padding: 20px;
+  width: calc(100% - 420px);
+  margin: 0 auto;
+}
+
+.logList-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 14px;
+}
+
+.logList-table th,
+.logList-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.logList-table th {
+  background-color: #f3f3f3;
+  font-weight: bold;
+}
+
+.logList-table td {
+  background-color: #fff;
+  word-break: keep-all;
+}
