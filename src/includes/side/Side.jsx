@@ -65,8 +65,24 @@ const Side = () =>{
         "main" : 
                 {"name" : "관리자 페이지", 
                 "icon" : "/img/icon/journal-frame.png"},
-        "subMenu" : [],
-        "path" : "/"
+        "subMenu" : [
+            {
+                "name" : "회원 관리", 
+                "icon" : "/img/icon/journal-frame.png",
+                "path" : "/admin/user"
+            },
+            {
+                "name" : "챌린지방 관리", 
+                "icon" : "/img/icon/journal-frame.png",
+                "path" : "/admin/challenge"
+            },
+            {
+                "name" : "로그 관리", 
+                "icon" : "/img/icon/journal-frame.png",
+                "path" : "/admin/log"
+            }
+        ],
+        "path" : "/admin"
     }
 
     return(

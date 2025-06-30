@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import "./reset.css";
 import Header from "./includes/header/Header";
 import Side from "./includes/side/Side";
@@ -11,6 +11,9 @@ import FindUserId from "./components/Member/Find/FindUserId";
 import FindPassword from "./components/Member/Find/FindPassword";
 import ChatRoom from "./pages/team-room/components/chat-room/ChatRoom";
 import WorkRoom from "./pages/team-room/components/work-room/WorkRoom";
+import User from "./pages/Admin/user/User";
+import FindUser from "./pages/Admin/user/FindUser";
+import ManageUser from "./pages/Admin/user/ManageUser";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -36,6 +39,12 @@ function App() {
           <Route path="chat-room" element={<ChatRoom />} />
           <Route path="work-room" element={<WorkRoom />} />
         </Route>
+
+        <Route path="/admin/user" element={<User />} />
+        <Route path="/admin/user/list" element={<FindUser />} />
+        <Route path="/admin/user/manage" element={<ManageUser />} />
+        <Route path="/admin/challenge" element={<h1>챌린지방관리</h1>} />
+        <Route path="/admin/log" element={<h1>로그관리</h1>} />
       </Routes>
     </main>
   );

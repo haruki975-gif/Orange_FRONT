@@ -1,0 +1,31 @@
+.tab {
+  flex: none;
+  width: 140px;
+  padding: 12px 24px;
+  margin: 0 5px;
+  background-color: #eee;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 12px;
+  transition: background-color 0.2s;
+}
+
+.tab:hover {
+  background-color: #ddd;
+}
+
+.tab.active {
+  color: red;
+  background-color: #ddd;
+}
+
+.tab-buttons {
+    display: flex;
+    top: 50px;
+    width: 50%;
+    justify-content: space-between;
+    margin: 0 auto;
+    margin-top: 30px;
+}
