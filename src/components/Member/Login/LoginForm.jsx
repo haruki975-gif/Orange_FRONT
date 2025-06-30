@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./LoginForm.css";
+import "../../Member/Form.css";
 import { login } from "./js/authService";
 
 function Login() {
@@ -24,7 +24,7 @@ function Login() {
     login(userId, userPw)
       .then((data) => {
         //console.log(data);
-        const response = data.items;
+        const response = data.items[0];
 
         sessionStorage.setItem("accessToken", response.accessToken);
         sessionStorage.setItem("refreshToken", response.refreshToken);
@@ -64,41 +64,43 @@ function Login() {
   };
 
   return (
-    <div className="login-wrapper">
-      <h2 className="title">로그인</h2>
-      <form onSubmit={handleLogin} className="login-form">
-        <input
-          type="text"
-          name="userId"
-          placeholder="아이디를 입력해주세요."
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-          disabled={isLoading}
-        />
-        <div className="password-field">
+    <div className="page-container">
+      <div className="login-wrapper">
+        <h2 className="title">로그인</h2>
+        <form onSubmit={handleLogin} className="login-form">
           <input
-            type="password"
-            name="userPw"
-            placeholder="비밀번호를 입력해주세요."
-            value={userPw}
-            onChange={(e) => setUserPw(e.target.value)}
+            type="text"
+            name="userId"
+            placeholder="아이디를 입력해주세요."
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
             disabled={isLoading}
           />
+          <div className="password-field">
+            <input
+              type="password"
+              name="userPw"
+              placeholder="비밀번호를 입력해주세요."
+              value={userPw}
+              onChange={(e) => setUserPw(e.target.value)}
+              disabled={isLoading}
+            />
+          </div>
+
+          {errorMsg && <p className="error-msg">{errorMsg}</p>}
+
+          <button type="submit" className="login-btn" disabled={isLoading}>
+            로그인
+          </button>
+        </form>
+
+        <div className="login-links">
+          <a href="/find-pw">비밀번호 찾기</a>
+          <span>|</span>
+          <a href="/find-id">아이디 찾기</a>
+          <span>|</span>
+          <a href="/signup">회원가입</a>
         </div>
-
-        {errorMsg && <p className="error-msg">{errorMsg}</p>}
-
-        <button type="submit" className="login-btn" disabled={isLoading}>
-          로그인
-        </button>
-      </form>
-
-      <div className="login-links">
-        <a href="/find-pw">비밀번호 찾기</a>
-        <span>|</span>
-        <a href="/find-id">아이디 찾기</a>
-        <span>|</span>
-        <a href="/signup">회원가입</a>
       </div>
     </div>
   );
