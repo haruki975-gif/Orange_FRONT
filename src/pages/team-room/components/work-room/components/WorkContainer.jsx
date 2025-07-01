@@ -16,9 +16,18 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
     const ref = useRef(null);
 
     const [, drop] = useDrop({
-        accept: "ITEM",
+        accept: "WORK",
         drop: (item) => {
-        console.log(`드롭됨: `);
+            const updateWorkStatus = {
+                type : "statusUpdate",
+                teamId : id,
+                requestUserNo : userNo,
+                workId : item.work.workId,
+                status : column.columnValue,
+                prevStatus : item.work.status
+            }
+
+            sendJsonMessage(updateWorkStatus);
         },
     });
 
@@ -40,17 +49,61 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
     }, [id]);
 
     useEffect(()=>{
-        if(!lastJsonMessage || column.columnValue !== 'todo'){
+
+        if(!lastJsonMessage){
             return;
         }
 
-        if(lastJsonMessage?.type !== 'add'){
-            errorAlert(lastJsonMessage?.type);
-            return;
+        switch(lastJsonMessage?.type){
+            case 'add': 
+                const addWorkList = {...lastJsonMessage}
+                delete addWorkList.type
+                if(column.columnValue === addWorkList.status){
+                    setWorkList(prev => [...prev, addWorkList]);
+                }
+                break;
+            case 'statusUpdate':
+                const suWorkList = {...lastJsonMessage}
+
+                if(suWorkList.prevStatus === column.columnValue){
+                    setWorkList(prev => {
+                        return prev.filter(work =>(
+                            work.workId != suWorkList.workId
+                        ))
+                    });
+                }
+                if(suWorkList.status === column.columnValue){
+                    setWorkList(prev => [suWorkList, ...prev]);
+                }
+                break;
+            case 'update':
+                const updateWork = {...lastJsonMessage}
+
+                if (updateWork.status === column.columnValue) {
+                    setWorkList(prev => [
+                        ...prev.map(work =>
+                            work.workId === updateWork.workId ? updateWork : work
+                        )
+                    ]);
+                }
+                break;  
+            case 'delete':
+                if (lastJsonMessage.status === column.columnValue) {
+                    setWorkList(prev => [
+                        ...prev.filter(work =>
+                            work.workId != lastJsonMessage.workId
+                        )
+                    ]);
+                }
+                break;
+            default : 
+                console.log(lastJsonMessage.userNo);
+                if(lastJsonMessage.requestUserNo == userNo && column.columnValue == 'todo'){
+                    errorAlert(lastJsonMessage?.type); 
+                }
+                break;
         }
-        const addWorkList = {...lastJsonMessage}
-        delete addWorkList.type
-        setWorkList(prev => [...prev, addWorkList]);
+        
     }, [lastJsonMessage])
 
 
@@ -58,10 +111,13 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
         const addWork = {
             type : "add",
             teamId : id,
-            requestUserNo : userNo
+            requestUserNo : userNo,
+            status : column.columnValue
         }
         sendJsonMessage(addWork);
     }
+
+    if(!workList) return null;
 
 
     return(
@@ -75,6 +131,7 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
                         openDetailModalHandler={openDetailModalHandler}
                         sendJsonMessage={sendJsonMessage}
                         lastJsonMessage={lastJsonMessage}
+                        column={column}
                         id={id}
                         userNo={userNo}/>
                 ))}

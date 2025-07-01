@@ -78,13 +78,6 @@ const ChatRoom = () =>{
         }
     );
 
-    const status = {
-        [WebSocket.CONNECTING]: "연결 중...",
-        [WebSocket.OPEN]: "연결됨",
-        [WebSocket.CLOSING]: "연결 종료 중...",
-        [WebSocket.CLOSED]: "연결 종료됨"
-    }[readyState]
-
     // 메시지 전송
     const sendMessageHandler = () =>{
 

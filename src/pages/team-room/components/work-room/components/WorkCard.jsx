@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { DndProvider, useDrag } from "react-dnd";
 
-const WorkCard = ({work, openUpdateModalHandler, openDetailModalHandler, sendJsonMessage, lastJsonMessage, id, userNo}) =>{
-
+const WorkCard = ({work, openUpdateModalHandler, openDetailModalHandler, sendJsonMessage, column, id, userNo}) =>{
     
     const optionBtn = useRef();
 
@@ -13,8 +12,8 @@ const WorkCard = ({work, openUpdateModalHandler, openDetailModalHandler, sendJso
     const ref = useRef(null);
 
     const [{ isDragging }, drag] = useDrag({
-      type: "ITEM",
-      item: { "a": "" },
+      type: "WORK",
+      item: { work : work },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
@@ -22,11 +21,17 @@ const WorkCard = ({work, openUpdateModalHandler, openDetailModalHandler, sendJso
 
     drag(ref);
 
+    const deleteWorkHandler = () =>{
+        const deleteWork = {
+            type : 'delete',
+            teamId : id,
+            workId : work.workId,
+            requestUserNo : userNo,
+            status : column.columnValue
+        }
 
-    
-
-    
-
+        sendJsonMessage(deleteWork);
+    }
 
 
     return(
@@ -49,9 +54,11 @@ const WorkCard = ({work, openUpdateModalHandler, openDetailModalHandler, sendJso
                 {openOptionModal && 
                     <div className="option-modal">
                         <div className="update-option"
-                            onClick={() => openDetailModalHandler(workTitle)}>상세보기</div>
+                            onClick={() => openDetailModalHandler(work)}>상세보기</div>
                         <div className="detail-option"
-                            onClick={() => openUpdateModalHandler(workTitle)}>수정하기</div>
+                            onClick={() => openUpdateModalHandler(work)}>수정하기</div>
+                        <div className="delete-option"
+                            onClick={() => deleteWorkHandler()}>삭제하기</div>
                     </div>
                 }
             </div>

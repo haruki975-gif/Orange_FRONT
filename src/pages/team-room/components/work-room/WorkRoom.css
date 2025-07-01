@@ -186,6 +186,10 @@
 #team-room .work-modal .container > div > p{
     padding: 0 8px;
 }
+#team-room .work-modal .container > .team-content > p{
+    min-height: 100px;
+    max-height: 200px;
+}
 #team-room .work-modal #team-name{
     width: 100%;
     height: 44px;
@@ -261,6 +265,7 @@
     color: #ffffff;
     font-weight: 500;
     font-size: 18px;
+    cursor: pointer;
 }
 #team-room .work-modal .close-btn{
     position: absolute;
@@ -279,3 +284,36 @@
     width: 16px;
     height: 16px;
 }
+#team-room .work-modal .calendar-wrapper{
+    position: relative;
+}
+#team-room .work-modal .calendar-display{
+    margin-bottom: 30px;   
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1px solid #000000;
+    margin-top: 6px;
+    border-radius: 10px;
+    border: 1px solid #BCBCBC;
+}
+#team-room .work-modal .calender-container{
+    position: absolute;
+    top: 80px;
+    left: 0;
+    z-index: 2;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+#team-room .work-modal .react-calendar {
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+#team-room .work-modal .react-calendar__tile--active {
+    background: #84befd;
+    color: white;
+}
+
+
