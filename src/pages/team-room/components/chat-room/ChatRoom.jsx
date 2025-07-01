@@ -28,8 +28,6 @@ const ChatRoom = () =>{
 
     const scrollRef = useRef();
 
-    const [openOptionModal, setOpenOptionModal] = useState(false);
-    
     // 메시지 조회 요청 함수
     const findMessages = () =>{
         if(!accessToken){
@@ -89,6 +87,8 @@ const ChatRoom = () =>{
 
     // 메시지 전송
     const sendMessageHandler = () =>{
+
+        console.log(sendMessage);
 
         const sendMessageRequest ={
             content: sendMessage,

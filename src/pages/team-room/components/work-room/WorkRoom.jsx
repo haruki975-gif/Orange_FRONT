@@ -1,5 +1,5 @@
 
-import { useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import WorkContainer from "./components/WorkContainer";
 import "./WorkRoom.css";
 import Plus from "/img/icon/plus.svg";
@@ -8,6 +8,10 @@ import { DndProvider} from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import UpdateWorkModal from "./components/UpdateWorkModal";
 import DetailWorkModal from "./components/DetailWorkModal";
+import useWebSocket from "react-use-websocket";
+import { AlertContext } from "../../../../components/context/AlertContext";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 
 
@@ -18,21 +22,31 @@ const WorkRoom = () =>{
     const updateModalBackground = useRef();
     const detailModalBackground = useRef();
 
+    const { errorAlert, successAlert } = useContext(AlertContext);
+
+    const {id} = useParams("id");
+    const userNo = sessionStorage.getItem("userNo");
+
+    const accessToken = sessionStorage.getItem("accessToken");
+
+    const wsUrl = URL_CONFIG.WS_URL + "/ws/work/" + id + "?token=" + accessToken;
+
+
     const [columnList, setColumnList] = useState([
         {
-            columnNo : "1",
+            columnValue : "todo",
             workStatus : "진행전"
         },
         {
-            columnNo : "2",
+            columnValue : "doing",
             workStatus : "진행중",
         },
         {
-            columnNo : "3",
+            columnValue : "done",
             workStatus : "완료",
         },
         {
-            columnNo : "4",
+            columnValue : "tested",
             workStatus : "테스트 완료",
         },
     ]);
@@ -50,6 +64,27 @@ const WorkRoom = () =>{
         setWorkTitle(workTitle);
     }
 
+    // WebSocket 연결 
+    const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+        wsUrl,
+        {
+            onOpen: () => successAlert("채팅방 연결에성공하였습니다."),
+            onClose: () => console.log("채팅방 연결이종료되었습니다."),
+            shouldReconnect: (closeEvent) => true,
+            reconnectAttempts: 3,
+            reconnectInterval: 3000,
+            
+            onBeforeOpen: (instance) => {
+                if(!accessToken){
+                    instance.close();
+                    return false;
+                }
+                alert('123');
+                return true;
+            },
+        }
+    );
+
 
     return(
         <DndProvider backend={HTML5Backend}>
@@ -59,6 +94,10 @@ const WorkRoom = () =>{
                         column={column} 
                         openUpdateModalHandler={openUpdateModalHandler}
                         openDetailModalHandler={openDetailModalHandler}
+                        sendJsonMessage={sendJsonMessage}
+                        lastJsonMessage={lastJsonMessage}
+                        id={id}
+                        userNo={userNo}
                     />
                 ))}
             </div>

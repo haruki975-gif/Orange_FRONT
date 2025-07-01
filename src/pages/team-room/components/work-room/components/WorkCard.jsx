@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 
-const WorkCard = ({id, workTitle, assigneeName, openUpdateModalHandler, openDetailModalHandler}) =>{
+const WorkCard = ({work, openUpdateModalHandler, openDetailModalHandler, sendJsonMessage, lastJsonMessage, id, userNo}) =>{
 
     
     const optionBtn = useRef();
@@ -14,7 +14,7 @@ const WorkCard = ({id, workTitle, assigneeName, openUpdateModalHandler, openDeta
 
     const [{ isDragging }, drag] = useDrag({
       type: "ITEM",
-      item: { id },
+      item: { "a": "" },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
@@ -22,12 +22,19 @@ const WorkCard = ({id, workTitle, assigneeName, openUpdateModalHandler, openDeta
 
     drag(ref);
 
+
+    
+
+    
+
+
+
     return(
         <div className="work-card" ref={ref}>
-            <h4 className="work-title">{workTitle}</h4>
+            <h4 className="work-title">{work.title}</h4>
             <div className="assignee-info">
                 <span>담당자</span>
-                <p className="assignee-name">{assigneeName}</p>
+                <p className="assignee-name">{work.assigneeName}</p>
                 <div className="assignee-profile">
                     <img src="/img/icon/person-fill.png" alt="" />
                 </div>
