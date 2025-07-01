@@ -26,6 +26,11 @@ import Challenge from "./pages/Admin/challenge/Challenge";
 import Log from "./pages/Admin/log/Log";
 import ManageLog from "./pages/Admin/log/ManageLog";
 
+
+// 대시보드, 캘린더
+import Calender from './components/calendar/Calendar'
+import DashBoard from './components/dashBoard/DashBoard'
+
 function App() {
   const [count, setCount] = useState(0);
 
