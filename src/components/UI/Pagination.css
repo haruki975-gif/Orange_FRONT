@@ -1,0 +1,40 @@
+.pagination {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.pagination-btn {
+    padding: 10px 20px;             /* 버튼 크기 키움 */
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 8px;             /* 살짝 둥글게 */
+    cursor: pointer;
+    font-size: 16px;                /* 폰트 크기 증가 */
+    min-width: 44px;                /* 최소 클릭 영역 확보 (접근성) */
+    min-height: 44px;               /* 모바일 터치 고려 */
+    transition: background-color 0.2s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background-color: #ddd;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-active {
+    background-color: #ff8c00;
+    color: white;
+    font-weight: bold;
+}
+
+.pagination-ellipsis {
+    padding: 0 8px;
+    color: #888;
+    font-size: 16px;
+}

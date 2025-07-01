@@ -1,24 +1,27 @@
 import { useNavigate } from "react-router-dom";
 
-const SubMenu = (props) =>{
+const SubMenu = ({ menu }) => {
+  const navi = useNavigate();
 
-    const navi = useNavigate();
+  const name = menu.name ? menu.name : menu.title;
+  const icon = menu.icon;
+  const path = menu.path ? menu.path : "/team-room/" + menu.teamId;
+  const index = menu.index;
 
-    const name = props.name;
-    const icon = props.icon;
-    const path = props.path;
-
-
-    return(
-        <>
-            <div className="menu" onClick={() => {console.log(path); navi(path)}}>
-                <div className="icon">
-                    <img src={icon} alt=""/>
-                </div>
-                <p className="menu-name">{name}</p>
-            </div>
-        </>
-    )
-}
+  return (
+    <div
+      className="menu"
+      key={index}
+      onClick={() => {
+        navi(path);
+      }}
+    >
+      <div className="icon">
+        <img src={icon ? icon : "/img/icon/journal-frame.png"} alt="" />
+      </div>
+      <p className="menu-name">{name}</p>
+    </div>
+  );
+};
 
 export default SubMenu;
