@@ -8,11 +8,18 @@ export const useDuplicateCheck = (
   value,
   apiUrl,
   validationRules,
-  setFieldStatus
+  setFieldStatus,
+  enabled = true,
+  originalValue = ""
 ) => {
   useEffect(() => {
-    if (!value) return;
+    if (!enabled || !value) return;
 
+    // 기존 값이면 중복 체크 안함
+    if (value === originalValue) {
+      setFieldStatus(fieldName, "", "", true); // 성공 상태로 초기화
+      return;
+    }
     const rule = validationRules[fieldName];
 
     if (rule && !rule.regex.test(value)) {
@@ -45,5 +52,5 @@ export const useDuplicateCheck = (
       .catch((err) => {
         console.error(`${fieldName} 중복 확인 에러`, err);
       });
-  }, [value]);
+  }, [value, enabled, originalValue]);
 };

@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import UserPhoneInfo from "./UserPhoneInfo";
 import UserEmailInfo from "./UserEmailInfo";
 import UserAddressInfo from "./UserAddressInfo";
+import axios from "axios";
 
 const InfoEditInput = () => {
   const userNo = sessionStorage.getItem("userNo");
   const userId = sessionStorage.getItem("userId");
   const userName = sessionStorage.getItem("userName");
+  const token = sessionStorage.getItem("accessToken");
   const navi = useNavigate();
   const apiUrl = URL_CONFIG.API_URL;
 
@@ -19,6 +21,13 @@ const InfoEditInput = () => {
   });
 
   const [validationErrors, setValidationErrors] = useState({});
+  const [successMessages, setSuccessMessages] = useState({});
+
+  // 변경된 이메일, 연락처를 sessionStorage에 반영
+  useEffect(() => {
+    sessionStorage.setItem("userEmail", formData.userEmail);
+    sessionStorage.setItem("userPhone", formData.userPhone);
+  }, [formData.userEmail, formData.userPhone]);
 
   // 정보 수정 요청
   const handleSubmit = (e) => {
@@ -34,9 +43,19 @@ const InfoEditInput = () => {
     }
 
     axios
-      .put(`${apiUrl}/api/info/${userNo}`, formData)
-      .then(() => alert("수정이 완료되었습니다."))
-      .catch(() => alert("수정 중 오류가 발생했습니다."));
+      .put(`${apiUrl}/api/info/${userNo}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(() => {
+        alert("수정이 완료되었습니다.");
+        sessionStorage.setItem("userEmail", formData.userEmail);
+        sessionStorage.setItem("userPhone", formData.userPhone);
+      })
+      .catch(() => {
+        alert("수정 중 오류가 발생했습니다.");
+      });
   };
 
   return (
@@ -64,9 +83,13 @@ const InfoEditInput = () => {
             formData={formData}
             setFormData={setFormData}
             setValidationErrors={setValidationErrors}
+            setSuccessMessages={setSuccessMessages}
           />
           {validationErrors.userPhone && (
             <p className="error-msg">{validationErrors.userPhone}</p>
+          )}
+          {successMessages.userPhone && (
+            <p className="success-msg">{successMessages.userPhone}</p>
           )}
 
           <UserEmailInfo
@@ -74,9 +97,13 @@ const InfoEditInput = () => {
             formData={formData}
             setFormData={setFormData}
             setValidationErrors={setValidationErrors}
+            setSuccessMessages={setSuccessMessages}
           />
           {validationErrors.userEmail && (
             <p className="error-msg">{validationErrors.userEmail}</p>
+          )}
+          {successMessages.userEmail && (
+            <p className="success-msg">{successMessages.userEmail}</p>
           )}
 
           <UserAddressInfo

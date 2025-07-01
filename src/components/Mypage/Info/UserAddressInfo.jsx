@@ -20,7 +20,7 @@ const UserAddressInfo = ({ formData, setFormData, setValidationErrors }) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         const item = response.data.items[0];
         const addr1 = item?.userAddress1 || "";
         const addr2 = item?.userAddress2 || "";
