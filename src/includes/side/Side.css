@@ -35,8 +35,18 @@
 #side .menu .icon{
     margin-right: 8px;
 }
+#side .sub-menus .menu .menu-name{
+    font-weight: 400;
+    font-size: 15px;
+}
 #side .menu .menu-name{
     margin-bottom: 2px;
+    font-size: 16px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
 }
 #side .menu:hover{
     background-color: #091e422e;

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./reset.css";
-import { ToastContainer } from "react-toastify";
 import Header from "./includes/header/Header";
 import Side from "./includes/side/Side";
 import TeamComponent from "./pages/team/TeamComponent";
@@ -20,6 +19,9 @@ import ProfileImage from "./components/Mypage/Profile/ProfileImage";
 import InfoForm from "./components/Mypage/Info/InfoForm";
 import PasswordForm from "./components/Mypage/Password/PasswordForm";
 import DeleteUser from "./components/Mypage/Delete/DeleteUser";
+import { ToastContainer, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { AlertProvider } from "./components/context/AlertContext";
 import Challenge from "./pages/Admin/challenge/Challenge";
 import Log from "./pages/Admin/log/Log";
 import ManageLog from "./pages/Admin/log/ManageLog";
@@ -28,46 +30,58 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <main id="main">
-      <Header />
-      <Side />
-      <Routes>
-        <Route
-          path="/"
-          element={<h1 style={{ margin: "400px" }}>메인페이지</h1>}
-        ></Route>
-        {/* member */}
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/find-id" element={<FindUserId />} />
-        <Route path="/find-pw" element={<FindPassword />} />
-        {/* mypage */}
-        <Route path="/mypage-main" element={<MypageMain />} />
-        <Route path="/info-form" element={<InfoForm />} />
-        <Route path="/profile-image" element={<ProfileImage />} />
-        <Route path="/password-form/" element={<PasswordForm />} />
-        <Route path="/delete-user" element={<DeleteUser />} />
+    <AlertProvider>
+      <main id="main">
+        <Header />
+        <Side />
+        <Routes>
+          <Route
+            path="/"
+            element={<h1 style={{ margin: "400px" }}>메인페이지</h1>}
+          ></Route>
+          {/* member */}
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/find-id" element={<FindUserId />} />
+          <Route path="/find-pw" element={<FindPassword />} />
+          {/* mypage */}
+          <Route path="/mypage-main" element={<MypageMain />} />
+          <Route path="/info-form" element={<InfoForm />} />
+          <Route path="/profile-image" element={<ProfileImage />} />
+          <Route path="/password-form/" element={<PasswordForm />} />
+          <Route path="/delete-user" element={<DeleteUser />} />
 
-        <Route path="/find-team" element={<TeamComponent />} />
-        <Route path="/team-room" element={<TeamRoom />}>
-          <Route index element={<Navigate to="chat-room" replace />} />
-          <Route path="chat-room" element={<ChatRoom />} />
-          <Route path="work-room" element={<WorkRoom />} />
-        </Route>
+          <Route path="/find-team" element={<TeamComponent />} />
+          <Route path="/team-room/:id" element={<TeamRoom />}>
+            <Route index element={<Navigate to="chat-room" replace />} />
+            <Route path="chat-room" element={<ChatRoom />} />
+            <Route path="work-room" element={<WorkRoom />} />
+          </Route>
 
-        {/* Admin Page */}
-        <Route path="/admin/user" element={<User />} />
-        <Route path="/admin/user/list" element={<FindUser />} />
-        <Route path="/admin/user/manage" element={<ManageUser />} />
-        <Route path="/admin/challenge" element={<Challenge />} />
-        <Route path="/admin/log" element={<Log />} />
-        <Route path="/admin/log/list" element={<ManageLog />} />
-      </Routes>
-
-        {/* 토스트 메시지 띄우는 곳 */}
-        <ToastContainer position="top-center" autoClose={2000} />
-    </main>
-  );
+          {/* Admin Page */}
+            <Route path="/admin/user" element={<User />} />
+            <Route path="/admin/user/list" element={<FindUser />} />
+            <Route path="/admin/user/manage" element={<ManageUser />} />
+            <Route path="/admin/challenge" element={<Challenge />} />
+            <Route path="/admin/log" element={<Log />} />
+            <Route path="/admin/log/list" element={<ManageLog />} />
+          </Routes>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            transition={Bounce}
+          />
+        </main>
+      </AlertProvider>
+  )
 }
 
 export default App;
