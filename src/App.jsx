@@ -11,6 +11,9 @@ import FindUserId from "./components/Member/Find/FindUserId";
 import FindPassword from "./components/Member/Find/FindPassword";
 import ChatRoom from "./pages/team-room/components/chat-room/ChatRoom";
 import WorkRoom from "./pages/team-room/components/work-room/WorkRoom";
+import User from "./pages/Admin/user/User";
+import FindUser from "./pages/Admin/user/FindUser";
+import ManageUser from "./pages/Admin/user/ManageUser";
 import MypageMain from "./components/Mypage/MypageMain";
 import ProfileImage from "./components/Mypage/Profile/ProfileImage";
 import InfoForm from "./components/Mypage/Info/InfoForm";
@@ -19,6 +22,9 @@ import DeleteUser from "./components/Mypage/Delete/DeleteUser";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AlertProvider } from "./components/context/AlertContext";
+import Challenge from "./pages/Admin/challenge/Challenge";
+import Log from "./pages/Admin/log/Log";
+import ManageLog from "./pages/Admin/log/ManageLog";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -51,23 +57,31 @@ function App() {
             <Route path="chat-room" element={<ChatRoom />} />
             <Route path="work-room" element={<WorkRoom />} />
           </Route>
-        </Routes>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          transition={Bounce}
-        />
-      </main>
-    </AlertProvider>
-  );
+
+          {/* Admin Page */}
+            <Route path="/admin/user" element={<User />} />
+            <Route path="/admin/user/list" element={<FindUser />} />
+            <Route path="/admin/user/manage" element={<ManageUser />} />
+            <Route path="/admin/challenge" element={<Challenge />} />
+            <Route path="/admin/log" element={<Log />} />
+            <Route path="/admin/log/list" element={<ManageLog />} />
+          </Routes>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            transition={Bounce}
+          />
+        </main>
+      </AlertProvider>
+  )
 }
 
 export default App;

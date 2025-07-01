@@ -1,0 +1,59 @@
+/* 회원목록 */
+.userList-table-wrapper {
+  padding: 20px;
+  width: calc(100% - 420px);
+  margin: 0 auto;
+}
+
+.userList-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 14px;
+}
+
+.userList-table th,
+.userList-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.userList-table th {
+  background-color: #f3f3f3;
+  font-weight: bold;
+}
+
+.userList-table td {
+  background-color: #fff;
+  word-break: keep-all;
+}
+
+/* 회원관리 */
+.userManage-table-wrapper {
+  padding: 20px;
+  width: calc(100% - 420px);
+  margin: 0 auto;
+}
+
+.userManage-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 14px;
+}
+
+.userManage-table th,
+.userManage-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.userManage-table th {
+  background-color: #f3f3f3;
+  font-weight: bold;
+}
+
+.userManage-table td {
+  background-color: #fff;
+  word-break: keep-all;
+}
