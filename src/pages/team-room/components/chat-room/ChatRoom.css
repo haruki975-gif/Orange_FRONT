@@ -5,10 +5,14 @@
     height: calc(100vh - 270px);
     overflow-y: auto;
     position: relative;
+    
 }
 .chat-room .message{
     display: flex;
     margin-bottom: 24px;
+    width: 100%;
+    position: relative;
+    width: 100%;
 }
 .chat-room .message .sender-profile{
     width: 44px;
@@ -28,6 +32,7 @@
 .chat-room .message .txt-box{
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 .chat-room .message .sender{
     display: flex;
@@ -47,6 +52,32 @@
 .chat-room .message .message-content{
     font-size: 16px;
     font-weight: 400;
+}
+.chat-room .message .update-textarea{
+    width: 100%;
+    resize: none;
+    background-color: inherit;
+    border-radius: 6px;
+    padding: 16px;
+    font-size: 15px;
+    background-color: #ffffff2f;
+}
+.chat-room .message .update-form{
+    position: relative;
+}
+.chat-room .message .update-form .submit-btn{
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    cursor: pointer;
+    z-index: 1;
+}
+.chat-room .message .update-form .submit-btn > img{
+    width: 20px;
+    height: 20px;
+}
+.chat-room .message .update-textarea::-webkit-scrollbar{
+    display: none;
 }
 .chat-room .input-message{
     position: fixed;
@@ -80,4 +111,46 @@
     position: absolute;
     bottom: 16px;
     right: 20px;
+}
+
+#team-room .message .options-btn{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    height: 20px;
+}
+#team-room .message .options-btn > span{
+    display: block;
+    width: 4px;
+    height: 4px;
+    background-color: #343434;
+    border-radius: 50%;
+    margin-left: 3px;
+}
+
+#team-room .message .options-btn .option-modal{
+    position: absolute;
+    width: 100px;
+    left: -10px;
+    bottom: 0px;
+    border-radius: 6px;
+    height: 72px;
+    z-index: 1;
+}
+#team-room .message .option-modal > div{
+    width: 100%;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    background-color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 400;
+}
+#team-room .message .option-modal > div:hover{
+    background-color: #efefef;
 }

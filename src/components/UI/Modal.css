@@ -1,0 +1,100 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0000004b;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-container {
+    width: 922px;
+    padding: 60px 80px;
+    border-radius: 30px;
+    background-color: #ffffff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    text-align: left;
+}
+
+.modal-container .title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 44px;
+}
+
+/* 모든 입력 블록에 공통 적용 */
+.modal-container .field-block {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 기존 name, content 클래스 이름 대체용 */
+.modal-container .field-block label {
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 6px;
+}
+
+.modal-container input[type="text"],
+.modal-container textarea {
+    width: 100%;
+    border: 1px solid #BCBCBC;
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 10px 20px;
+    resize: none;
+}
+
+.modal-container input[type="text"] {
+    height: 44px;
+}
+
+.modal-container textarea {
+    height: 300px;
+}
+
+/* 버튼 공통 스타일 */
+.modal-container .submit-btn {
+    margin-top: 10px;
+    align-self: flex-end;
+    padding: 8px 26px;
+    border-radius: 10px;
+    background-color: skyblue;
+    color: black;
+    font-weight: 500;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+/* 호버 시 살짝 커짐 */
+.modal-container .submit-btn:hover {
+    transform: scale(1.05);
+}
+
+/* 닫기 버튼 */
+.close-btn {
+    position: absolute;
+    top: 80px;
+    right: 80px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #EBEBEB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+}

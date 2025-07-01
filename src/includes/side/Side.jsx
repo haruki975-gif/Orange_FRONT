@@ -1,7 +1,18 @@
+import { useEffect, useState } from "react";
 import Menu from "./components/menu/Menu";
 import Tab from "./components/tab/Tab";
 import "./side.css";
-const Side = () => {
+import axios from "axios";
+
+
+
+const Side = () =>{
+
+    const accessToken = sessionStorage.getItem("accessToken");
+
+    const apiUrl = URL_CONFIG.API_URL;
+
+
     const myCalendar = {
         "main":
         {
@@ -22,26 +33,36 @@ const Side = () => {
         ],
         "path": null
     };
-    const myTeam = {
-        "main":
-        {
-            "name": "팀 관리",
-            "icon": "/img/icon/journal-frame.png"
+
+    const [myTeam, setMyTeam] = useState({
+        main: {
+            name: "팀 관리",
+            icon: "/img/icon/journal-frame.png"
         },
-        "subMenu": [
-            {
-                "name": "오렌지조",
-                "icon": "/img/icon/journal-frame.png",
-                "path": "/team-room"
-            },
-            {
-                "name": "팀2",
-                "icon": "/img/icon/journal-frame.png",
-                "path": "/team-room"
+        subMenu: [],
+        path: null
+    });
+
+    useEffect(()=>{
+
+        if(!accessToken){
+            return;
+        }
+
+        axios.get(`${apiUrl}/api/teams/my-team`,{
+            headers : {
+                Authorization : `Bearer ${accessToken}`,
             }
-        ],
-        "path": null
-    };
+        }).then((response)=>{
+            setMyTeam(prev => ({
+                ...prev,
+                subMenu : [...response.data.items]
+            }))
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }, [accessToken])
+
     const findTeam = {
         "main":
         {
@@ -52,33 +73,47 @@ const Side = () => {
         "path": "/find-team"
     };
     const challenges = {
-        "main":
-        {
-            "name": "챌린지방",
-            "icon": "/img/icon/journal-frame.png"
-        },
-        "subMenu": [],
-        "path": "/"
+        "main" : 
+                {"name" : "챌린지방", 
+                "icon" : "/img/icon/journal-frame.png"},
+        "subMenu" : [],
+        "path" : "/challenge/list"
     }
     const admin = {
-        "main":
-        {
-            "name": "관리자 페이지",
-            "icon": "/img/icon/journal-frame.png"
-        },
-        "subMenu": [],
-        "path": "/"
+        "main" : 
+                {"name" : "관리자 페이지", 
+                "icon" : "/img/icon/journal-frame.png"},
+        "subMenu" : [
+            {
+                "name" : "회원 관리", 
+                "icon" : "/img/icon/journal-frame.png",
+                "path" : "/admin/user"
+            },
+            {
+                "name" : "챌린지방 관리", 
+                "icon" : "/img/icon/journal-frame.png",
+                "path" : "/admin/challenge"
+            },
+            {
+                "name" : "로그 관리", 
+                "icon" : "/img/icon/journal-frame.png",
+                "path" : "/admin/log"
+            }
+        ],
+        "path" : "/admin"
     }
-    return (
-        <side id="side">
+
+    return(
+        <div id="side">
             <div className="menus">
-                <Tab menu={myCalendar} />
-                <Tab menu={myTeam} />
-                <Tab menu={findTeam} />
-                <Tab menu={challenges} />
-                <Tab menu={admin} />
+                <Tab menu={myCalendar}/>
+                <Tab menu={myTeam}/>
+                <Tab menu={findTeam}/>
+                <Tab menu={challenges}/>
+                <Tab menu={admin}/>
+
             </div>
-        </side>
+        </div>
     )
 }
 export default Side;

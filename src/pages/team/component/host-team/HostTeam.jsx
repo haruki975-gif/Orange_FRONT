@@ -1,75 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MyTeamRow from "../team-row/myTeamRow";
+import axios from "axios";
 
-const HostTeam = ({setOpenModal}) =>{
+const HostTeam = ({setOpenModal, updateTeamList, findCategoryLabel}) =>{
 
-    
+    const apiUrl = URL_CONFIG.API_URL;
 
-    const [teamList, setTeamList] = useState([
-        {
-            "teamNo" : "12",
-            "teamName" : "공부하자",
-            "teamContent" : "매일 공부하는 방입니다.",
-            "leaderNo" : "32",
-            "leaderName" : "짱구",
-            "category" : "스터디",
-            "teamMemberList" : [
-                {
-                    "memberNo" : "7",
-                    "memberName" : "호돌이"
-                },
-                {
-                     "memberNo" : "251",
-                     "memberName" : "최윤서"
-                }
-            ]
-        },
-        {
-            "teamNo" : "12",
-            "teamName" : "공부하자",
-            "teamContent" : "매일 공부하는 방입니다.",
-            "leaderNo" : "32",
-            "leaderName" : "짱구",
-            "category" : "스터디",
-            "teamMemberList" : [
-                {
-                    "memberNo" : "25",
-                    "memberName" : "홍길동"
-                },
-                {
-                    "memberNo" : "7",
-                    "memberName" : "호돌이"
-                },
-                {
-                     "memberNo" : "251",
-                     "memberName" : "최윤서"
-                }
-            ]
-        },
-        {
-            "teamNo" : "12",
-            "teamName" : "공부하자",
-            "teamContent" : "매일 공부하는 방입니다.",
-            "leaderNo" : "32",
-            "leaderName" : "짱구",
-            "category" : "스터디",
-            "teamMemberList" : [
-                {
-                    "memberNo" : "25",
-                    "memberName" : "홍길동"
-                },
-                {
-                    "memberNo" : "7",
-                    "memberName" : "호돌이"
-                },
-                {
-                     "memberNo" : "251",
-                     "memberName" : "최윤서"
-                }
-            ]
-        },
-        
-    ]);
+    const [teamList, setTeamList] = useState([]);
+    const [updateSearchTeamList, setUpdateSearchTeamList] = useState(true);
+
+    useEffect(()=>{
+        const accessToken = sessionStorage.getItem("accessToken");
+
+        if(!accessToken){
+            return;
+        }
+
+        axios.get(`${apiUrl}/api/teams/created-team`,{
+            headers : {
+                Authorization : `Bearer ${accessToken}`,
+            }
+        }).then((response)=>{
+            setTeamList(response.data.items);
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }, [updateSearchTeamList, updateTeamList])
 
     const openCreateTeamModal = () =>{
         setOpenModal(true);
@@ -87,9 +43,16 @@ const HostTeam = ({setOpenModal}) =>{
                     <p className="max-member">인원수</p>
                 </div>
                 <div className="team-list">
-                    {teamList.map(team => (
-                        <MyTeamRow team={team}/>
-                    ))}
+                    {teamList.length !== 0 ? (
+                        teamList.map((team, index) => (
+                        <MyTeamRow key={index} team={team} teamViewType={"host"} 
+                            setUpdateSearchTeamList={setUpdateSearchTeamList} findCategoryLabel={findCategoryLabel}/>
+                        ))
+                    ) : (
+                        <div className="not-found-team">
+                            <h2>팀이 존재하지 않습니다.</h2>
+                        </div>
+                    )}
                 </div>
                 {teamList.length < 5 &&
                     <button className="create-team-btn" onClick={()=>openCreateTeamModal()}>팀 추가</button>

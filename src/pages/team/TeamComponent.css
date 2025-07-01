@@ -57,6 +57,7 @@
     display: flex;
     flex-direction: column;
 }
+
 #team-page .column-name{
     display: flex;
     align-items: center;
@@ -64,6 +65,7 @@
     width: 100%;
     border-bottom: 1px solid #BCBCBC;
     height: 50px;
+    min-height: 50px;
     padding-left: 6px;
 }
 #team-page .column-name > p{
@@ -102,6 +104,24 @@
     padding: 20px 0px 0px 6px;
     flex-direction: column;
     width: 100%;
+}
+#team-page .search-team .team-list{
+    max-height: 528px;
+    overflow: auto;
+}
+
+#team-page .not-found-team{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 160px;
+}
+#team-page .host-team .not-found-team{
+    height: 80px;
+}
+#team-page .not-found-team > h2{
+    font-size: 20px;
+    font-weight: 600;
 }
 #team-page .team-list .team-row{
     display: flex;
@@ -142,11 +162,19 @@
 #team-page .team-row .team-info .team-name{
     font-size: 16px;
     font-weight: 400;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #team-page .team-row .team-info .team-content{
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     color: #8F8F8F;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #team-page .team-row .category{
     width: 15%;
@@ -172,6 +200,9 @@
     font-size: 16px;
     font-weight: 400;
     cursor: pointer;
+}
+#team-page .team-row .join-team.active{
+    background-color: #505050;
 }
 
 #team-page .create-team-modal{
