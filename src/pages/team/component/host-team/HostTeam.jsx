@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MyTeamRow from "../team-row/myTeamRow";
 import axios from "axios";
+import { GlobalContext } from "../../../../components/context/GlobalContext";
 
 const HostTeam = ({setOpenModal, updateTeamList, findCategoryLabel}) =>{
 
@@ -8,24 +9,25 @@ const HostTeam = ({setOpenModal, updateTeamList, findCategoryLabel}) =>{
 
     const [teamList, setTeamList] = useState([]);
     const [updateSearchTeamList, setUpdateSearchTeamList] = useState(true);
+    const { auth } = useContext(GlobalContext);
 
     useEffect(()=>{
-        const accessToken = sessionStorage.getItem("accessToken");
 
-        if(!accessToken){
+        if(!auth?.accessToken){
             return;
         }
 
         axios.get(`${apiUrl}/api/teams/created-team`,{
             headers : {
-                Authorization : `Bearer ${accessToken}`,
+                Authorization : `Bearer ${auth.accessToken}`,
             }
         }).then((response)=>{
+            console.log(response.data.items);
             setTeamList(response.data.items);
         }).catch((error)=>{
             console.log(error);
         })
-    }, [updateSearchTeamList, updateTeamList])
+    }, [updateSearchTeamList, updateTeamList, auth])
 
     const openCreateTeamModal = () =>{
         setOpenModal(true);

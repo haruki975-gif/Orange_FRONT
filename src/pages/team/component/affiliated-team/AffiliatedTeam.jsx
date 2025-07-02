@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MyTeamRow from "../team-row/myTeamRow";
 import axios from "axios";
+import { GlobalContext } from "../../../../components/context/GlobalContext";
 
 const AffiliatedTeam = ({updateTeamList, findCategoryLabel}) =>{
 
@@ -9,23 +10,24 @@ const AffiliatedTeam = ({updateTeamList, findCategoryLabel}) =>{
     const [teamList, setTeamList] = useState([]);
     const [updateSearchTeamList, setUpdateSearchTeamList] = useState(true);
 
-    useEffect(()=>{
-        const accessToken = sessionStorage.getItem("accessToken");
+    const { auth } = useContext(GlobalContext);
 
-        if(!accessToken){
+    useEffect(()=>{
+
+        if(!auth?.accessToken){
             return;
         }
 
         axios.get(`${apiUrl}/api/teams/affiliated`,{
             headers : {
-                Authorization : `Bearer ${accessToken}`,
+                Authorization : `Bearer ${auth.accessToken}`,
             }
         }).then((response)=>{
             setTeamList(response.data.items);
         }).catch((error)=>{
             console.log(error);
         })
-    }, [updateSearchTeamList])
+    }, [updateSearchTeamList, auth])
 
     return(
         <div className="affiliated-team">

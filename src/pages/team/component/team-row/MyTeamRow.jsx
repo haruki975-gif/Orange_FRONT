@@ -1,21 +1,21 @@
 import { useContext, useState } from "react";
 import axios from "axios";
-import { AlertContext } from "../../../../components/context/AlertContext";
+import { GlobalContext } from "../../../../components/context/GlobalContext";
+import { FaUserCircle } from "react-icons/fa";
+
 
 
 const MyTeamRow = ({team, index, teamViewType, setUpdateSearchTeamList, findCategoryLabel}) =>{
 
     const apiUrl = URL_CONFIG.API_URL;
-    const { errorAlert, successAlert } = useContext(AlertContext);
+    const { errorAlert, successAlert, auth } = useContext(GlobalContext);
 
     const [openRequestBtn, setOpenRequestBtn] = useState(false);
 
 
     const deleteRequestHandler = () =>{
 
-        const accessToken = sessionStorage.getItem("accessToken");
-
-        if(!accessToken){
+        if(!auth?.accessToken){
             errorAlert("로그인 후 이용 가능합니다.");
             return;
         }
@@ -25,7 +25,7 @@ const MyTeamRow = ({team, index, teamViewType, setUpdateSearchTeamList, findCate
         axios.delete(`${apiUrl}/api/teams${requestUrl}?teamId=${team.teamId}`,
         {
             headers : {
-                Authorization : `Bearer ${accessToken}`,
+                Authorization : `Bearer ${auth.accessToken}`,
             }
         }).then((response)=>{
             successAlert(response.data.message);
@@ -40,8 +40,16 @@ const MyTeamRow = ({team, index, teamViewType, setUpdateSearchTeamList, findCate
         <div className="team-row" key={index}
             onMouseEnter={() => {setOpenRequestBtn(true)}}onMouseLeave={() => {setOpenRequestBtn(false)}}>
             <div className="user">
+                
                 <div className="profile">
-                    <img src="/img/icon/person-fill.png" alt="" />
+                    {team.leaderProfile ? (
+                            <img src={team.leaderProfile} alt="" />
+                        ) : (
+                            <FaUserCircle
+                                className="profile-icon"
+                            />
+                        )
+                    }
                 </div>
                 <p className="user-name">{team.leaderName}</p>
             </div>

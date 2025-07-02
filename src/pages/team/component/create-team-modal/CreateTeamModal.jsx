@@ -1,12 +1,13 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { toast, Bounce } from "react-toastify";
+import { GlobalContext } from "../../../../components/context/GlobalContext";
 
 const CreateTeamModal = ({setOpenModal, modalBackground, setUpdateTeamList, categories}) =>{
 
     const apiUrl = URL_CONFIG.API_URL;
 
-
+    const { auth } = useContext(GlobalContext);
 
     const [chooseCategory, setChooseCategory] = useState("");
     const [title, setTitle] = useState("");
@@ -49,11 +50,10 @@ const CreateTeamModal = ({setOpenModal, modalBackground, setUpdateTeamList, cate
     // 팀생성 요청
     const createTeamHandler = () =>{
         
-        if(!sessionStorage.getItem("userNo")){
+        if(!auth?.userNo){
             errorAlert("로그인 후 이용 가능합니다.");
             return;
         }
-            const accessToken = sessionStorage.getItem("accessToken");
 
             if(title.trim() === "" || content.trim() === "" || chooseCategory.trim() === ""){
                 errorAlert("모든 정보를 기입 해야합니다.");
@@ -66,7 +66,7 @@ const CreateTeamModal = ({setOpenModal, modalBackground, setUpdateTeamList, cate
             },
             {
                 headers : {
-                    Authorization : `Bearer ${accessToken}`,
+                    Authorization : `Bearer ${auth.accessToken}`,
                 }
             }).then((response) =>{
                 closeCreateTeamModal();
