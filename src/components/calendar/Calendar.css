@@ -57,7 +57,7 @@
 }
 
 .fc.fc-media-screen.fc-direction-ltr.fc-theme-standard {
-    margin-left: -211px;
+    margin-left: -210px;
     margin-top: -58px;
     margin-right: -210px;
 }
@@ -65,7 +65,7 @@
 .fc .fc-view-harness {
     flex-grow: 1;
     position: relative;
-    top: -12px;
+    top: 10px;
 }
 
 
@@ -76,4 +76,49 @@
     position: relative;
     top: -6px;
     left: 1px;
+}
+
+
+/* 비로그인 캘린더 스타일 */
+/* 예: Calendar.css */
+
+.calendar-wrapper.blur {
+  filter: blur(4px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-modal {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.login-button {
+  margin-top: 20px;
+  padding: 10px 24px;
+  font-size: 16px;
+  background-color: #FFB55B;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.login-button:hover {
+  background-color: #e09f50;
 }

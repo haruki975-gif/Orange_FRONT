@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import "./Calendar.css";
 import TabNav from "../../includes/side/components/tab/TabNav";
 import EventDetailModal from "../modal/EventDetailModal";
+import { useEffect } from "react";
+import { checkAuthStatus } from "../Member/Login/js/authService.js"
+import { useNavigate } from "react-router-dom";
+
 
 import {
     useFloating,    /*
@@ -34,6 +38,10 @@ const Calender = () => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const [scheduleTitle, setScheduleTitle] = useState([]);
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navi = useNavigate();
+
 
     // 이벤트 클릭 모달 상태 추가
     const [selectedEvent, setSelectEvent] = useState(null);
@@ -189,10 +197,18 @@ const Calender = () => {
     };
 
 
+    useEffect(() => {
+        const isAuth = checkAuthStatus();
+        setIsLoggedIn(isAuth);
+    }, []);
+
 
     return (
         <>
             <TabNav />
+
+            {/* 캘린더 블러 처리용 wrapper */}
+            {/* <div className={`calendar-wrapper ${!isLoggedIn ? "blur" : ""}`}> */}
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
                 height={900}
@@ -211,10 +227,8 @@ const Calender = () => {
                     start: event.startDate || event.dueDate,
                     end: getNextDate(event.dueDate),
                 }))}
-
             />
 
-            {/* 날짜 클릭 시 팝업 */}
             {isOpen && (
                 <FloatingPortal>
                     <PopupForm
@@ -229,7 +243,6 @@ const Calender = () => {
                 </FloatingPortal>
             )}
 
-            {/* 이벤트 클릭 시 모달 */}
             {isEventModalOpen && selectedEvent && (
                 <EventDetailModal
                     event={selectedEvent}
@@ -238,8 +251,25 @@ const Calender = () => {
                     onDelete={handleDeleteEvent}
                 />
             )}
+            {/* </div> */}
+
+            {/* 비로그인 시 오버레이 */}
+            {/* {!isLoggedIn && (
+                <div className="login-overlay">
+                    <div className="login-modal">
+                        <h2>로그인이 필요합니다</h2>
+                        <button
+                            className="login-button"
+                            onClick={() => window.location.href = "/login"}
+                        >
+                            로그인
+                        </button>
+                    </div>
+                </div>
+            )} */}
         </>
     );
+
 };
 
 export default Calender;

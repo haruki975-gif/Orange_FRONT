@@ -15,23 +15,12 @@
     padding: 25px;
 }
 
-.addSection {
-    width: 38px;
-    height: 38px;
-    position: relative;
-    right: -287px;
-    top: -52px;
-    background-color: white;
-    border: solid 1px #d9d9d9;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 25px;
-    font-family: math;
+
+
+.dashBoard .addSectionBtn:hover {
+  background-color: #e9e9e9;
 }
 
-.addSection:hover{
-  background-color: #e1e1e1;
-}
 
 .task-card {
   background: white;
@@ -94,6 +83,10 @@
 .dashBoard {
     display: inline-block;
     height: auto;
+    width: 116%;
+    position: relative;
+    left: -132px;
+    top: 40px;
 }
 
 
@@ -219,21 +212,35 @@
       background-color: #ffad49;
 }
 
-.dashBoard .addSectionBtn{
-  position: relative;
-  width: 35px;
-  height: 35px;
-  border-radius: 5px;
-  border: solid 1px rgb(209, 208, 208);
-  top: 40px;
-  left: 305px;
+.section-container-wrapper {
+  display: flex;
+  gap: 20px;
+  padding: 40px;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.dashBoard .addSectionBtn {
+  border-radius: 8px;
+  background-color: #f8f8f8;
+  color: #8c8c8c;
+  font-size: 30px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  flex-shrink: 0;            /* ✅ 이거 중요 */
+  transition: background-color 0.2s ease;
 }
 
 
-.dashBoard .addSectionBtn:hover{
-  background-color: #dddbdb;
+.dashBoard .addSectionBtn:hover {
+  background-color: #e9e9e9;
 }
+
 
 
 .makeBtn{
@@ -299,4 +306,16 @@
 
 .submit-btn:hover {
   color: #ffad49;
+}
+
+
+
+/* 섹션 카드 스타일 */
+.work-status-container {
+  width: 300px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  flex-shrink: 0;
 }

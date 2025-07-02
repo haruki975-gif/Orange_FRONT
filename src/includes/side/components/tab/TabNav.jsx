@@ -1,5 +1,6 @@
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import { useNavigate, useLocation } from 'react-router-dom';
+import "./TabNav.css"
 
 
 function TabNav() {
