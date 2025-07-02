@@ -1,96 +1,124 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import WorkCard from "./WorkCard";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { AlertContext } from "../../../../../components/context/AlertContext";
 
 
-const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler}) => {
+const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, sendJsonMessage, lastJsonMessage, id, userNo}) => {
+    const { errorAlert, successAlert } = useContext(AlertContext); 
+    const accessToken = sessionStorage.getItem("accessToken");
+    const apiUrl = URL_CONFIG.API_URL;
 
     const [workList, setWorkList] = useState([]); 
 
     const ref = useRef(null);
 
     const [, drop] = useDrop({
-        accept: "ITEM",
+        accept: "WORK",
         drop: (item) => {
-        console.log(`드롭됨: `);
+            const updateWorkStatus = {
+                type : "statusUpdate",
+                teamId : id,
+                requestUserNo : userNo,
+                workId : item.work.workId,
+                status : column.columnValue,
+                prevStatus : item.work.status
+            }
+
+            sendJsonMessage(updateWorkStatus);
         },
     });
 
     drop(ref);
 
+
     useEffect(()=>{
-        getWorkList(column.columnNo);
-    }, []);
+        axios.get(`${apiUrl}/api/works?teamId=${id}&status=${column.columnValue}`,
+            {
+                headers : {
+                    Authorization : `Bearer ${accessToken}`,
+                }
+            }
+        ).then((response)=>{
+            setWorkList(response.data.items);
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }, [id]);
 
-    const getWorkList = (columnNo) =>{
+    useEffect(()=>{
 
-        switch(columnNo){
-            case "1" : 
-                setWorkList(
-                    [
-                        {
-                            workNo : "1",
-                            workTitle : "(진행전)점심 메뉴 정하기1",
-                            assigneeName : "홍길동",
-                        },
-                        {
-                            workNo : "2",
-                            workTitle : "(진행전)점심 메뉴 정하기2",
-                            assigneeName : "홍길동",
-                        },
-                    ]
-                )
-                break;
-            case "2" : 
-                setWorkList(
-                    [
-                        {
-                            workNo : "1",
-                            workTitle : "(진행중)점심 메뉴 정하기1",
-                            assigneeName : "홍길동",
-                        },
-                        {
-                            workNo : "2",
-                            workTitle : "(진행중)점심 메뉴 정하기2",
-                            assigneeName : "홍길동",
-                        },
-                        {
-                            workNo : "3",
-                            workTitle : "(진행중)점심 메뉴 정하기3",
-                            assigneeName : "홍길동",
-                        },
-                    ]
-                )    
-                break;
-            case "3" : 
-                setWorkList(
-                    [
-                        {
-                            workNo : "1",
-                            workTitle : "(완료)점심 메뉴 정하기1",
-                            assigneeName : "홍길동",
-                        },
-                    ]
-                )    
-                break;
-            case "4" : 
-                setWorkList(
-                    [
-                        {
-                            workNo : "1",
-                            workTitle : "(테스트 완료)점심 메뉴 정하기1",
-                            assigneeName : "홍길동",
-                        },
-                        {
-                            workNo : "2",
-                            workTitle : "(테스트 완료)점심 메뉴 정하기2",
-                            assigneeName : "홍길동",
-                        },
-                    ]
-                )    
-                break; 
+        if(!lastJsonMessage){
+            return;
         }
+
+        switch(lastJsonMessage?.type){
+            case 'add': 
+                const addWorkList = {...lastJsonMessage}
+                delete addWorkList.type
+                if(column.columnValue === addWorkList.status){
+                    setWorkList(prev => [...prev, addWorkList]);
+                }
+                break;
+            case 'statusUpdate':
+                const suWorkList = {...lastJsonMessage}
+
+                if(suWorkList.prevStatus === column.columnValue){
+                    setWorkList(prev => {
+                        return prev.filter(work =>(
+                            work.workId != suWorkList.workId
+                        ))
+                    });
+                }
+                if(suWorkList.status === column.columnValue){
+                    setWorkList(prev => [suWorkList, ...prev]);
+                }
+                break;
+            case 'update':
+                const updateWork = {...lastJsonMessage}
+
+                if (updateWork.status === column.columnValue) {
+                    setWorkList(prev => [
+                        ...prev.map(work =>
+                            work.workId === updateWork.workId ? updateWork : work
+                        )
+                    ]);
+                }
+                break;  
+            case 'delete':
+                if (lastJsonMessage.status === column.columnValue) {
+                    setWorkList(prev => [
+                        ...prev.filter(work =>
+                            work.workId != lastJsonMessage.workId
+                        )
+                    ]);
+                }
+                break;
+            default : 
+                console.log(lastJsonMessage.userNo);
+                if(lastJsonMessage.requestUserNo == userNo && column.columnValue == 'todo'){
+                    errorAlert(lastJsonMessage?.type); 
+                }
+                break;
+        }
+        
+    }, [lastJsonMessage])
+
+
+    const addWorkHandler = () =>{
+        const addWork = {
+            type : "add",
+            teamId : id,
+            requestUserNo : userNo,
+            status : column.columnValue
+        }
+        sendJsonMessage(addWork);
     }
+
+    if(!workList) return null;
+
 
     return(
         <div className="work-status-container" ref={ref}>
@@ -98,15 +126,18 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler})
             <div className="work-container">
                 {workList.map(work =>(
                     <WorkCard 
-                        id={work.workNo} 
-                        workTitle={work.workTitle}
-                        assigneeName={work.assigneeName} 
+                        work={work}
                         openUpdateModalHandler={openUpdateModalHandler}
-                        openDetailModalHandler={openDetailModalHandler}/>
+                        openDetailModalHandler={openDetailModalHandler}
+                        sendJsonMessage={sendJsonMessage}
+                        lastJsonMessage={lastJsonMessage}
+                        column={column}
+                        id={id}
+                        userNo={userNo}/>
                 ))}
             </div>
             
-            <div className="work-create-btn">
+            <div className="work-create-btn" onClick={() => addWorkHandler()}>
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg> 만들기
             </div>
         </div>
