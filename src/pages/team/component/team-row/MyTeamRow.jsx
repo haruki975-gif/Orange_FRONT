@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import axios from "axios";
 import { GlobalContext } from "../../../../components/context/GlobalContext";
+import { FaUserCircle } from "react-icons/fa";
 
 
 
@@ -39,8 +40,16 @@ const MyTeamRow = ({team, index, teamViewType, setUpdateSearchTeamList, findCate
         <div className="team-row" key={index}
             onMouseEnter={() => {setOpenRequestBtn(true)}}onMouseLeave={() => {setOpenRequestBtn(false)}}>
             <div className="user">
+                
                 <div className="profile">
-                    <img src="/img/icon/person-fill.png" alt="" />
+                    {team.leaderProfile ? (
+                            <img src={team.leaderProfile} alt="" />
+                        ) : (
+                            <FaUserCircle
+                                className="profile-icon"
+                            />
+                        )
+                    }
                 </div>
                 <p className="user-name">{team.leaderName}</p>
             </div>

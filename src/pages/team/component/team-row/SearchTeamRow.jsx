@@ -2,13 +2,13 @@ import { useContext, useState } from "react";
 
 import axios from "axios";
 import { GlobalContext } from "../../../../components/context/GlobalContext";
+import { FaUserCircle } from "react-icons/fa";
 
 const SearchTeamRow = ({team, setUpdateSearchTeamList, findCategoryLabel}) =>{
 
     const apiUrl = URL_CONFIG.API_URL;
     const { errorAlert, successAlert, auth } = useContext(GlobalContext);
     
-    const userNo = sessionStorage.getItem("userNo");
 
     const [openRequestBtn, setOpenRequestBtn] = useState(false);
 
@@ -18,7 +18,7 @@ const SearchTeamRow = ({team, setUpdateSearchTeamList, findCategoryLabel}) =>{
         if (!team.canApplyToTeam) return false;
 
         // 2. 이미 팀 멤버면 신청 불가
-        const isAlreadyMember = team.teamMemberList.some(member => member.memberNo == userNo);
+        const isAlreadyMember = team.teamMemberList.some(member => member.memberNo == auth?.userNo);
         if (isAlreadyMember) return false;
 
         return true;
@@ -57,7 +57,14 @@ const SearchTeamRow = ({team, setUpdateSearchTeamList, findCategoryLabel}) =>{
         >
             <div className="user">
                 <div className="profile">
-                    <img src="/img/icon/person-fill.png" alt="" />
+                    {team.leaderProfile ? (
+                            <img src={team.leaderProfile} alt="" />
+                        ) : (
+                            <FaUserCircle
+                                className="profile-icon"
+                            />
+                        )
+                    }
                 </div>
                 <p className="user-name">{team.leaderName}</p>
             </div>

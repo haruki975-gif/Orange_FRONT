@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../../components/context/GlobalContext";
+import { FaUserCircle } from "react-icons/fa";
 
 const AlertComponent = ({setOpenAlertModal, openAlertModal}) =>{
 
     const apiUrl = URL_CONFIG.API_URL;
-    const { errorAlert, successAlert } = useContext(GlobalContext);
+    const { errorAlert, successAlert, auth } = useContext(GlobalContext);
 
     const [applicantList, setApplicantList] = useState([]);
     const [updateApplicantList, setUpdateApplicantList] = useState(true);
@@ -17,9 +18,7 @@ const AlertComponent = ({setOpenAlertModal, openAlertModal}) =>{
             return;
         }
 
-        const accessToken = sessionStorage.getItem("accessToken");
-
-        if(!accessToken){
+        if(!auth?.accessToken){
             errorAlert("로그인 후 이용 가능합니다.");
             return;
         }
@@ -27,7 +26,7 @@ const AlertComponent = ({setOpenAlertModal, openAlertModal}) =>{
         axios.get(`${apiUrl}/api/teams/member`,
             {
                 headers : {
-                    Authorization : `Bearer ${accessToken}`,
+                    Authorization : `Bearer ${auth.accessToken}`,
                 }
             }
         ).then((response)=>{
@@ -38,60 +37,61 @@ const AlertComponent = ({setOpenAlertModal, openAlertModal}) =>{
 
     }, [openAlertModal, updateApplicantList])
 
-    const acceptTeamJoinHandler = (requestNo, teamId, applicantNo) =>{
+    const acceptTeamJoinHandler = (applicant) =>{
 
-        const accessToken = sessionStorage.getItem("accessToken");
+        console.log(applicant);
 
-        if(!accessToken){
+        if(!auth?.accessToken){
             errorAlert("로그인 후 이용 가능합니다.");
             return;
         }
 
         axios.post(`${apiUrl}/api/teams/join-accept`,
             {
-                requestNo : requestNo,
-                teamId : teamId,
-                applicantNo : applicantNo
+                requestNo : applicant.requestNo,
+                teamId : applicant.teamId,
+                applicantNo : applicant.applicantNo
             },
             {
                 headers : {
-                    Authorization : `Bearer ${accessToken}`,
+                    Authorization : `Bearer ${auth.accessToken}`,
                 }
             }
         ).then((response)=>{
             successAlert(response.data.message);
             setUpdateApplicantList(prev => !prev);
         }).catch((error)=>{
-            console.log(error);
+            errorAlert(error.response.data.message);
+            setUpdateApplicantList(prev => !prev);
         });
     };
 
-    const cancleTeamJoinHandler = (requestNo, teamId, applicantNo) =>{
+    const cancleTeamJoinHandler = (applicant) =>{
 
-        const accessToken = sessionStorage.getItem("accessToken");
+        console.log(applicant);
 
-        if(!accessToken){
+        if(!auth?.accessToken){
             errorAlert("로그인 후 이용 가능합니다.");
             return;
         }
 
-        axios.post(`${apiUrl}/api/teams/join-cancle`,
+        axios.delete(`${apiUrl}/api/teams/join-cancle`,
             {
-                requestNo : requestNo,
-                teamId : teamId,
-                applicantNo : applicantNo
-            },
-            {
+                data : {
+                    requestNo : applicant.requestNo,
+                    teamId : applicant.teamId,
+                    applicantNo : applicant.applicantNo
+                },
                 headers : {
-                    Authorization : `Bearer ${accessToken}`,
+                    Authorization : `Bearer ${auth.accessToken}`,
                 }
             }
         ).then((response)=>{
-            console.log(response);
+            successAlert(response.data.message);
             setUpdateApplicantList(prev => !prev);
         }).catch((error)=>{
-            console.log(error);
-        });
+            errorAlert(error.response.data.message);
+        })
     };
 
 
@@ -108,15 +108,22 @@ const AlertComponent = ({setOpenAlertModal, openAlertModal}) =>{
                             <div className="request-user-info">
                                 <img src="/img/icon/arrow-90.png" alt="" />
                                 <div className="user-profile">
-                                    <img src="/img/icon/person-fill.png" alt="" />
+                                    {applicant.applicantProfile ? (
+                                            <img src={applicant.applicantProfile} alt="" />
+                                        ) : (
+                                            <FaUserCircle
+                                                className="profile-icon"
+                                            />
+                                        )
+                                    }
                                 </div>
                                 <p className="user-name">{applicant.applicantName}</p>
                             </div>
                         </div>
                         <button className="accept-btn"
-                            onClick={() => acceptTeamJoinHandler(applicant.requestNo, applicant.teamId, applicant.applicantNo)}>수락</button>
+                            onClick={() => acceptTeamJoinHandler(applicant)}>수락</button>
                         <button className="cancle-btn"
-                            onClick={() => cancleTeamJoinHandler(applicant.requestNo, applicant.teamId, applicant.applicantNo)}>거절</button>
+                            onClick={() => cancleTeamJoinHandler(applicant)}>거절</button>
                     </div>
                 ))) : (
                     <div className="not-found-applicant">

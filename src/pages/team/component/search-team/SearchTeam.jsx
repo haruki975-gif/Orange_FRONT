@@ -16,11 +16,13 @@ const SearchTeam = ({updateTeamList, categories, findCategoryLabel}) =>{
     const [teamList, setTeamList] = useState([]);
     const [lastTimeStamp, setLastTimeStamp] = useState(null);
 
+    const { auth } = useContext(GlobalContext);
+
 
 
     const getTeamList = (lastTimeStamp) =>{
 
-        let userNo = sessionStorage.getItem("userNo");
+        let userNo = auth?.userNo;
 
         if(userNo == null){
             userNo = -1;
@@ -58,7 +60,7 @@ const SearchTeam = ({updateTeamList, categories, findCategoryLabel}) =>{
 
 
     useEffect(()=>{
-        let userNo = sessionStorage.getItem("userNo");
+        let userNo = auth?.userNo;
 
         scrollEnabledRef.current = false;
 
@@ -78,7 +80,7 @@ const SearchTeam = ({updateTeamList, categories, findCategoryLabel}) =>{
             setTimeout(() => scrollEnabledRef.current = true, 100);
         });
             
-    }, [chooseCategory, updateTeamList, updateSearchTeamList]);
+    }, [chooseCategory, updateTeamList, updateSearchTeamList, auth]);
 
     // 카테고리 수정
     const categoryHandler = (key) =>{

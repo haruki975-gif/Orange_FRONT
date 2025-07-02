@@ -52,8 +52,9 @@
     position: relative;
 }
 #team-room .team-info .member-profile > img{
-    width: 20px;
-    height: 20px;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
 }
 #team-room .tab-menu{
     display: flex;
@@ -83,6 +84,43 @@
     font-weight: 600;
     color: #434343;
 }
+
+
+#team-room .profile-list .option-modal{
+    position: absolute;
+    width: 100px;
+    left: 0;
+    bottom: 0px;
+    transform: translate(-70%, 100%);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
+
+}
+#team-room .profile-list .option-modal > div{
+    width: 100%;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    background-color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 400;
+}
+#team-room .profile-list .option-modal .user-name{
+    /* border-bottom: 1px solid #e2e2e2; */
+    font-weight: 500;
+    z-index: 1;
+}
+#team-room .profile-list .option-modal .kick-member{
+    cursor: pointer;
+}
+#team-room .profile-list .option-modal .kick-member:hover{
+    background-color: #efefef;
+}
+
+
 #team-room .chat-room .option-modal{
     position: absolute;
     width: 100px;

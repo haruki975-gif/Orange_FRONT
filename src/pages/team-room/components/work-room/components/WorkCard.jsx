@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { DndProvider, useDrag } from "react-dnd";
+import { FaUserCircle } from "react-icons/fa";
 
 const WorkCard = ({work, openUpdateModalHandler, openDetailModalHandler, sendJsonMessage, column, id, userNo}) =>{
     
@@ -41,7 +42,14 @@ const WorkCard = ({work, openUpdateModalHandler, openDetailModalHandler, sendJso
                 <span>담당자</span>
                 <p className="assignee-name">{work.assigneeName}</p>
                 <div className="assignee-profile">
-                    <img src="/img/icon/person-fill.png" alt="" />
+                    {work.assigneeProfile ? (
+                            <img src={work.assigneeProfile} alt="" />
+                        ) : (
+                            <FaUserCircle
+                                className="profile-icon"
+                            />
+                        )
+                    }
                 </div>
             </div>
             <div className="options-btn" ref={optionBtn} 
