@@ -27,10 +27,11 @@
     display: flex;
     align-items: center;
 }
-#team-room .team-info .left > img{
-    width: 16px;
-    height: 16px;
-    margin-right: 10px;
+#team-room .team-info .left > svg{
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+    fill: #FF8C00;
 }
 #team-room .team-info .left .team-name{
     font-size: 16px;
@@ -70,10 +71,14 @@
 #team-room .tab-menu > div.active{
     border-bottom: 2px solid #FF8C00;
 }
-#team-room .tab-menu > div > img{
-    width: 18px;
-    height: 18px;
-    margin-right: 8px;
+#team-room .tab-menu > div > svg{
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+    fill: #434343;
+}
+#team-room .tab-menu > div.active > svg{
+    fill: #FF8C00;
 }
 
 #team-room .tab-menu > div.active > h3{
