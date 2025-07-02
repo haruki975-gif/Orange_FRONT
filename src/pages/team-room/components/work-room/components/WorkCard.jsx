@@ -1,8 +1,7 @@
-import { useRef, useState } from "react";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { useEffect, useRef, useState } from "react";
+import { DndProvider, useDrag } from "react-dnd";
 
-const WorkCard = ({id, workTitle, assigneeName, openUpdateModalHandler, openDetailModalHandler}) =>{
-
+const WorkCard = ({work, openUpdateModalHandler, openDetailModalHandler, sendJsonMessage, column, id, userNo}) =>{
     
     const optionBtn = useRef();
 
@@ -13,8 +12,8 @@ const WorkCard = ({id, workTitle, assigneeName, openUpdateModalHandler, openDeta
     const ref = useRef(null);
 
     const [{ isDragging }, drag] = useDrag({
-      type: "ITEM",
-      item: { id },
+      type: "WORK",
+      item: { work : work },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
@@ -22,12 +21,25 @@ const WorkCard = ({id, workTitle, assigneeName, openUpdateModalHandler, openDeta
 
     drag(ref);
 
+    const deleteWorkHandler = () =>{
+        const deleteWork = {
+            type : 'delete',
+            teamId : id,
+            workId : work.workId,
+            requestUserNo : userNo,
+            status : column.columnValue
+        }
+
+        sendJsonMessage(deleteWork);
+    }
+
+
     return(
         <div className="work-card" ref={ref}>
-            <h4 className="work-title">{workTitle}</h4>
+            <h4 className="work-title">{work.title}</h4>
             <div className="assignee-info">
                 <span>담당자</span>
-                <p className="assignee-name">{assigneeName}</p>
+                <p className="assignee-name">{work.assigneeName}</p>
                 <div className="assignee-profile">
                     <img src="/img/icon/person-fill.png" alt="" />
                 </div>
@@ -42,9 +54,11 @@ const WorkCard = ({id, workTitle, assigneeName, openUpdateModalHandler, openDeta
                 {openOptionModal && 
                     <div className="option-modal">
                         <div className="update-option"
-                            onClick={() => openDetailModalHandler(workTitle)}>상세보기</div>
+                            onClick={() => openDetailModalHandler(work)}>상세보기</div>
                         <div className="detail-option"
-                            onClick={() => openUpdateModalHandler(workTitle)}>수정하기</div>
+                            onClick={() => openUpdateModalHandler(work)}>수정하기</div>
+                        <div className="delete-option"
+                            onClick={() => deleteWorkHandler()}>삭제하기</div>
                     </div>
                 }
             </div>

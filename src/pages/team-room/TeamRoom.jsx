@@ -128,7 +128,7 @@ const TeamRoom = () =>{
                     </div>
                 </div>
             </div>
-            <Outlet context={{memberString}}/>
+            <Outlet context={{memberString, teamInfo}}/>
         </div>
     )
 }
