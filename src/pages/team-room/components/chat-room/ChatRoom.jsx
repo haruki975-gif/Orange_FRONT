@@ -10,65 +10,15 @@ import Message from "./components/Message";
 
 const ChatRoom = () => {
 
-<<<<<<< HEAD
-    const chatList = [
-        {
-            sender: "홍길동",
-            date: "06/19 20:32",
-            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
-        },
-        {
-            sender: "홍길동",
-            date: "06/19 20:32",
-            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
-        },
-        {
-            sender: "홍길동",
-            date: "06/19 20:32",
-            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
-        },
-        {
-            sender: "홍길동",
-            date: "06/19 20:32",
-            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
-        },
-        {
-            sender: "홍길동",
-            date: "06/19 20:32",
-            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
-        },
-        {
-            sender: "홍길동",
-            date: "06/19 20:32",
-            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
-        },
-        {
-            sender: "홍길동",
-            date: "06/19 20:32",
-            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
-        },
-        {
-            sender: "홍길동",
-            date: "06/19 20:32",
-            content: "화면 디자인 구현할 때 \n 가나다라마바사 아자차카타파하 \n 야호야호야호야호야호얗오햐오ㅑㅎ오햐ㅗ\n크크크크크크크크크 크크크ㅡ크",
-        },
-    ]
-=======
     const {id} = useParams("id");
     const accessToken = sessionStorage.getItem("accessToken");
     const userNo = sessionStorage.getItem("userNo");
     const wsUrl = URL_CONFIG.WS_URL + "/ws/chat/" + id + "?token=" + accessToken;
     const apiUrl = URL_CONFIG.API_URL;
     const {memberString} = useOutletContext();
->>>>>>> 9c77725eef4412d4dd9028b2a2d062f4083326f6
 
     const { errorAlert, successAlert } = useContext(AlertContext);
 
-<<<<<<< HEAD
-    useEffect(() => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-=======
     const [messages, setMessages] = useState([]);
     const lastTimeStampRef = useRef(null);
 
@@ -84,7 +34,6 @@ const ChatRoom = () => {
     const findMessages = () =>{
         if(!accessToken){
             return;
->>>>>>> 9c77725eef4412d4dd9028b2a2d062f4083326f6
         }
 
         console.log(lastTimeStampRef.current);
@@ -232,12 +181,8 @@ const ChatRoom = () => {
         return () => element.removeEventListener("scroll", handleScroll);
     }, []);
 
-<<<<<<< HEAD
-    return (
-=======
 
     return(
->>>>>>> 9c77725eef4412d4dd9028b2a2d062f4083326f6
         <div className="chat-room" ref={scrollRef}>
             {messages.map(message => (
                 <Message message={message} 

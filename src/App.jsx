@@ -63,6 +63,9 @@ function App() {
             <Route path="work-room" element={<WorkRoom />} />
           </Route>
 
+          <Route path='/calendar' element={<Calender />} />
+          <Route path='/dashboard' element={<DashBoard />} />
+
           {/* Admin Page */}
             <Route path="/admin/user" element={<User />} />
             <Route path="/admin/user/list" element={<FindUser />} />
