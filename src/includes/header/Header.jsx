@@ -1,19 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import AlertComponent from "./components/AlertComponent";
 import axios from "axios";
 import {
   checkAuthStatus,
-  getUserData,
-  logout,
+  getUserData
 } from "../../components/Member/Login/js/authService";
+import { GlobalContext } from "../../components/context/GlobalContext";
+import { getProfileImage } from "../../components/Mypage/Profile/js/getProfileImage";
+import { FaUserCircle } from "react-icons/fa";
 
 const Header = () => {
   const [openAlertModal, setOpenAlertModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [userName, setUserName] = useState("");
+  const { logout, auth } = useContext(GlobalContext);
   const navi = useNavigate();
+  const token = sessionStorage.getItem("accessToken");
+  const userNo = sessionStorage.getItem("userNo");
+  const [profileImage, setProfileImage] = useState(null); // 서버에서 불러온 이미지
+  const apiUrl = URL_CONFIG.API_URL;
 
   // 로그인 상태 확인
   const checkLoginStatus = () => {
@@ -29,12 +36,47 @@ const Header = () => {
     }
   };
 
+  /* 프로필 이미지 조회 */
+  useEffect(() => {
+    getProfileImage(userNo, token, apiUrl)
+      .then((url) => {
+        if (url) {
+          setProfileImage(url);
+        } else {
+          setProfileImage(null);
+          setMessage("등록된 프로필 이미지가 없습니다.");
+        }
+      })
+      .catch((error) => {
+        console.log("프로필 이미지 조회 실패", error);
+        setMessage("프로필 이미지를 불러오지 못했습니다.");
+      });
+  }, []);
+
   // 로그아웃 처리
   const handleLogout = () => {
-    logout()
+
+    if (!auth?.accessToken) {
+      clearAuthData();
+      alert("이미 로그인 만료 상태입니다.");
+      navi("/");
+      return;
+    }
+
+      axios
+        .post(
+          `${apiUrl}/api/auth/logout`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${auth.accessToken}`,
+            },
+          }
+        )
       .then(() => {
+        clearAuthData();
         alert("로그아웃 되었습니다.");
-        sessionStorage.clear();
+        logout();
         checkLoginStatus();
         navi("/");
       })
@@ -80,11 +122,20 @@ const Header = () => {
             <div className="user">
               <a className="name">{userName}</a>
               <div className="profile">
-                <img
-                  src="/img/icon/person-fill.png"
-                  alt=""
-                  onClick={() => navi("/mypage-main")}
-                />
+                {profileImage ? (
+                  <img
+                    src={profileImage}
+                    alt="프로필 이미지"
+                    onClick={() => navi("/mypage-main")}
+                    className="profile-img"
+                    style={{ width: "100%", height: "100%", border: "none" }}
+                  />
+                ) : (
+                  <FaUserCircle
+                    className="profile-icon"
+                    onClick={() => navi("/mypage-main")}
+                  />
+                )}
               </div>
               <div className="logout">
                 <a className="logout" onClick={handleLogout}>

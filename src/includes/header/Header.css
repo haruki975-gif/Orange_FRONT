@@ -149,10 +149,11 @@
   justify-content: center;
   background-color: #d9d9d9;
   margin-right: 10px;
+  overflow: hidden;
 }
 #alert-component .request .request-content .user-profile > img {
-  width: 10px;
-  height: 10px;
+  width: 100%;
+  height: 100%;
 }
 #alert-component .request .request-content .user-name {
   font-size: 14px;

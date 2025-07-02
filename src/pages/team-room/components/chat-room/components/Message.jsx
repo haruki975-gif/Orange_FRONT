@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { FaUserCircle } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -75,7 +76,14 @@ const Message = ({message, userNo, sendJsonMessage }) =>{
         <div className="message" onMouseEnter={() => {setOpenOptionBtnHandler(message.senderNo)}}
                                  onMouseLeave={() => {setOpenOptionBtn(false)}}>
                 <div className="sender-profile">
-                    <img src="/img/icon/person-fill.png" alt="" />
+                    {message.senderProfile ? (
+                            <img src={message.senderProfile} alt="" />
+                        ) : (
+                            <FaUserCircle
+                                className="profile-icon"
+                            />
+                        )
+                    }
                 </div>
                 <div className="txt-box">
                     <div className="sender">

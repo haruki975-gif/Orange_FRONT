@@ -2,10 +2,19 @@
 
 import axios from "axios";
 
-export const updateUserPassword = (userNo, newPassword, token, apiUrl) => {
+export const updateUserPassword = (
+  userNo,
+  userPassword,
+  newPassword,
+  token,
+  apiUrl
+) => {
   return axios.put(
     `${apiUrl}/api/info/password-update/${userNo}`,
-    { newPassword },
+    {
+      userPassword,
+      newPassword,
+    },
     {
       headers: {
         Authorization: `Bearer ${token}`,

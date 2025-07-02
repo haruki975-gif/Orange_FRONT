@@ -1,13 +1,14 @@
 import { useContext, useState } from "react";
-import { AlertContext } from '../../../../components/context/AlertContext';
+
 import axios from "axios";
+import { GlobalContext } from "../../../../components/context/GlobalContext";
+import { FaUserCircle } from "react-icons/fa";
 
 const SearchTeamRow = ({team, setUpdateSearchTeamList, findCategoryLabel}) =>{
 
     const apiUrl = URL_CONFIG.API_URL;
-    const { errorAlert, successAlert } = useContext(AlertContext);
+    const { errorAlert, successAlert, auth } = useContext(GlobalContext);
     
-    const userNo = sessionStorage.getItem("userNo");
 
     const [openRequestBtn, setOpenRequestBtn] = useState(false);
 
@@ -17,7 +18,7 @@ const SearchTeamRow = ({team, setUpdateSearchTeamList, findCategoryLabel}) =>{
         if (!team.canApplyToTeam) return false;
 
         // 2. 이미 팀 멤버면 신청 불가
-        const isAlreadyMember = team.teamMemberList.some(member => member.memberNo == userNo);
+        const isAlreadyMember = team.teamMemberList.some(member => member.memberNo == auth?.userNo);
         if (isAlreadyMember) return false;
 
         return true;
@@ -26,9 +27,7 @@ const SearchTeamRow = ({team, setUpdateSearchTeamList, findCategoryLabel}) =>{
     
     const joinRequestHandler = () =>{
 
-        const accessToken = sessionStorage.getItem("accessToken");
-
-        if(!accessToken){
+        if(!auth?.accessToken){
             errorAlert("로그인 후 이용 가능합니다.");
             return;
         }
@@ -39,7 +38,7 @@ const SearchTeamRow = ({team, setUpdateSearchTeamList, findCategoryLabel}) =>{
             },
             {
                 headers : {
-                    Authorization : `Bearer ${accessToken}`,
+                    Authorization : `Bearer ${auth.accessToken}`,
                 }
             }
         ).then((response)=>{
@@ -58,7 +57,14 @@ const SearchTeamRow = ({team, setUpdateSearchTeamList, findCategoryLabel}) =>{
         >
             <div className="user">
                 <div className="profile">
-                    <img src="/img/icon/person-fill.png" alt="" />
+                    {team.leaderProfile ? (
+                            <img src={team.leaderProfile} alt="" />
+                        ) : (
+                            <FaUserCircle
+                                className="profile-icon"
+                            />
+                        )
+                    }
                 </div>
                 <p className="user-name">{team.leaderName}</p>
             </div>

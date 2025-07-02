@@ -23,10 +23,11 @@
     align-items: center;
     justify-content: center;
     margin-right: 16px;
+    overflow: hidden;
 }
 .chat-room .message .sender-profile > img{
-    width: 30px;
-    height: 30px;
+    width: 100%;
+    height: 100%;
 }
 
 .chat-room .message .txt-box{
