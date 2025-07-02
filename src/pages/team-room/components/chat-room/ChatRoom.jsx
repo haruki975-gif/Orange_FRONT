@@ -8,7 +8,7 @@ import { AlertContext } from "../../../../components/context/AlertContext";
 import axios from "axios";
 import Message from "./components/Message";
 
-const ChatRoom = () => {
+const ChatRoom = () =>{
 
     const {id} = useParams("id");
     const accessToken = sessionStorage.getItem("accessToken");
@@ -28,8 +28,6 @@ const ChatRoom = () => {
 
     const scrollRef = useRef();
 
-    const [openOptionModal, setOpenOptionModal] = useState(false);
-    
     // 메시지 조회 요청 함수
     const findMessages = () =>{
         if(!accessToken){
@@ -80,15 +78,10 @@ const ChatRoom = () => {
         }
     );
 
-    const status = {
-        [WebSocket.CONNECTING]: "연결 중...",
-        [WebSocket.OPEN]: "연결됨",
-        [WebSocket.CLOSING]: "연결 종료 중...",
-        [WebSocket.CLOSED]: "연결 종료됨"
-    }[readyState]
-
     // 메시지 전송
     const sendMessageHandler = () =>{
+
+        console.log(sendMessage);
 
         const sendMessageRequest ={
             content: sendMessage,

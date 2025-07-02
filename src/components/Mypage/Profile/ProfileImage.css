@@ -1,0 +1,108 @@
+/* 프로필 이미지 */
+.profile-container {
+  display: flex;
+  justify-content: center;
+  padding: 30px 0;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 400px;
+}
+
+.title {
+  margin-bottom: 30px;
+  text-align: left;
+  width: 100%;
+}
+
+.profile-image-box {
+  margin-bottom: 20px;
+  margin: auto;
+}
+
+.profile-img {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+.profile-icon {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  object-fit: cover;
+  color: #ccc;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.profile-btn {
+  background-color: #ff9900;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.profile-btn.with-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background-color: #ff9900;
+  color: white;
+  border: none;
+  padding: 10px 38px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.profile-btn.with-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.outline-btn {
+  background-color: white;
+  color: #ff9900;
+  border: 2px solid #ff9900;
+  padding: 8px 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.outline-btn:hover {
+  background-color: #ff8c00;
+  color: white;
+}
+
+.info-msg {
+  color: #ff3333;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+/* 사용자 정보 텍스트 */
+.info-user {
+  margin: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-size: 1.1em;
+  font-weight: bold;
+}
