@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../Member/Form.css";
-import { login } from "./js/authService";
+import { GlobalContext } from "../../context/GlobalContext";
+import axios from "axios";
 
 function Login() {
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { login } = useContext(GlobalContext);
+  const apiUrl = URL_CONFIG.API_URL;
   const navi = useNavigate();
 
   const handleLogin = (e) => {
@@ -21,23 +24,22 @@ function Login() {
     setIsLoading(true);
     setErrorMsg("");
 
-    login(userId, userPw)
-      .then((data) => {
-        //console.log(data);
-        const response = data.items[0];
-
-        sessionStorage.setItem("accessToken", response.accessToken);
-        sessionStorage.setItem("refreshToken", response.refreshToken);
-        sessionStorage.setItem("userNo", response.userNo);
-        sessionStorage.setItem("userId", response.userId);
-        sessionStorage.setItem("userName", response.userName);
-        sessionStorage.setItem("userRole", response.userRole);
+    axios
+      .post(`${apiUrl}/api/auth/tokens`, {
+        userId,
+        userPw,
+      })
+      .then((response) => {
+        const userInfo = response.data.items[0];
+        login(userInfo.accessToken, userInfo.refreshToken,
+              userInfo.userNo, userInfo.userId,
+              userInfo.userName, userInfo.userRole);
 
         // 로그인 상태 변경 이벤트
         window.dispatchEvent(new Event("loginStateChanged"));
-        alert(`${response.userName}님 환영합니다.`);
+        alert(`${userInfo.userName}님 환영합니다.`);
 
-        if (response.userRole === "ADMIN") {
+        if (userInfo.userRole === "ADMIN") {
           navi("/admin");
         } else {
           navi("/");
@@ -60,7 +62,8 @@ function Login() {
       })
       .finally(() => {
         setIsLoading(false);
-      });
+    });
+
   };
 
   return (

@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
-import { AlertContext } from '../../../../components/context/AlertContext';
+
 import axios from "axios";
+import { GlobalContext } from "../../../../components/context/GlobalContext";
 
 const SearchTeamRow = ({team, setUpdateSearchTeamList, findCategoryLabel}) =>{
 
     const apiUrl = URL_CONFIG.API_URL;
-    const { errorAlert, successAlert } = useContext(AlertContext);
+    const { errorAlert, successAlert, auth } = useContext(GlobalContext);
     
     const userNo = sessionStorage.getItem("userNo");
 
@@ -26,9 +27,7 @@ const SearchTeamRow = ({team, setUpdateSearchTeamList, findCategoryLabel}) =>{
     
     const joinRequestHandler = () =>{
 
-        const accessToken = sessionStorage.getItem("accessToken");
-
-        if(!accessToken){
+        if(!auth?.accessToken){
             errorAlert("로그인 후 이용 가능합니다.");
             return;
         }
@@ -39,7 +38,7 @@ const SearchTeamRow = ({team, setUpdateSearchTeamList, findCategoryLabel}) =>{
             },
             {
                 headers : {
-                    Authorization : `Bearer ${accessToken}`,
+                    Authorization : `Bearer ${auth.accessToken}`,
                 }
             }
         ).then((response)=>{

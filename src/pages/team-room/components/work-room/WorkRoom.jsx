@@ -9,9 +9,10 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import UpdateWorkModal from "./components/UpdateWorkModal";
 import DetailWorkModal from "./components/DetailWorkModal";
 import useWebSocket from "react-use-websocket";
-import { AlertContext } from "../../../../components/context/AlertContext";
+
 import { useOutletContext, useParams } from "react-router-dom";
 import axios from "axios";
+import { GlobalContext } from "../../../../components/context/GlobalContext";
 
 
 
@@ -23,14 +24,11 @@ const WorkRoom = () =>{
     const detailModalBackground = useRef();
     const {teamInfo} = useOutletContext();
 
-    const { errorAlert, successAlert } = useContext(AlertContext);
+    const { errorAlert, successAlert, auth } = useContext(GlobalContext);
 
     const {id} = useParams("id");
-    const userNo = sessionStorage.getItem("userNo");
 
-    const accessToken = sessionStorage.getItem("accessToken");
-
-    const wsUrl = URL_CONFIG.WS_URL + "/ws/work/" + id + "?token=" + accessToken;
+    const wsUrl = URL_CONFIG.WS_URL + "/ws/work/" + id + "?token=";
 
     const columnList = [
         {
@@ -68,7 +66,7 @@ const WorkRoom = () =>{
 
     // WebSocket 연결 
     const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-        wsUrl,
+        wsUrl + auth.accessToken,
         {
             onOpen: () => console.log("팀 일정관리방 연결에 성공하였습니다."),
             onClose: () => console.log("팀 일정관리방 연결이 종료되었습니다."),
@@ -77,7 +75,7 @@ const WorkRoom = () =>{
             reconnectInterval: 3000,
             
             onBeforeOpen: (instance) => {
-                if(!accessToken){
+                if(!auth?.accessToken){
                     instance.close();
                     return false;
                 }
@@ -99,7 +97,7 @@ const WorkRoom = () =>{
                         sendJsonMessage={sendJsonMessage}
                         lastJsonMessage={lastJsonMessage}
                         id={id}
-                        userNo={userNo}
+                        userNo={auth?.userNo}
                     />
                 ))}
             </div>
@@ -111,7 +109,7 @@ const WorkRoom = () =>{
                     teamMemberList={teamInfo.teamMemberList}
                     sendJsonMessage={sendJsonMessage}
                     id={id}
-                    userNo={userNo}
+                    userNo={auth?.userNo}
                     />
             }
             {openDetailModal &&

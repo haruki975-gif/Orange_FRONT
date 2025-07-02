@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import SearchTeamRow from "../team-row/searchTeamRow";
 import axios from "axios";
+import { GlobalContext } from "../../../../components/context/GlobalContext";
 
 const SearchTeam = ({updateTeamList, categories, findCategoryLabel}) =>{
 

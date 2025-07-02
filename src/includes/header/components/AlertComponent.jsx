@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { AlertContext } from "../../../components/context/AlertContext";
+import { GlobalContext } from "../../../components/context/GlobalContext";
 
 const AlertComponent = ({setOpenAlertModal, openAlertModal}) =>{
 
     const apiUrl = URL_CONFIG.API_URL;
-    const { errorAlert, successAlert } = useContext(AlertContext);
+    const { errorAlert, successAlert } = useContext(GlobalContext);
 
     const [applicantList, setApplicantList] = useState([]);
     const [updateApplicantList, setUpdateApplicantList] = useState(true);

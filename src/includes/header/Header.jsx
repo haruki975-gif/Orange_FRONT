@@ -1,19 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import AlertComponent from "./components/AlertComponent";
 import axios from "axios";
 import {
   checkAuthStatus,
-  getUserData,
-  logout,
+  getUserData
 } from "../../components/Member/Login/js/authService";
+import { GlobalContext } from "../../components/context/GlobalContext";
 
 const Header = () => {
   const [openAlertModal, setOpenAlertModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [userName, setUserName] = useState("");
+  const { logout, auth } = useContext(GlobalContext);
   const navi = useNavigate();
+  const apiUrl = URL_CONFIG.API_URL;
 
   // 로그인 상태 확인
   const checkLoginStatus = () => {
@@ -31,10 +33,28 @@ const Header = () => {
 
   // 로그아웃 처리
   const handleLogout = () => {
-    logout()
+
+    if (!auth?.accessToken) {
+      clearAuthData();
+      alert("이미 로그인 만료 상태입니다.");
+      navi("/");
+      return;
+    }
+
+      axios
+        .post(
+          `${apiUrl}/api/auth/logout`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${auth.accessToken}`,
+            },
+          }
+        )
       .then(() => {
+        clearAuthData();
         alert("로그아웃 되었습니다.");
-        sessionStorage.clear();
+        logout();
         checkLoginStatus();
         navi("/");
       })

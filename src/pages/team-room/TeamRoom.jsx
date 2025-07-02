@@ -2,7 +2,7 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import "./TeamRoom.css";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { AlertContext } from "../../components/context/AlertContext";
+import { GlobalContext } from "../../components/context/GlobalContext";
 
 const TeamRoom = () =>{
 
@@ -11,7 +11,7 @@ const TeamRoom = () =>{
     const path = String(window.location.href).split("/")
     const currentPath = path[path.length - 1];
     const navi = useNavigate();
-    const { errorAlert, successAlert } = useContext(AlertContext);
+    const { errorAlert, successAlert } = useContext(GlobalContext);
 
     const userNo = sessionStorage.getItem("userNo");
 
