@@ -81,7 +81,7 @@ const CreateTeamModal = ({setOpenModal, modalBackground, setUpdateTeamList, cate
 
     return( 
         <div className="create-team-modal" ref={modalBackground} onClick={(e) => {
-            if(modalBackground.current === e.target)
+            if (modalBackground.current === e.target)
                 closeCreateTeamModal(e);
         }}>
             <form className="container" onSubmit={(e) => {e.preventDefault(); createTeamHandler();}}>

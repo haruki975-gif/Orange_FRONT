@@ -14,22 +14,24 @@ const Side = () =>{
 
 
     const myCalendar = {
-        "main" : 
-                {"name" : "개인 일정 관리", 
-                "icon" : "/img/icon/journal-frame.png"},
-        "subMenu" : [
+        "main":
+        {
+            "name": "개인 일정 관리",
+            "icon": "/img/icon/journal-frame.png"
+        },
+        "subMenu": [
             {
-                "name" : "캘린더", 
-                "icon" : "/img/icon/journal-frame.png",
-                "path" : "/"
+                "name": "캘린더",
+                "icon": "/img/icon/journal-frame.png",
+                "path": "/calendar"
             },
             {
-                "name" : "대시보드", 
-                "icon" : "/img/icon/journal-frame.png",
-                "path" : "/"
+                "name": "대시보드",
+                "icon": "/img/icon/journal-frame.png",
+                "path": "/dashboard"
             }
         ],
-        "path" : null
+        "path": null
     };
 
     const [myTeam, setMyTeam] = useState({
@@ -62,13 +64,14 @@ const Side = () =>{
     }, [accessToken])
 
     const findTeam = {
-        "main" : 
-            {"name" : "팀 찾기", 
-            "icon" : "/img/icon/journal-frame.png"},
-        "subMenu" : [],
-        "path" : "/find-team"
+        "main":
+        {
+            "name": "팀 찾기",
+            "icon": "/img/icon/journal-frame.png"
+        },
+        "subMenu": [],
+        "path": "/find-team"
     };
-
     const challenges = {
         "main" : 
                 {"name" : "챌린지방", 
@@ -76,8 +79,6 @@ const Side = () =>{
         "subMenu" : [],
         "path" : "/challenge/list"
     }
-    
-
     const admin = {
         "main" : 
                 {"name" : "관리자 페이지", 
@@ -115,6 +116,4 @@ const Side = () =>{
         </div>
     )
 }
-
-
 export default Side;
