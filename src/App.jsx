@@ -25,6 +25,7 @@ import { AlertProvider } from "./components/context/AlertContext";
 import Challenge from "./pages/Admin/challenge/Challenge";
 import Log from "./pages/Admin/log/Log";
 import ManageLog from "./pages/Admin/log/ManageLog";
+import FindChallenge from "./pages/challenge/FindChallenge";
 
 
 // 대시보드, 캘린더
@@ -63,13 +64,16 @@ function App() {
             <Route path="work-room" element={<WorkRoom />} />
           </Route>
 
+          {/* challenge */}
+          <Route path="/challenge/:id" element={<FindChallenge />} />
+
           {/* Admin Page */}
             <Route path="/admin/user" element={<User />} />
-            <Route path="/admin/user/list" element={<FindUser />} />
+            <Route path="/admin/user/:id" element={<FindUser />} />
             <Route path="/admin/user/manage" element={<ManageUser />} />
             <Route path="/admin/challenge" element={<Challenge />} />
             <Route path="/admin/log" element={<Log />} />
-            <Route path="/admin/log/list" element={<ManageLog />} />
+            <Route path="/admin/log/:id" element={<ManageLog />} />
           </Routes>
           <ToastContainer
             position="top-right"

@@ -74,6 +74,8 @@
     border: none;
     cursor: pointer;
     transition: transform 0.2s ease;
+    position: relative;
+    top: 0px; 
 }
 
 /* 호버 시 살짝 커짐 */
