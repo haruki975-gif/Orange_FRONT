@@ -2,7 +2,8 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import "./TeamRoom.css";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { AlertContext } from "../../components/context/AlertContext";
+import { GlobalContext } from "../../components/context/GlobalContext";
+import { FaUserCircle } from "react-icons/fa";
 
 const TeamRoom = () =>{
 
@@ -11,15 +12,14 @@ const TeamRoom = () =>{
     const path = String(window.location.href).split("/")
     const currentPath = path[path.length - 1];
     const navi = useNavigate();
-    const { errorAlert, successAlert } = useContext(AlertContext);
-
-    const userNo = sessionStorage.getItem("userNo");
+    const { errorAlert, successAlert, auth } = useContext(GlobalContext);
 
     const {id} = useParams("id");
 
     const [teamInfo, setTeamInfo] = useState();
     const [openOptionModal, setOpenOptionModal] = useState("");
     const [memberString, setMemberString] = useState("");
+    const [updateTeamInfo, setUpdateTeamInfo] = useState(true);
 
     useEffect(()=>{
 
@@ -42,7 +42,7 @@ const TeamRoom = () =>{
         }).catch((error)=>{
             console.log(error);
         })
-    }, [id]);
+    }, [id, updateTeamInfo]);
 
 
     const kickOutTeamMemberHandler = (member) =>{
@@ -64,7 +64,7 @@ const TeamRoom = () =>{
             }
         }).then((response)=>{
             successAlert(response.data.message);
-            
+            setUpdateTeamInfo(prev => !prev);
         }).catch((error)=>{
             errorAlert(error.response.data.message);
         })
@@ -98,12 +98,19 @@ const TeamRoom = () =>{
                             <div className="member-profile" key={member.memberNo}
                                 onClick={() => {setOpenOptionModal(member.memberNo)}} 
                                 onMouseLeave={() => {setOpenOptionModal("")}}>
-                                <img src="/img/icon/person-fill.png" alt="" />
+                                {member.memberProfile ? (
+                                        <img src={member.memberProfile} alt="" />
+                                    ) : (
+                                        <FaUserCircle
+                                            className="profile-icon"
+                                        />
+                                    )
+                                }
                                 {openOptionModal == member.memberNo && 
                                     <div className="option-modal">
                                         <div className="user-name"
                                             >{member.memberName}</div>
-                                        {userNo == teamInfo.teamLeader &&
+                                        {auth.userNo == teamInfo.teamLeader &&
                                             <div className="kick-member"
                                                 onClick={() => kickOutTeamMemberHandler(member)}
                                             >추방하기</div>

@@ -47,7 +47,13 @@ const PasswordForm = () => {
     UserPasswordCheck(userNo, userPassword, token, apiUrl)
       .then(() => {
         // 2단계: 새 비밀번호로 업데이트
-        return updateUserPassword(userNo, newPassword, token, apiUrl);
+        return updateUserPassword(
+          userNo,
+          userPassword,
+          newPassword,
+          token,
+          apiUrl
+        );
       })
       .then((response) => {
         alert("비밀번호가 성공적으로 변경되었습니다. 다시 로그인해주세요.");

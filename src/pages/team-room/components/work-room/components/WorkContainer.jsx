@@ -3,11 +3,12 @@ import WorkCard from "./WorkCard";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { AlertContext } from "../../../../../components/context/AlertContext";
+import { GlobalContext } from "../../../../../components/context/GlobalContext";
+
 
 
 const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, sendJsonMessage, lastJsonMessage, id, userNo}) => {
-    const { errorAlert, successAlert } = useContext(AlertContext); 
+    const { errorAlert } = useContext(GlobalContext); 
     const accessToken = sessionStorage.getItem("accessToken");
     const apiUrl = URL_CONFIG.API_URL;
 

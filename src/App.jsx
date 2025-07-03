@@ -21,7 +21,7 @@ import PasswordForm from "./components/Mypage/Password/PasswordForm";
 import DeleteUser from "./components/Mypage/Delete/DeleteUser";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { AlertProvider } from "./components/context/AlertContext";
+import { GlobalProvider } from "./components/context/GlobalContext";
 import Challenge from "./pages/Admin/challenge/Challenge";
 import Log from "./pages/Admin/log/Log";
 import ManageLog from "./pages/Admin/log/ManageLog";
@@ -36,7 +36,7 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <AlertProvider>
+    <GlobalProvider>
       <main id="main">
         <Header />
         <Side />
@@ -89,7 +89,7 @@ function App() {
             transition={Bounce}
           />
         </main>
-      </AlertProvider>
+      </GlobalProvider>
   )
 }
 

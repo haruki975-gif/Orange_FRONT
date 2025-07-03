@@ -4,20 +4,19 @@ import "./ChatRoom.css";
 import TextareaAutosize from 'react-textarea-autosize';
 import { useOutletContext, useParams } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
-import { AlertContext } from "../../../../components/context/AlertContext";
+
 import axios from "axios";
 import Message from "./components/Message";
+import { GlobalContext } from "../../../../components/context/GlobalContext";
 
 const ChatRoom = () =>{
 
     const {id} = useParams("id");
-    const accessToken = sessionStorage.getItem("accessToken");
-    const userNo = sessionStorage.getItem("userNo");
-    const wsUrl = URL_CONFIG.WS_URL + "/ws/chat/" + id + "?token=" + accessToken;
+    const wsUrl = URL_CONFIG.WS_URL + "/ws/chat/" + id + "?token=";
     const apiUrl = URL_CONFIG.API_URL;
     const {memberString} = useOutletContext();
 
-    const { errorAlert, successAlert } = useContext(AlertContext);
+    const { errorAlert, successAlert, auth } = useContext(GlobalContext);
 
     const [messages, setMessages] = useState([]);
     const lastTimeStampRef = useRef(null);
@@ -30,7 +29,7 @@ const ChatRoom = () =>{
 
     // 메시지 조회 요청 함수
     const findMessages = () =>{
-        if(!accessToken){
+        if(!auth?.accessToken){
             return;
         }
 
@@ -38,7 +37,7 @@ const ChatRoom = () =>{
 
         axios.get(`${apiUrl}/api/chat?teamId=${id}&lastTimeStamp=${lastTimeStampRef.current || null}`,{
             headers : {
-                Authorization : `Bearer ${accessToken}`,
+                Authorization : `Bearer ${auth.accessToken}`,
             }
         }).then((response)=>{
             console.log(response.data.items[0]?.sentDate);
@@ -59,16 +58,16 @@ const ChatRoom = () =>{
 
     // WebSocket 연결 
     const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-        wsUrl,
+        wsUrl + auth.accessToken,
         {
-            onOpen: () => successAlert("채팅방 연결에 성공하였습니다."),
+            onOpen: () => console.log("채팅방 연결에 성공하였습니다."),
             onClose: () => console.log("채팅방 연결이 종료되었습니다."),
             shouldReconnect: (closeEvent) => true,
             reconnectAttempts: 3,
             reconnectInterval: 3000,
             
             onBeforeOpen: (instance) => {
-                if(!accessToken){
+                if(!auth?.accessToken){
                     instance.close();
                     return false;
                 }
@@ -86,7 +85,7 @@ const ChatRoom = () =>{
         const sendMessageRequest ={
             content: sendMessage,
             teamId: id,
-            senderNo: userNo,
+            senderNo: auth.userNo,
             type: "send" 
         }
 
@@ -129,7 +128,7 @@ const ChatRoom = () =>{
                 );
                 break;
             default :
-                if(lastJsonMessage.senderNo == userNo){
+                if(lastJsonMessage.senderNo == auth.userNo){
                     errorAlert(lastJsonMessage.type);
                 }
                 break;
@@ -179,7 +178,7 @@ const ChatRoom = () =>{
         <div className="chat-room" ref={scrollRef}>
             {messages.map(message => (
                 <Message message={message} 
-                    id={id} userNo={userNo} 
+                    id={id} userNo={auth.userNo} 
                     sendJsonMessage={sendJsonMessage} />
             ))}
             <form className="input-message">

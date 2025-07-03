@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Menu from "./components/menu/Menu";
 import Tab from "./components/tab/Tab";
 import "./side.css";
 import axios from "axios";
+import { GlobalContext } from "../../components/context/GlobalContext";
 
 
 
 const Side = () =>{
 
-    const accessToken = sessionStorage.getItem("accessToken");
+    const { auth } = useContext(GlobalContext);
 
     const apiUrl = URL_CONFIG.API_URL;
 
@@ -45,13 +46,13 @@ const Side = () =>{
 
     useEffect(()=>{
 
-        if(!accessToken){
+        if(!auth?.accessToken){
             return;
         }
 
         axios.get(`${apiUrl}/api/teams/my-team`,{
             headers : {
-                Authorization : `Bearer ${accessToken}`,
+                Authorization : `Bearer ${auth.accessToken}`,
             }
         }).then((response)=>{
             setMyTeam(prev => ({
@@ -61,7 +62,7 @@ const Side = () =>{
         }).catch((error)=>{
             console.log(error);
         })
-    }, [accessToken])
+    }, [auth?.accessToken])
 
     const findTeam = {
         "main":

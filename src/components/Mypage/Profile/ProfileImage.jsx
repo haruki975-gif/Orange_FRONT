@@ -3,17 +3,14 @@ import { useEffect, useState } from "react";
 import { getProfileImage } from "./js/getProfileImage";
 import { deleteProfileImage } from "./js/deleteProfileImage";
 import { updateProfileImage } from "./js/updateProfileImage";
-import { uploadProfileImage } from "./js/uploadProfileImage";
-import "../../Member/Form.css";
-import "./profileImage.css";
 import { FaUserCircle, FaCamera } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import "../../Member/Form.css";
+import "./profileImage.css";
 
 const ProfileImage = () => {
   const token = sessionStorage.getItem("accessToken");
   const userNo = sessionStorage.getItem("userNo");
-  const userId = sessionStorage.getItem("userId");
-  const userName = sessionStorage.getItem("userName");
   const navi = useNavigate();
   const apiUrl = URL_CONFIG.API_URL;
 
@@ -28,12 +25,12 @@ const ProfileImage = () => {
   /* 프로필 이미지 조회 */
   useEffect(() => {
     getProfileImage(userNo, token, apiUrl)
-      .then((response) => {
-        const url = response.data.items?.[0]?.profileUrl;
+      .then((url) => {
         if (url) {
-          setProfileImage(url); // 등록된 이미지가 있는 경우
+          setProfileImage(url);
         } else {
-          setProfileImage(null); // 없으면 기본 이미지 보여주기
+          setProfileImage(null);
+          setMessage("등록된 프로필 이미지가 없습니다.");
         }
       })
       .catch((error) => {
@@ -42,18 +39,7 @@ const ProfileImage = () => {
       });
   }, []);
 
-  const handleUpload = (e) => {
-    uploadProfileImage(userNo, formData, token, apiUrl)
-      .then((response) => {
-        setMessage("프로필 이미지가 등록되었습니다.");
-        // setProfileImage(...); 필요 시 상태 갱신
-      })
-      .catch((error) => {
-        console.error("이미지 등록 실패", error);
-        setMessage("이미지 등록에 실패했습니다.");
-      });
-  };
-
+  /* 이미지 선택 */
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -71,7 +57,7 @@ const ProfileImage = () => {
     }
   };
 
-  /* 변경하기 버튼 */
+  /* 변경하기 */
   const handleUpdate = () => {
     if (!selectedFile) {
       setMessage("변경할 이미지를 선택해주세요.");
@@ -79,14 +65,22 @@ const ProfileImage = () => {
     }
 
     const formData = new FormData();
-    formData.append("profileImage", selectedFile);
+    formData.append("file", selectedFile);
 
     updateProfileImage(userNo, formData, token, apiUrl)
       .then((response) => {
         alert("프로필 이미지가 성공적으로 변경되었습니다.");
         setPreviewUrl(null);
         setSelectedFile(null);
-        setProfileImage(response.data.items?.[0]?.profileUrl || "");
+
+        // 변경된 이미지 다시 불러오기
+        const updateUrl = response.data.items?.[0]; // 백엔드가 url을 줄 경우
+        if (updateUrl) {
+          setProfileImage(updateUrl);
+        } else {
+          // 재조회
+          setProfileImage(profileImage + "?" + Date.now()); // 캐싱 방지용
+        }
       })
       .catch((error) => {
         console.error("이미지 변경 실패", error);
@@ -94,7 +88,7 @@ const ProfileImage = () => {
       });
   };
 
-  /* 삭제하기 버튼 */
+  /* 삭제하기 */
   const handleDelete = () => {
     if (!window.confirm("정말 이미지를 삭제하시겠습니까?")) return;
 
@@ -104,6 +98,17 @@ const ProfileImage = () => {
         setProfileImage(null);
         setPreviewUrl(null);
         setSelectedFile(null);
+
+        // 삭제 후 재조회로 UI 반영 보장
+        setTimeout(() => {
+          getProfileImage(userNo, token, apiUrl).then((url) => {
+            if (url) {
+              setProfileImage(`${url}?t=${Date.now()}`);
+            } else {
+              setProfileImage(null);
+            }
+          });
+        }, 300);
       })
       .catch((error) => {
         console.error("이미지 삭제 실패", error);
@@ -127,13 +132,6 @@ const ProfileImage = () => {
           ) : (
             <FaUserCircle className="profile-icon" />
           )}
-        </div>
-
-        {/* 유저 정보 */}
-        <div className="info-user">
-          <p>
-            {userName}({userId})
-          </p>
         </div>
 
         {/* 파일 업로드 */}
