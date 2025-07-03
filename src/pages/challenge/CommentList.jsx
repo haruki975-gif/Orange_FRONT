@@ -14,34 +14,34 @@ const CommentList = ({ comments = [], onDelete, onEdit }) => {
     return (
         <div className="comment-list">
             {comments.map((comment) => (
-                <div key={comment.id} className="comment-item">
-                    {editId === comment.id ? (
+                <div key={comment.commentNo} className="comment-item">
+                    {editId === comment.commentNo ? (
                         <>
                             <textarea
                                 value={editContent}
                                 onChange={(e) => setEditContent(e.target.value)}
                             />
                             <div className="comment-actions">
-                                <button onClick={() => handleEditSave(comment.id)}>저장</button>
+                                <button onClick={() => handleEditSave(comment.commentNo)}>저장</button>
                                 <button onClick={() => setEditId(null)}>취소</button>
                             </div>
                         </>
                     ) : (
                         <>
-                            <p>{comment.content}</p>
-                            {comment.imageUrl && (
-                                <img src={comment.imageUrl} alt="첨부 이미지" />
+                            <p>{comment.commentContent}</p>
+                            {comment.commentFileUrl && (
+                                <img src={comment.commentFileUrl} alt="첨부 이미지" />
                             )}
                             <div className="comment-actions">
                                 <button
                                     onClick={() => {
-                                        setEditId(comment.id);
-                                        setEditContent(comment.content);
+                                        setEditId(comment.commentNo);
+                                        setEditContent(comment.commentContent);
                                     }}
                                 >
                                     수정
                                 </button>
-                                <button onClick={() => onDelete(comment.id)}>삭제</button>
+                                <button onClick={() => onDelete(comment.commentNo)}>삭제</button>
                             </div>
                         </>
                     )}

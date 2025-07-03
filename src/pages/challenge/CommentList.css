@@ -1,32 +1,23 @@
-.comment-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.comment-item textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: vertical;
 }
 
-.comment-item {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fafafa;
-    position: relative;
+.comment-actions button:hover {
+    background-color: #e0e0e0;
+    border-radius: 4px;
+}
+
+.comment-item p {
+    word-break: break-word;
 }
 
 .comment-item img {
-    margin-top: 8px;
-    max-width: 100%;
-    height: auto;
-    border-radius: 5px;
-}
-
-.comment-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.comment-actions button {
-    padding: 4px 8px;
-    font-size: 0.9rem;
-    cursor: pointer;
+    max-height: 300px;
+    object-fit: contain;
 }

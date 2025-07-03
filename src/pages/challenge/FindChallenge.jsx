@@ -17,10 +17,20 @@ const FindChallenge = () => {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        axios.get(`${apiURL}/api/challenge?page=${currentPage}`)
+        const accessToken = sessionStorage.getItem("accessToken");
+
+        if(!accessToken){
+            return;
+        }
+
+        axios.get(`${apiURL}/api/challenge?page=${currentPage}`,{
+             headers : {
+                Authorization : `Bearer ${accessToken}`,
+            }
+        })
             .then(res => {
-                console.log("게시글 응답:", res.data);
-                setPosts(res.data.posts || []);
+                console.log("게시글 응답:", [...res.data]);
+                setPosts([...res.data] || []);
                 setTotalPages(res.data.totalPages || 1);
             })
             .catch(err => {
@@ -30,10 +40,10 @@ const FindChallenge = () => {
     }, [currentPage]);
 
     const loadComments = (postId) => {
-        axios.get(`${apiURL}/api/comments?postId=${postId}`)
+        axios.get(`${apiURL}/api/challenge/comment?postId=${postId}`)
             .then(res => {
-                console.log("댓글 응답:", res.data);
-                setComments(Array.isArray(res.data) ? res.data : (res.data.comments || []));
+                console.log("댓글 응답:", [...res.data]);
+                setComments(Array.isArray(res.data) ? [...res.data] : (res.data.comments || []));
             })
             .catch((err) => {
                 console.error("댓글 로딩 실패", err);
@@ -43,13 +53,13 @@ const FindChallenge = () => {
 
     const handlePostClick = (post) => {
         setSelectedPost(post);
-        loadComments(post.id);
+        loadComments(post.challengeNo);
     };
 
     const handleCommentDelete = (commentId) => {
         toast.promise(
             axios.delete(`${apiURL}/api/challenge/comment/${commentId}`).then(() => {
-                loadComments(selectedPost.id);
+                loadComments(selectedPost.challengeNo);
             }),
             {
                 pending: "댓글 삭제 중...",
@@ -62,7 +72,7 @@ const FindChallenge = () => {
     const handleCommentEdit = (commentId, newContent) => {
         toast.promise(
             axios.patch(`${apiURL}/api/challenge/comment/${commentId}`, { content: newContent }).then(() => {
-                loadComments(selectedPost.id);
+                loadComments(selectedPost.challengeNo);
             }),
             {
                 pending: "댓글 수정 중...",
@@ -86,14 +96,14 @@ const FindChallenge = () => {
                 <tbody>
                     {posts.map((post, idx) => (
                         <tr
-                            key={post.id}
+                            key={post.challengeNo}
                             onClick={() => handlePostClick(post)}
-                            className={selectedPost?.id === post.id ? "selected" : ""}
+                            className={selectedPost?.challengeNo === post.challengeNo ? "selected" : ""}
                         >
                             <td>{(totalPages - currentPage) * posts.length + (idx + 1)}</td>
-                            <td className="title">{post.title}</td>
-                            <td>{post.author}</td>
-                            <td>{post.createdAt}</td>
+                            <td className="title">{post.challengeTitle}</td>
+                            <td>{post.challengeAuthor}</td>
+                            <td>{post.challengeDate}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -107,12 +117,12 @@ const FindChallenge = () => {
 
             {selectedPost && (
                 <div className="challenge-detail">
-                    <h2>{selectedPost.title}</h2>
-                    <p>{selectedPost.content}</p>
+                    <h2>{selectedPost.challengeTitle}</h2>
+                    <p>{selectedPost.challengeContent}</p>
                     {isLoggedIn ? (
                         <AddChallengeComment
-                            postId={selectedPost.id}
-                            onCommentAdded={() => loadComments(selectedPost.id)}
+                            postId={selectedPost.challengeNo}
+                            onCommentAdded={() => loadComments(selectedPost.challengeNo)}
                         />
                     ) : (
                         <p className="login-required">댓글 작성은 로그인 후 가능합니다.</p>

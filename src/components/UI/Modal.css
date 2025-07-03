@@ -29,14 +29,12 @@
     margin-bottom: 44px;
 }
 
-/* 모든 입력 블록에 공통 적용 */
 .modal-container .field-block {
     margin-bottom: 30px;
     display: flex;
     flex-direction: column;
 }
 
-/* 기존 name, content 클래스 이름 대체용 */
 .modal-container .field-block label {
     font-size: 18px;
     font-weight: 400;
@@ -61,7 +59,33 @@
     height: 300px;
 }
 
-/* 버튼 공통 스타일 */
+/* ✅ 첨부파일 입력 스타일 */
+.modal-container input[type="file"] {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    border: 1px solid #BCBCBC;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.modal-container input[type="file"]::file-selector-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #d0eaff;
+    font-weight: 500;
+    color: #333;
+    margin-right: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.modal-container input[type="file"]::file-selector-button:hover {
+    background-color: #b5ddff;
+}
+
 .modal-container .submit-btn {
     margin-top: 10px;
     align-self: flex-end;
@@ -75,15 +99,13 @@
     cursor: pointer;
     transition: transform 0.2s ease;
     position: relative;
-    top: 0px; 
+    top: 0px;
 }
 
-/* 호버 시 살짝 커짐 */
 .modal-container .submit-btn:hover {
     transform: scale(1.05);
 }
 
-/* 닫기 버튼 */
 .close-btn {
     position: absolute;
     top: 80px;
@@ -99,4 +121,38 @@
     font-size: 16px;
     font-weight: bold;
     border: none;
+}
+
+/* ✅ 반응형 대응 (모바일, 태블릿) */
+@media screen and (max-width: 768px) {
+    .modal-container {
+        width: 90%;
+        padding: 30px 20px;
+        border-radius: 20px;
+    }
+
+    .modal-container .title {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+
+    .modal-container input[type="text"],
+    .modal-container textarea,
+    .modal-container input[type="file"] {
+        font-size: 14px;
+        padding: 8px 14px;
+    }
+
+    .modal-container .submit-btn {
+        font-size: 16px;
+        padding: 6px 20px;
+    }
+
+    .close-btn {
+        top: 20px;
+        right: 20px;
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
 }

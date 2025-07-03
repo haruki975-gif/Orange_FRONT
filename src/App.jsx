@@ -68,13 +68,13 @@ function App() {
           <Route path="/challenge/:id" element={<FindChallenge />} />
 
           {/* Admin Page */}
-            <Route path="/admin/user" element={<User />} />
-            <Route path="/admin/user/:id" element={<FindUser />} />
-            <Route path="/admin/user/manage" element={<ManageUser />} />
-            <Route path="/admin/challenge" element={<Challenge />} />
-            <Route path="/admin/log" element={<Log />} />
-            <Route path="/admin/log/:id" element={<ManageLog />} />
-          </Routes>
+          <Route path="/admin/user" element={<User />} />
+          <Route path="/admin/user/:id" element={<FindUser />} />
+          <Route path="/admin/user/manage" element={<ManageUser />} />
+          <Route path="/admin/challenge" element={<Challenge />} />
+          <Route path="/admin/log" element={<Log />} />
+          <Route path="/admin/log/:id" element={<ManageLog />} />
+        </Routes>
           <ToastContainer
             position="top-right"
             autoClose={5000}
