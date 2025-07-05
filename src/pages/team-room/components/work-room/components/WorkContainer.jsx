@@ -51,6 +51,8 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
 
     useEffect(()=>{
 
+        console.log(lastJsonMessage);
+
         if(!lastJsonMessage){
             return;
         }
