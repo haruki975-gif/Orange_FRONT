@@ -32,8 +32,13 @@
     align-items: center;
     cursor: pointer;
 }
+#side .menu.active{
+    background-color: #091e422e;
+}
 #side .menu .icon{
     margin-right: 8px;
+    width: 20px;
+    height: 20px;
 }
 #side .sub-menus .menu .menu-name{
     font-weight: 400;

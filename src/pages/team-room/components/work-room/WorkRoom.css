@@ -317,4 +317,14 @@
     color: white;
 }
 
+#team-room .work-card .profile-icon{
+    height: 24px;
+}
 
+#team-room .profile-list .profile-icon{
+    height: 30px;
+}
+
+#team-room .message .profile-icon{
+    height: 44px;
+}

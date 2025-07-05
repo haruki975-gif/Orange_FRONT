@@ -7,15 +7,18 @@ const Tab = (props) => {
     const tab = useRef();
     const menu = props.menu.main;
     const subMenu = props.menu.subMenu;
-    const path = props.menu.path;
+    let path = props.menu.path;
     const [openTab, setOpenTab] = useState(false);
+
     const openTabHandler = () => {
         setOpenTab(!openTab);
         navi(path)
     }
+    
+    
     return (
         <div className="tab">
-            <Menu name={menu.name} icon={menu.icon} onClick={openTabHandler} />
+            <Menu name={menu.name} icon={menu.icon} onClick={openTabHandler} path={path} />
             <div className={`sub-menus ${openTab ? 'active' : ''}`}>
                 {subMenu && subMenu.map((menu, index) => (
                     <SubMenu key={index} menu={menu} name={menu.name ? menu.name : menu.title} icon={menu.icon} path={menu.path}/>

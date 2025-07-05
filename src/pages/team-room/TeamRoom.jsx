@@ -9,7 +9,7 @@ const TeamRoom = () =>{
 
     const apiUrl = URL_CONFIG.API_URL;
 
-    const path = String(window.location.href).split("/")
+    const path = String(window.location.href).split("/");
     const currentPath = path[path.length - 1];
     const navi = useNavigate();
     const { errorAlert, successAlert, auth } = useContext(GlobalContext);
