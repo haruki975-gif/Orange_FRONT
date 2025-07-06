@@ -85,7 +85,7 @@ const Header = () => {
         sessionStorage.clear();
         alert("로그아웃 되었습니다.");
         checkLoginStatus();
-        navigate("/");
+        navi("/");
       });
   };
 

@@ -3,6 +3,7 @@ import './EventDetailModal.css';
 
 const EventDetailModal = ({ event, onClose, onUpdate, onDelete }) => {
 
+    // ✅ 일정 입력 데이터 상태 관리
     const [formData, setFormData] = useState({
         title: '',
         content: '',
@@ -10,21 +11,24 @@ const EventDetailModal = ({ event, onClose, onUpdate, onDelete }) => {
         dueDate: '',
     });
 
+    // ✅ 메뉴 드롭다운 상태
     const [modalDropDown, setModalDropDown] = useState(false);
 
+    // ✅ 드롭다운 외부 클릭 감지용 ref
     const ref = useRef(null);
 
     const toggleDropdown = () => {
         setModalDropDown(!modalDropDown);
     };
 
+    // ✅ 기한 초과 여부 판단
     const isPastDue = (date) => {
         if (!date) return false;
         const today = new Date().toISOString().split('T')[0];
         return date < today;
     };
 
-
+    // ✅ 드롭다운 외부 클릭 시 닫기
     useEffect(() => {
         const handleClickOutSide = (event) => {
             if (ref.current && !ref.current.contains(event.target)) {
@@ -38,9 +42,9 @@ const EventDetailModal = ({ event, onClose, onUpdate, onDelete }) => {
         };
     }, [ref]);
 
+    // ✅ 모달이 열릴 때 기존 일정 데이터 설정
     useEffect(() => {
         if (event) {
-            console.log('받은 event 객체:', event); // 디버깅용
             setFormData({
                 title: event.title || '',
                 content: event.content || '',
@@ -50,44 +54,35 @@ const EventDetailModal = ({ event, onClose, onUpdate, onDelete }) => {
         }
     }, [event]);
 
+    // ✅ 입력 필드 변경 처리
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        console.log(`Input 변경: ${name} = ${value}`); // 디버깅용
-
-        setFormData(prev => {
-            const updated = {
-                ...prev,
-                [name]: value
-            };
-            console.log('업데이트된 formData:', updated); // 디버깅용
-            return updated;
-        });
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    // ✅ 저장(수정) 버튼 클릭 시 호출
     const handleSubmit = (e) => {
         e.preventDefault();
         const submitData = {
             ...event,
             ...formData,
         };
-        console.log('제출할 데이터:', submitData); // 디버깅용
         onUpdate(submitData);
     };
 
+    // ✅ 삭제 버튼 클릭 시 호출
     const handleDelete = () => {
         if (window.confirm('일정을 삭제하시겠습니까?')) {
             onDelete(event.id);
         }
     };
 
-
-
-
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div className="event-modal-content" onClick={(e) => e.stopPropagation()}>
                 <form onSubmit={handleSubmit} className="event-form">
                     <div className='modalHeaderGroup'>
+                        {/* ✅ 제목 입력 */}
                         <div className="form-group">
                             <input
                                 type="text"
@@ -99,26 +94,28 @@ const EventDetailModal = ({ event, onClose, onUpdate, onDelete }) => {
                                 required
                             />
                         </div>
+
+                        {/* ✅ 드롭다운 메뉴 및 닫기 버튼 */}
                         <div className="modal-actions" ref={ref}>
-                            <button type="button" className="menu-button" onClick={toggleDropdown} >⋯</button>
+                            <button type="button" className="menu-button" onClick={toggleDropdown}>⋯</button>
                             {modalDropDown && (
-                                <ul className='modalDropDownWrap' >
+                                <ul className='modalDropDownWrap'>
                                     <li className='dropDownMenu'>이동</li>
                                     <li className='dropDownMenu' onClick={handleDelete}>삭제</li>
                                 </ul>
                             )}
-
                             <button type="button" className="close-button" onClick={onClose}>×</button>
                         </div>
                     </div>
 
+                    {/* ✅ 날짜 입력 필드 */}
                     <div className="form-row">
                         <div className="form-group">
                             <label>시작 날짜</label>
                             <input
                                 type="date"
                                 name="startDate"
-                                value={formData.startDate || ''}
+                                value={formData.startDate}
                                 onChange={handleInputChange}
                                 className="date-input"
                                 required
@@ -140,10 +137,12 @@ const EventDetailModal = ({ event, onClose, onUpdate, onDelete }) => {
                         </div>
                     </div>
 
+                    {/* ✅ 설명 입력 필드 */}
                     <div className="form-group">
                         <label className='content-title'>설명</label>
                         <textarea
                             name="content"
+                            value={formData.content}
                             onChange={handleInputChange}
                             placeholder="일정 내용(최대 1000자)"
                             className="description-textarea"
@@ -153,10 +152,9 @@ const EventDetailModal = ({ event, onClose, onUpdate, onDelete }) => {
                         />
                     </div>
 
+                    {/* ✅ 저장 버튼 */}
                     <div className="form-actions">
-                        <button type="submit" className="save-btn">
-                            저장
-                        </button>
+                        <button type="submit" className="save-btn">저장</button>
                     </div>
                 </form>
             </div>
