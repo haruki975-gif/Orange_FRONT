@@ -8,7 +8,7 @@ import { GlobalContext } from "../../../../../components/context/GlobalContext";
 
 
 const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, sendJsonMessage, lastJsonMessage, id, userNo}) => {
-    const { errorAlert } = useContext(GlobalContext); 
+    const { auth, errorAlert } = useContext(GlobalContext); 
     const accessToken = sessionStorage.getItem("accessToken");
     const apiUrl = URL_CONFIG.API_URL;
 
@@ -36,22 +36,28 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
 
 
     useEffect(()=>{
+        if(!auth?.accessToken){
+            return;
+        }
+
         axios.get(`${apiUrl}/api/works?teamId=${id}&status=${column.columnValue}`,
             {
                 headers : {
-                    Authorization : `Bearer ${accessToken}`,
+                    Authorization : `Bearer ${auth.accessToken}`,
                 }
             }
         ).then((response)=>{
             setWorkList(response.data.items);
+
+            if(column.columnValue == "done"){
+                console.log(response.data.items);
+            }
         }).catch((error)=>{
             console.log(error);
         })
-    }, [id]);
+    }, [id, auth]);
 
     useEffect(()=>{
-
-        console.log(lastJsonMessage);
 
         if(!lastJsonMessage){
             return;

@@ -49,6 +49,10 @@
     font-weight: 400;
     margin-bottom: 14px;
 }
+.work-room .left{
+    display: flex;
+    align-items: center;
+}
 .work-room .assignee-info{
     display: flex;
     align-items: center;
@@ -73,10 +77,17 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    margin-right: 4px;
 }
 .work-room .assignee-info .assignee-profile > img{
     width: 100%;
     height: 100%;
+}
+#team-room .work-room .day{
+    margin-left: auto;
+    font-size: 13px;
+    font-weight: 400;
+    color: #000000;
 }
 #team-room .work-room .options-btn{
     position: absolute;

@@ -36,7 +36,7 @@ const SearchTeam = ({updateTeamList, categories, findCategoryLabel}) =>{
             const items = response.data.items;
             
             setTeamList(prev => [...prev, ...items]);
-            setLastTimeStamp(items[items.length - 1].currentDate);
+            setLastTimeStamp(items[items.length - 1].createdAt);
         }).catch((error)=>{
             console.log(error);
         })
@@ -77,7 +77,7 @@ const SearchTeam = ({updateTeamList, categories, findCategoryLabel}) =>{
             const items = response.data.items;
 
             setTeamList(items);
-            setLastTimeStamp(items[items.length - 1].currentDate);
+            setLastTimeStamp(items[items.length - 1].createdAt);
         }).catch((error)=>{
             console.log(error);
         })

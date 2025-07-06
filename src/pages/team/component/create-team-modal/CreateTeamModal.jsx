@@ -59,8 +59,9 @@ const CreateTeamModal = ({setOpenModal, modalBackground, setUpdateTeamList, cate
             return;
         }
 
-            if(title.trim() === "" || content.trim() === "" || chooseCategory.trim() === ""){
+            if(title.trim() === "" || chooseCategory.trim() === ""){
                 errorAlert("모든 정보를 기입 해야합니다.");
+                return;
             }
 
             axios.post(`${apiUrl}/api/teams`, {
