@@ -111,7 +111,9 @@ const Side = () =>{
                 <Tab menu={myTeam}/>
                 <Tab menu={findTeam}/>
                 <Tab menu={challenges}/>
-                <Tab menu={admin}/>
+
+                {/* ✅ 관리자일 때만 관리자 탭 렌더링 */}
+                {auth?.accessToken && auth.userRole === "ROLE_ADMIN" && <Tab menu={admin} />}
 
             </div>
         </div>

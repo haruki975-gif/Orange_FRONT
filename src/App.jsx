@@ -26,6 +26,7 @@ import Challenge from "./pages/Admin/challenge/Challenge";
 import Log from "./pages/Admin/log/Log";
 import ManageLog from "./pages/Admin/log/ManageLog";
 import FindChallenge from "./pages/challenge/FindChallenge";
+import AdminRoute from "./pages/Admin/AdminRoute";
 
 
 // 대시보드, 캘린더
@@ -68,13 +69,56 @@ function App() {
           <Route path="/challenge/:id" element={<FindChallenge />} />
 
           {/* Admin Page */}
-          <Route path="/admin/user" element={<User />} />
-          <Route path="/admin/user/:id" element={<FindUser />} />
-          <Route path="/admin/user/manage" element={<ManageUser />} />
-          <Route path="/admin/challenge" element={<Challenge />} />
-          <Route path="/admin/log" element={<Log />} />
-          <Route path="/admin/log/:id" element={<ManageLog />} />
+          <Route
+            path="/admin/user"
+            element={
+              <AdminRoute>
+                <User />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/user/:id"
+            element={
+              <AdminRoute>
+                <FindUser />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/user/manage"
+            element={
+              <AdminRoute>
+                <ManageUser />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/challenge"
+            element={
+              <AdminRoute>
+                <Challenge />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/log"
+            element={
+              <AdminRoute>
+                <Log />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/log/:id"
+            element={
+              <AdminRoute>
+                <ManageLog />
+              </AdminRoute>
+            }
+          />
         </Routes>
+
           <ToastContainer
             position="top-right"
             autoClose={5000}

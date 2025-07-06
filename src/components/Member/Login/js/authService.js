@@ -16,6 +16,18 @@ export const login = (userId, userPw) => {
       userPw,
     })
     .then((response) => {
+      const { accessToken, refreshToken, userNo, userId, userName, role } = response.data;
+
+      // 세션에 사용자 정보 저장
+      sessionStorage.setItem("accessToken", accessToken);
+      sessionStorage.setItem("refreshToken", refreshToken);
+      sessionStorage.setItem("userNo", userNo);
+      sessionStorage.setItem("userId", userId);
+      sessionStorage.setItem("userName", userName);
+      sessionStorage.setItem("userRole", role);
+
+      window.dispatchEvent(new Event("loginStateChanged")); // 리렌더링 유도용 이벤트
+      
       console.log(response);
       return response.data;
     })
