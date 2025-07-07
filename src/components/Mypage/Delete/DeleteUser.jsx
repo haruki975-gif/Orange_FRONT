@@ -1,8 +1,11 @@
 import axios from "axios";
 import "../../Member/Form.css";
 import { useNavigate } from "react-router-dom";
+import { GlobalContext } from "../../context/GlobalContext";
+import { useContext } from "react";
 
 const DeleteUser = () => {
+  const { auth } = useContext(GlobalContext);
   const apiUrl = URL_CONFIG.API_URL;
   const navi = useNavigate();
 
@@ -10,27 +13,23 @@ const DeleteUser = () => {
     const confirmed = window.confirm("정말 탈퇴하시겠습니까?");
     if (!confirmed) return;
 
-    const token = sessionStorage.getItem("accessToken");
-    const userNo = sessionStorage.getItem("userNo");
-
-    if (!token) {
+    if (!auth.accessToken) {
       alert("로그인이 필요합니다.");
       return;
     }
 
     axios
-      .delete(`${apiUrl}/api/members/${userNo}`, {
+      .delete(`${apiUrl}/api/members/${auth.userNo}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${auth.accessToken}`,
         },
       })
-      .then((response) => {
+      .then(() => {
         alert("회원 탈퇴가 완료되었습니다.");
         sessionStorage.clear();
         window.location.replace("/");
       })
-      .catch((error) => {
-        console.log("회원 탈퇴 실패", error);
+      .catch(() => {
         alert("회원 탈퇴 중 오류가 발생했습니다.");
       });
   };

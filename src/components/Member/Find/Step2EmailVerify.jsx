@@ -48,7 +48,7 @@ const Step2EmailVerify = ({
         startTimer(); // 타이머 시작
         alert("인증번호가 전송되었습니다.");
       })
-      .catch((error) => {
+      .catch(() => {
         setErrorMsg("인증번호 전송에 실패했습니다.");
       });
   };

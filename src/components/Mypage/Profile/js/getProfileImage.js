@@ -1,5 +1,4 @@
 // 이미지 조회
-
 import axios from "axios";
 
 export const getProfileImage = (userNo, token, apiUrl) => {
@@ -10,8 +9,7 @@ export const getProfileImage = (userNo, token, apiUrl) => {
       },
     })
     .then((response) => response.data.items?.[0])
-    .catch((error) => {
-      console.error("프로필 이미지 조회 실패:", error);
+    .catch(() => {
       return null;
     });
 };

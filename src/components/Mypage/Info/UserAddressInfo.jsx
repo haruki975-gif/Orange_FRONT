@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import OpenPostcode from "../../Member/Signup/OpenPostcode";
 import axios from "axios";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const UserAddressInfo = ({ formData, setFormData, setValidationErrors }) => {
   const [showPostcode, setShowPostcode] = useState(false);
   const [localAddress1, setLocalAddress1] = useState("");
   const [localAddress2, setLocalAddress2] = useState("");
-  const userNo = sessionStorage.getItem("userNo");
-  const token = sessionStorage.getItem("accessToken");
+  const { auth } = useContext(GlobalContext);
   const apiUrl = URL_CONFIG.API_URL;
 
   // 주소 조회
   useEffect(() => {
+    if (!auth.userNo || !auth.accessToken) return;
+
     axios
-      .get(`${apiUrl}/api/info/address/${userNo}`, {
+      .get(`${apiUrl}/api/info/address/${auth.userNo}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${auth.accessToken}`,
         },
       })
       .then((response) => {
-        //console.log(response.data);
         const item = response.data.items[0];
         const addr1 = item?.userAddress1 || "";
         const addr2 = item?.userAddress2 || "";
@@ -38,7 +39,7 @@ const UserAddressInfo = ({ formData, setFormData, setValidationErrors }) => {
           userAddress1: "주소 조회에 실패했습니다.",
         }));
       });
-  }, [userNo]);
+  }, [auth.userNo, auth.accessToken]);
 
   const handleAddressComplete = (address) => {
     setLocalAddress1(address);

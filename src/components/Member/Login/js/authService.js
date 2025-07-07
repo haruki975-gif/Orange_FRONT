@@ -16,7 +16,7 @@ export const login = (userId, userPw) => {
       userPw,
     })
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       return response.data;
     })
     .catch((error) => {
@@ -91,10 +91,8 @@ export const refreshToken = () => {
       // 새 토큰 세션에 저장
       const { accessToken, refreshToken: newRefreshToken } = response.data;
       sessionStorage.setItem("accessToken", accessToken);
+      sessionStorage.setItem("refreshToken", newRefreshToken);
 
-      if (!refreshToken) {
-        sessionStorage.setItem("refreshToken", newRefreshToken);
-      }
       return response.data;
     })
     .catch((error) => {
