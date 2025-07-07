@@ -20,7 +20,7 @@ const SearchTeam = ({updateTeamList, categories, findCategoryLabel}) =>{
 
 
 
-    const getTeamList = (lastTimeStamp) =>{
+    const getTeamList = () =>{
 
         let userNo = auth?.userNo;
 
@@ -30,9 +30,10 @@ const SearchTeam = ({updateTeamList, categories, findCategoryLabel}) =>{
 
         axios.get(`${apiUrl}/api/teams?category=${chooseCategory}&userNo=${userNo}&lastTimeStamp=${lastTimeStamp}`
         ).then((response)=>{
+            const items = response.data.items;
             
-            setTeamList([...teamList, ...response.data.items]);
-            setLastTimeStamp(response.data.items.pop().currentDate);
+            setTeamList(prev => [...prev, ...items]);
+            setLastTimeStamp(items[items.length - 1].createdAt);
         }).catch((error)=>{
             console.log(error);
         })
@@ -50,13 +51,13 @@ const SearchTeam = ({updateTeamList, categories, findCategoryLabel}) =>{
             const { scrollTop, scrollHeight, clientHeight } = element;
 
             if (scrollHeight - scrollTop - clientHeight < 1) {
-                getTeamList(lastTimeStamp);
+                getTeamList();
             }
         };
 
         element.addEventListener("scroll", handleScroll);
         return () => element.removeEventListener("scroll", handleScroll);
-    }, []);
+      }, [chooseCategory, lastTimeStamp, auth?.userNo]);
 
 
     useEffect(()=>{
@@ -70,9 +71,10 @@ const SearchTeam = ({updateTeamList, categories, findCategoryLabel}) =>{
 
         axios.get(`${apiUrl}/api/teams?category=${chooseCategory}&userNo=${userNo}&lastTimeStamp=${null}`
         ).then((response)=>{
-            
-            setTeamList(response.data.items);
-            setLastTimeStamp(response.data.items.pop().currentDate);
+            const items = response.data.items;
+
+            setTeamList(items);
+            setLastTimeStamp(items[items.length - 1].createdAt);
         }).catch((error)=>{
             console.log(error);
         })

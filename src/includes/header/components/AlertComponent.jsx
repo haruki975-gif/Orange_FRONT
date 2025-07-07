@@ -3,39 +3,11 @@ import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../../components/context/GlobalContext";
 import { FaUserCircle } from "react-icons/fa";
 
-const AlertComponent = ({setOpenAlertModal, openAlertModal}) =>{
+const AlertComponent = ({setOpenAlertModal, openAlertModal, applicantList ,setUpdateApplicantList}) =>{
 
     const apiUrl = URL_CONFIG.API_URL;
     const { errorAlert, successAlert, auth } = useContext(GlobalContext);
 
-    const [applicantList, setApplicantList] = useState([]);
-    const [updateApplicantList, setUpdateApplicantList] = useState(true);
-
-
-    useEffect(()=>{
-
-        if(!openAlertModal){
-            return;
-        }
-
-        if(!auth?.accessToken){
-            errorAlert("로그인 후 이용 가능합니다.");
-            return;
-        }
-
-        axios.get(`${apiUrl}/api/teams/member`,
-            {
-                headers : {
-                    Authorization : `Bearer ${auth.accessToken}`,
-                }
-            }
-        ).then((response)=>{
-            setApplicantList(response.data.items);
-        }).catch((error)=>{
-            console.log(error);
-        });
-
-    }, [openAlertModal, updateApplicantList])
 
     const acceptTeamJoinHandler = (applicant) =>{
 
@@ -99,8 +71,8 @@ const AlertComponent = ({setOpenAlertModal, openAlertModal}) =>{
         <div id="alert-component" 
             className={openAlertModal ? "active" : ""}>
             <div className="container">
-                {applicantList.length !== 0 ?(
-                    applicantList.map((applicant, index) =>(
+                {applicantList?.length !== 0 ?(
+                    applicantList?.map((applicant, index) =>(
                     <div className="request" key={index}>
                         <p className="request-type">팀신청</p>
                         <div className="request-content">

@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import Menu from "./components/menu/Menu";
 import Tab from "./components/tab/Tab";
 import "./side.css";
 import axios from "axios";
@@ -8,11 +7,8 @@ import { GlobalContext } from "../../components/context/GlobalContext";
 
 
 const Side = () =>{
-
     const { auth } = useContext(GlobalContext);
-
     const apiUrl = URL_CONFIG.API_URL;
-
 
     const myCalendar = {
         "main":
@@ -38,7 +34,7 @@ const Side = () =>{
     const [myTeam, setMyTeam] = useState({
         main: {
             name: "팀 관리",
-            icon: "/img/icon/journal-frame.png"
+            icon: "/img/icon/teams.svg"
         },
         subMenu: [],
         path: null
@@ -68,7 +64,7 @@ const Side = () =>{
         "main":
         {
             "name": "팀 찾기",
-            "icon": "/img/icon/journal-frame.png"
+            "icon": "/img/icon/search-team.svg"
         },
         "subMenu": [],
         "path": "/find-team"
@@ -107,6 +103,7 @@ const Side = () =>{
     return(
         <div id="side">
             <div className="menus">
+
                 <Tab menu={myCalendar}/>
                 <Tab menu={myTeam}/>
                 <Tab menu={findTeam}/>

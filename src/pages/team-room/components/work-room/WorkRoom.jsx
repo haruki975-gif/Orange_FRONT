@@ -98,6 +98,7 @@ const WorkRoom = () =>{
                         lastJsonMessage={lastJsonMessage}
                         id={id}
                         userNo={auth?.userNo}
+                        key={column.columnValue}
                     />
                 ))}
             </div>

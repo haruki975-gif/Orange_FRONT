@@ -19,7 +19,7 @@ const ChatRoom = () =>{
     const { errorAlert, successAlert, auth } = useContext(GlobalContext);
 
     const [messages, setMessages] = useState([]);
-    const lastTimeStampRef = useRef(null);
+    const [lastTimeStamp, setLastTimeStamp] = useState(null);
 
     const [sendMessage, setSendMessage] = useState("");
 
@@ -33,21 +33,17 @@ const ChatRoom = () =>{
             return;
         }
 
-        console.log(lastTimeStampRef.current);
-
-        axios.get(`${apiUrl}/api/chat?teamId=${id}&lastTimeStamp=${lastTimeStampRef.current || null}`,{
+        axios.get(`${apiUrl}/api/chat?teamId=${id}&lastTimeStamp=${lastTimeStamp || null}`,{
             headers : {
                 Authorization : `Bearer ${auth.accessToken}`,
             }
         }).then((response)=>{
-            console.log(response.data.items[0]?.sentDate);
-            console.log(response.data.items);
             setMessages(prev=> [...response.data.items, ...prev]);
-            lastTimeStampRef.current = response.data.items[0]?.sentDate || lastTimeStampRef.current;
+            setLastTimeStamp(response.data.items[0]?.sentDate || lastTimeStamp);
         }).catch((error)=>{
-            console.log(error);
+            errorAlert(error.response.data?.message ?? "조회 실패");
         })
-    }
+    };
 
     // 페이지 로드 시 메시지 조회 함수 호출
     useEffect(()=>{
@@ -65,13 +61,11 @@ const ChatRoom = () =>{
             shouldReconnect: (closeEvent) => true,
             reconnectAttempts: 3,
             reconnectInterval: 3000,
-            
             onBeforeOpen: (instance) => {
                 if(!auth?.accessToken){
                     instance.close();
                     return false;
                 }
-                alert('123');
                 return true;
             },
         }
@@ -79,9 +73,6 @@ const ChatRoom = () =>{
 
     // 메시지 전송
     const sendMessageHandler = () =>{
-
-        console.log(sendMessage);
-
         const sendMessageRequest ={
             content: sendMessage,
             teamId: id,
@@ -93,7 +84,6 @@ const ChatRoom = () =>{
 
         setSendMessage("");
         setIsMine(true);
-        
     };
 
     // WebSocket 메시지 응답 받았을 시 
@@ -101,8 +91,6 @@ const ChatRoom = () =>{
         if(!lastJsonMessage){
             return;
         }
-
-        console.log(lastJsonMessage.type);
 
         switch(lastJsonMessage.type){
             case "send" :
@@ -156,30 +144,22 @@ const ChatRoom = () =>{
 
     
     // 무한 스크롤 (메시지 조회 함수 호출)
-    useEffect(() => {
+    const handleScroll = (e) => {
+        const { scrollTop } = e.target;
 
-        const element = scrollRef.current;
-
-        const handleScroll = () => {
-
-            const { scrollTop } = element;
-
-            if (scrollTop == 0) {
-                findMessages();
-            }
-        };
-
-        element.addEventListener("scroll", handleScroll);
-        return () => element.removeEventListener("scroll", handleScroll);
-    }, []);
+        if (scrollTop == 0) {
+            findMessages();
+        }
+    };
 
 
     return(
-        <div className="chat-room" ref={scrollRef}>
+        <div className="chat-room" ref={scrollRef} onScroll={(e) => handleScroll(e)}>
             {messages.map(message => (
                 <Message message={message} 
                     id={id} userNo={auth.userNo} 
-                    sendJsonMessage={sendJsonMessage} />
+                    sendJsonMessage={sendJsonMessage}
+                    key={message.messageId} />
             ))}
             <form className="input-message">
                 <div className="textarea-wrapper">

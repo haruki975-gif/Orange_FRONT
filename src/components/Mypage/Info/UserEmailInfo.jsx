@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { validationRules } from "../../Member/Signup/js/validationRules";
 import { useDuplicateCheck } from "../../Member/Signup/js/useDuplicateCheck";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const UserEmailInfo = ({
   formData,
@@ -11,20 +12,20 @@ const UserEmailInfo = ({
 }) => {
   const [originalEmail, setOriginalEmail] = useState(""); // 기존 이메일
   const [isLoaded, setIsLoaded] = useState(false);
-  const userNo = sessionStorage.getItem("userNo");
-  const token = sessionStorage.getItem("accessToken");
+  const { auth } = useContext(GlobalContext);
   const apiUrl = URL_CONFIG.API_URL;
 
   useEffect(() => {
+    if (!auth.userNo || !auth.accessToken) return;
+
     axios
-      .get(`${apiUrl}/api/info/email/${userNo}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      .get(`${apiUrl}/api/info/email/${auth.userNo}`, {
+        headers: { Authorization: `Bearer ${auth.accessToken}` },
       })
       .then((res) => {
         const email = res.data.items[0] || "";
         setOriginalEmail(email);
         setFormData((prev) => ({ ...prev, userEmail: email }));
-        sessionStorage.setItem("userEmail", email);
         setIsLoaded(true);
       })
       .catch(() => {
@@ -33,7 +34,7 @@ const UserEmailInfo = ({
           userEmail: "이메일 조회에 실패했습니다.",
         }));
       });
-  }, [userNo]);
+  }, [auth.userNo, auth.accessToken]);
 
   const handleChange = (e) => {
     const value = e.target.value;

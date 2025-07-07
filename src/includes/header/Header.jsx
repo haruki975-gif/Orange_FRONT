@@ -3,107 +3,86 @@ import { useNavigate } from "react-router-dom";
 import "./header.css";
 import AlertComponent from "./components/AlertComponent";
 import axios from "axios";
-import {
-  checkAuthStatus,
-  getUserData
-} from "../../components/Member/Login/js/authService";
 import { GlobalContext } from "../../components/context/GlobalContext";
 import { getProfileImage } from "../../components/Mypage/Profile/js/getProfileImage";
 import { FaUserCircle } from "react-icons/fa";
 
 const Header = () => {
   const [openAlertModal, setOpenAlertModal] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
-  const [userName, setUserName] = useState("");
-  const { logout, auth } = useContext(GlobalContext);
+  const { logout, auth, errorAlert } = useContext(GlobalContext);
   const navi = useNavigate();
-  const token = sessionStorage.getItem("accessToken");
-  const userNo = sessionStorage.getItem("userNo");
   const [profileImage, setProfileImage] = useState(null); // 서버에서 불러온 이미지
   const apiUrl = URL_CONFIG.API_URL;
-
-  // 로그인 상태 확인
-  const checkLoginStatus = () => {
-    const isLoggedIn = checkAuthStatus();
-    const user = getUserData();
-
-    if (isLoggedIn && user.name) {
-      setIsLogin(true);
-      setUserName(user.name);
-    } else {
-      setIsLogin(false);
-      setUserName("");
-    }
-  };
+  const [applicantList, setApplicantList] = useState([]);
+  const [updateApplicantList, setUpdateApplicantList] = useState(true);
 
   /* 프로필 이미지 조회 */
   useEffect(() => {
-    getProfileImage(userNo, token, apiUrl)
+    if (!auth?.userNo || !auth?.accessToken) return;
+
+    getProfileImage(auth.userNo, auth.accessToken, apiUrl)
       .then((url) => {
         if (url) {
           setProfileImage(url);
         } else {
           setProfileImage(null);
-          setMessage("등록된 프로필 이미지가 없습니다.");
         }
       })
-      .catch((error) => {
-        console.log("프로필 이미지 조회 실패", error);
-        setMessage("프로필 이미지를 불러오지 못했습니다.");
+      .catch(() => {
+        setProfileImage(null);
       });
-  }, []);
+  }, [auth.userNo, auth.accessToken, apiUrl]);
 
   // 로그아웃 처리
   const handleLogout = () => {
-
     if (!auth?.accessToken) {
-      clearAuthData();
       alert("이미 로그인 만료 상태입니다.");
+      logout();
       navi("/");
       return;
     }
 
-      axios
-        .post(
-          `${apiUrl}/api/auth/logout`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${auth.accessToken}`,
-            },
-          }
-        )
+    axios
+      .post(
+        `${apiUrl}/api/auth/logout`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        }
+      )
       .then(() => {
-        clearAuthData();
         alert("로그아웃 되었습니다.");
         logout();
-        checkLoginStatus();
         navi("/");
       })
       .catch((err) => {
-        console.log("로그아웃 실패 또는 토큰 만료", err);
-        sessionStorage.clear();
+        console.error("로그아웃 실패 또는 토큰 만료", err);
         alert("로그아웃 되었습니다.");
-        checkLoginStatus();
-        navigate("/");
+        navi("/");
       });
   };
 
-  // 페이지 로드 시 로그인 상태 확인
+  // 팀 신청 목록 조회
   useEffect(() => {
-    checkLoginStatus();
+    if (!auth.accessToken) {
+      return;
+    }
 
-    // 로그인 상태 변화 감지용 이벤트
-    const handleLoginChange = () => {
-      checkLoginStatus();
-    };
-
-    window.addEventListener("loginStateChanged", handleLoginChange);
-
-    return () => {
-      window.removeEventListener("loginStateChanged", handleLoginChange);
-    };
-  }, []);
+    axios
+      .get(`${apiUrl}/api/teams/member`, {
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+      })
+      .then((response) => {
+        setApplicantList(response.data.items);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [openAlertModal, updateApplicantList, auth]);
 
   return (
     <header id="main-header">
@@ -113,14 +92,23 @@ const Header = () => {
 
       {/* 로그인하면 바뀌는 부분 */}
       <div className="right">
-        {isLogin ? (
+        {auth.userId ? (
           // 로그인 됨
           <>
-            <div className="alert" onClick={() => setOpenAlertModal(true)}>
+            <div
+              className={`alert ${applicantList.length !== 0 ? "active" : ""}`}
+              onClick={() => {
+                if (!auth?.accessToken) {
+                  errorAlert("로그인 후 이용 가능합니다.");
+                  return;
+                }
+                setOpenAlertModal(true);
+              }}
+            >
               <img src="/img/icon/bell.png" alt="" />
             </div>
             <div className="user">
-              <a className="name">{userName}</a>
+              <a className="name">{auth.userName}</a>
               <div className="profile">
                 {profileImage ? (
                   <img
@@ -162,6 +150,8 @@ const Header = () => {
       <AlertComponent
         setOpenAlertModal={setOpenAlertModal}
         openAlertModal={openAlertModal}
+        applicantList={applicantList}
+        setUpdateApplicantList={setUpdateApplicantList}
       />
     </header>
   );

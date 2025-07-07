@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getProfileImage } from "./js/getProfileImage";
 import { deleteProfileImage } from "./js/deleteProfileImage";
 import { updateProfileImage } from "./js/updateProfileImage";
@@ -7,10 +7,10 @@ import { FaUserCircle, FaCamera } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "../../Member/Form.css";
 import "./profileImage.css";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const ProfileImage = () => {
-  const token = sessionStorage.getItem("accessToken");
-  const userNo = sessionStorage.getItem("userNo");
+  const { auth } = useContext(GlobalContext);
   const navi = useNavigate();
   const apiUrl = URL_CONFIG.API_URL;
 
@@ -24,7 +24,9 @@ const ProfileImage = () => {
 
   /* 프로필 이미지 조회 */
   useEffect(() => {
-    getProfileImage(userNo, token, apiUrl)
+    if (!auth?.userNo || !auth?.accessToken) return;
+
+    getProfileImage(auth.userNo, auth.accessToken, apiUrl)
       .then((url) => {
         if (url) {
           setProfileImage(url);
@@ -33,28 +35,28 @@ const ProfileImage = () => {
           setMessage("등록된 프로필 이미지가 없습니다.");
         }
       })
-      .catch((error) => {
-        console.log("프로필 이미지 조회 실패", error);
+      .catch(() => {
         setMessage("프로필 이미지를 불러오지 못했습니다.");
       });
-  }, []);
+  }, [auth.userNo, auth.accessToken, apiUrl]);
 
   /* 이미지 선택 */
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        setMessage("5MB 이하의 이미지만 업로드할 수 있습니다.");
-        return;
-      }
-      if (!["image/jpeg", "image/png"].includes(file.type)) {
-        setMessage("이미지 파일(jpeg, png)만 업로드 가능합니다.");
-        return;
-      }
-      setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-      setMessage("");
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setMessage("5MB 이하의 이미지만 업로드할 수 있습니다.");
+      return;
     }
+    if (!["image/jpeg", "image/png"].includes(file.type)) {
+      setMessage("이미지 파일(jpeg, png)만 업로드 가능합니다.");
+      return;
+    }
+
+    setSelectedFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+    setMessage("");
   };
 
   /* 변경하기 */
@@ -67,7 +69,7 @@ const ProfileImage = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    updateProfileImage(userNo, formData, token, apiUrl)
+    updateProfileImage(auth.userNo, formData, auth.accessToken, apiUrl)
       .then((response) => {
         alert("프로필 이미지가 성공적으로 변경되었습니다.");
         setPreviewUrl(null);
@@ -82,8 +84,7 @@ const ProfileImage = () => {
           setProfileImage(profileImage + "?" + Date.now()); // 캐싱 방지용
         }
       })
-      .catch((error) => {
-        console.error("이미지 변경 실패", error);
+      .catch(() => {
         setMessage("이미지 변경에 실패했습니다.");
       });
   };
@@ -92,7 +93,7 @@ const ProfileImage = () => {
   const handleDelete = () => {
     if (!window.confirm("정말 이미지를 삭제하시겠습니까?")) return;
 
-    deleteProfileImage(userNo, token, apiUrl)
+    deleteProfileImage(auth.userNo, auth.accessToken, apiUrl)
       .then(() => {
         alert("프로필 이미지가 삭제되었습니다.");
         setProfileImage(null);
@@ -101,7 +102,7 @@ const ProfileImage = () => {
 
         // 삭제 후 재조회로 UI 반영 보장
         setTimeout(() => {
-          getProfileImage(userNo, token, apiUrl).then((url) => {
+          getProfileImage(auth.userNo, auth.accessToken, apiUrl).then((url) => {
             if (url) {
               setProfileImage(`${url}?t=${Date.now()}`);
             } else {
@@ -110,8 +111,7 @@ const ProfileImage = () => {
           });
         }, 300);
       })
-      .catch((error) => {
-        console.error("이미지 삭제 실패", error);
+      .catch(() => {
         setMessage("이미지 삭제에 실패했습니다.");
       });
   };

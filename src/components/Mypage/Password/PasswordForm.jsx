@@ -1,9 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "../../Member/Form.css";
 import { useNavigate } from "react-router-dom";
 import { UserPasswordCheck } from "./UserPasswordCheck";
 import { updateUserPassword } from "./UserPasswordUpdate";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const PasswordForm = () => {
   const [userPassword, setUserPassword] = useState("");
@@ -13,8 +14,7 @@ const PasswordForm = () => {
 
   const navi = useNavigate();
   const apiUrl = URL_CONFIG.API_URL;
-  const token = sessionStorage.getItem("accessToken");
-  const userNo = sessionStorage.getItem("userNo");
+  const { auth, logout } = useContext(GlobalContext);
 
   const passwordRegex =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~`!@#$%^&*()_\-+=])[A-Za-z\d~`!@#$%^&*()_\-+=]{8,20}$/;
@@ -44,20 +44,20 @@ const PasswordForm = () => {
     }
 
     // 1단계: 현재 비밀번호 확인
-    UserPasswordCheck(userNo, userPassword, token, apiUrl)
+    UserPasswordCheck(auth.userNo, userPassword, auth.accessToken, apiUrl)
       .then(() => {
         // 2단계: 새 비밀번호로 업데이트
         return updateUserPassword(
-          userNo,
+          auth.userNo,
           userPassword,
           newPassword,
-          token,
+          auth.accessToken,
           apiUrl
         );
       })
-      .then((response) => {
+      .then(() => {
         alert("비밀번호가 성공적으로 변경되었습니다. 다시 로그인해주세요.");
-        sessionStorage.clear();
+        logout();
         window.location.replace("/login");
       })
       .catch((error) => {
@@ -84,7 +84,7 @@ const PasswordForm = () => {
           />
           <input
             type="password"
-            name="userPassword"
+            name="newPassword"
             placeholder="새 비밀번호"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}

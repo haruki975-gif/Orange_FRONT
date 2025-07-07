@@ -29,7 +29,6 @@ const FindUserId = () => {
         },
       })
       .then((response) => {
-        //console.log(response);
         const items = response.data.items;
 
         if (Array.isArray(items) && items.length > 0 && items[0].userId) {
@@ -39,8 +38,7 @@ const FindUserId = () => {
           setFoundUserId("");
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
         alert("아이디 조회에 실패했습니다.");
         setErrorMsg("아이디를 찾을 수 없습니다.");
         setFoundUserId("");

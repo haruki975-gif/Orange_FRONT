@@ -53,6 +53,18 @@
   height: 22px;
   margin-right: 24px;
   cursor: pointer;
+  position: relative;
+}
+#main-header .alert.active::before{
+  content: '';
+  display: block;
+  position: absolute;
+  top: -2px;
+  right: 0;
+  width: 5px;
+  height: 5px;
+  background-color: #ff1e00;
+  border-radius: 50%;
 }
 #main-header .user .name {
   font-size: 18px;

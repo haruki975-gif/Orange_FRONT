@@ -1,0 +1,33 @@
+.icon-btn {
+    background: none;
+    border: none;
+    color: #fd7e14;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 1.8rem; /* 아이콘 크기 조절 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn:hover{
+    color: #bd5500;
+}
+
+
+svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.icon-btn.css-1umw9bq-MuiSvgIcon-root {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    left: -20px;
+}
+
+.title-edit-buttons {
+    display: flex;
+    justify-content: end;
+}
+
+.title-edit-wrapper{
+    height: 30px;
+    margin-bottom: 10px;
+}

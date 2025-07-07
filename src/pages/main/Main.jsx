@@ -1,9 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import "./Calendar.css";
-import TabNav from "../../includes/side/components/tab/TabNav";
-import EventDetailModal from "../modal/EventDetailModal";
-import { checkAuthStatus } from "../Member/Login/js/authService.js"
-import { GlobalContext } from '../context/GlobalContext';
+import "./Main.css";
 import axios from "axios";
 
 import {
@@ -19,9 +15,18 @@ import {
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import PopupForm from "./PopupForm";
 
-const Calender = () => {
+import { useNavigate } from "react-router-dom";
+import { GlobalContext } from "../../components/context/GlobalContext.jsx";
+import { checkAuthStatus } from "../../components/Member/Login/js/authService.js";
+import EventDetailModal from "../../components/modal/EventDetailModal.jsx";
+import PopupForm from "../../components/calendar/PopupForm.jsx";
+
+
+
+const Main = () =>{
+
+    const navi = useNavigate();
     const [selectedDate, setSelectedDate] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const [scheduleTitle, setScheduleTitle] = useState([]);
@@ -265,53 +270,66 @@ const Calender = () => {
     }, [auth.accessToken]);
 
     return (
-        <div id="my-calendar">
-            <TabNav />
+        <main id="main-page">
+            <div className={`calendal ${!auth?.accessToken && "active"}`}>
+                <FullCalendar
+                    plugins={[dayGridPlugin, interactionPlugin]}
+                    height={660}
+                    initialView="dayGridMonth"
+                    locale="ko"
+                    dayCellContent={handleDayCellContent}
+                    dateClick={handleDateClick}
+                    eventClick={handleEventClick}
+                    selectable={true}
+                    selectMirror={false}
+                    editable={true}
+                    eventDrop={handleEventDrop}
+                    events={scheduleTitle.map(event => ({
+                        id: event.id,
+                        title: event.title,
+                        start: event.startDate || event.dueDate,
+                        end: getNextDate(event.dueDate),
+                    }))}
 
-            <FullCalendar
-                plugins={[dayGridPlugin, interactionPlugin]}
-                height={900}
-                initialView="dayGridMonth"
-                locale="ko"
-                dayCellContent={handleDayCellContent}
-                dateClick={handleDateClick}
-                eventClick={handleEventClick}
-                selectable
-                selectMirror={false}
-                editable
-                eventDrop={handleEventDrop}
-                events={scheduleTitle.map(event => ({
-                    id: event.id,
-                    title: event.title,
-                    start: event.startDate || event.dueDate,
-                    end: getNextDate(event.dueDate),
-                }))}
-            />
-
-            {isOpen && (
-                <FloatingPortal>
-                    <PopupForm
-                        ref={refs.setFloating}
-                        selectedDate={selectedDate}
-                        x={x}
-                        y={y}
-                        strategy={strategy}
-                        onClose={handleClose}
-                        onAddEvent={handleAddScheduleTitle}
-                    />
-                </FloatingPortal>
-            )}
-
-            {isEventModalOpen && selectedEvent && (
-                <EventDetailModal
-                    event={selectedEvent}
-                    onClose={handleEventModalClose}
-                    onUpdate={handleUpdateEvent}
-                    onDelete={handleDeleteEvent}
                 />
-            )}
-        </div>
-    );
-};
 
-export default Calender;
+                {/* 날짜 클릭 시 팝업 */}
+                {isOpen && (
+                    <FloatingPortal>
+                        <PopupForm
+                            ref={refs.setFloating}
+                            selectedDate={selectedDate}
+                            x={x}
+                            y={y}
+                            strategy={strategy}
+                            onClose={handleClose}
+                            onAddEvent={handleAddScheduleTitle}
+                        />
+                    </FloatingPortal>
+                )}
+
+                {/* 이벤트 클릭 시 모달 */}
+                {isEventModalOpen && selectedEvent && (
+                    <EventDetailModal
+                        event={selectedEvent}
+                        onClose={handleEventModalClose}
+                        onUpdate={handleUpdateEvent}
+                        onDelete={handleDeleteEvent}
+                    />
+                )}
+            </div>
+
+            {!auth?.accessToken &&
+                <div className="pls-login">
+                    <div className="txt" onClick={() => navi("/login")}>
+                        <h3>로그인 후 이용 가능한 컨텐츠 입니다.</h3>
+                    </div>
+                </div>
+            }
+        </main>
+
+    
+    )
+}
+
+export default Main;

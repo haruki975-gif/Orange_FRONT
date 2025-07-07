@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import UserPhoneInfo from "./UserPhoneInfo";
 import UserEmailInfo from "./UserEmailInfo";
 import UserAddressInfo from "./UserAddressInfo";
 import axios from "axios";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const InfoEditInput = () => {
-  const userNo = sessionStorage.getItem("userNo");
-  const userId = sessionStorage.getItem("userId");
-  const userName = sessionStorage.getItem("userName");
-  const token = sessionStorage.getItem("accessToken");
+  const { auth } = useContext(GlobalContext);
   const navi = useNavigate();
   const apiUrl = URL_CONFIG.API_URL;
 
@@ -43,9 +41,9 @@ const InfoEditInput = () => {
     }
 
     axios
-      .put(`${apiUrl}/api/info/${userNo}`, formData, {
+      .put(`${apiUrl}/api/info/${auth.userNo}`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${auth.accessToken}`,
         },
       })
       .then(() => {
@@ -66,20 +64,20 @@ const InfoEditInput = () => {
           <input
             type="text"
             name="userId"
-            value={userId}
+            value={auth.userId ?? ""}
             disabled
             style={{ backgroundColor: "#ddd" }}
           />
           <input
             type="text"
             name="userName"
-            value={userName}
+            value={auth.userName ?? ""}
             disabled
             style={{ backgroundColor: "#ddd" }}
           />
 
           <UserPhoneInfo
-            userId={userId}
+            userId={auth.userId}
             formData={formData}
             setFormData={setFormData}
             setValidationErrors={setValidationErrors}
@@ -93,7 +91,7 @@ const InfoEditInput = () => {
           )}
 
           <UserEmailInfo
-            userId={userId}
+            userId={auth.userId}
             formData={formData}
             setFormData={setFormData}
             setValidationErrors={setValidationErrors}
@@ -107,7 +105,7 @@ const InfoEditInput = () => {
           )}
 
           <UserAddressInfo
-            userId={userId}
+            userId={auth.userId}
             formData={formData}
             setFormData={setFormData}
             setValidationErrors={setValidationErrors}

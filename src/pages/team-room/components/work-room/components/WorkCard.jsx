@@ -33,24 +33,64 @@ const WorkCard = ({work, openUpdateModalHandler, openDetailModalHandler, sendJso
 
         sendJsonMessage(deleteWork);
     }
+    
+    const ddayCalculer = (endDate) =>{
+        const date = new Date(endDate);
+        const currentDate = new Date();
+
+        date.setHours(0, 0, 0, 0);
+        currentDate.setHours(0, 0, 0, 0);
+
+        const diffTime = date - currentDate; 
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        return diffDays;
+    }
+
+    const ddayContent = (endDate) =>{
+        const diffDays = ddayCalculer(endDate);
+
+        if(diffDays < 0){
+            return "기간 초과";
+        }
+        if(diffDays == 0){
+            return "D-Day";
+        }
+        return "D-" + diffDays;
+    }
+
+    const ddayStyle = (endDate) =>{
+        const diffDays = ddayCalculer(endDate);
+
+        if(diffDays < 0){
+            return "#dddddd";
+        }
+        if(diffDays == 0){
+            return "#ffe2d3";
+        }
+        return "#f6fcdf";
+    }
 
 
     return(
-        <div className="work-card" ref={ref}>
+        <div className="work-card" ref={ref} style={{ backgroundColor : ddayStyle(work.endDate)}}>
             <h4 className="work-title">{work.title}</h4>
             <div className="assignee-info">
                 <span>담당자</span>
-                <p className="assignee-name">{work.assigneeName}</p>
-                <div className="assignee-profile">
-                    {work.assigneeProfile ? (
-                            <img src={work.assigneeProfile} alt="" />
-                        ) : (
-                            <FaUserCircle
-                                className="profile-icon"
-                            />
-                        )
-                    }
+                <div className="left">
+                    <div className="assignee-profile">
+                        {work.assigneeProfile ? (
+                                <img src={work.assigneeProfile} alt="" />
+                            ) : (
+                                <FaUserCircle
+                                    className="profile-icon"
+                                />
+                            )
+                        }
+                    </div>
+                    <p className="assignee-name">{work.assigneeName}</p>
                 </div>
+                <p className="day">{ddayContent(work.endDate)}</p>
             </div>
             <div className="options-btn" ref={optionBtn} 
                 onClick={() => {setOpenOptionModal(true)}} 

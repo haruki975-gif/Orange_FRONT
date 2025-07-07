@@ -3,6 +3,8 @@ const Menu = (props) =>{
 
     const name = props.name;
     const icon = props.icon;
+    const path = props.path;
+    
 
     return(
         <>

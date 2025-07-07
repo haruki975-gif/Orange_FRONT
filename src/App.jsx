@@ -31,6 +31,7 @@ import FindChallenge from "./pages/challenge/FindChallenge";
 // 대시보드, 캘린더
 import Calender from './components/calendar/Calendar'
 import DashBoard from './components/dashBoard/DashBoard'
+import Main from "./pages/main/Main";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -43,7 +44,7 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<h1 style={{ margin: "400px" }}>메인페이지</h1>}
+            element={<Main/>}
           ></Route>
           {/* member */}
           <Route path="/signup" element={<Signup />} />
@@ -64,8 +65,12 @@ function App() {
             <Route path="work-room" element={<WorkRoom />} />
           </Route>
 
+          <Route path='/calendar' element={<Calender />} />
+          <Route path='/dashboard' element={<DashBoard />} />
+          
           {/* challenge */}
           <Route path="/challenge/:id" element={<FindChallenge />} />
+
 
           {/* Admin Page */}
           <Route
