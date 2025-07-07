@@ -5,15 +5,16 @@ const SubMenu = ({ menu }) => {
 
   const name = menu.name ? menu.name : menu.title;
   const icon = menu.icon;
-  const path = menu.path ? menu.path : "/team-room/" + menu.teamId;
+  const naviPath = menu.path ? menu.path : "/team-room/" + menu.teamId;
+  const path = menu.path ? menu.path : menu.teamId;
   const index = menu.index;
 
   return (
     <div
-      className="menu"
+      className={`menu`}
       key={index}
       onClick={() => {
-        navi(path);
+        navi(naviPath);
       }}
     >
       <div className="icon">

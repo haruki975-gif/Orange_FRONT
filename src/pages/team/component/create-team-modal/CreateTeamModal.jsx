@@ -13,6 +13,10 @@ const CreateTeamModal = ({setOpenModal, modalBackground, setUpdateTeamList, cate
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
+    const newCategories = categories.filter(prev =>
+        prev.key !== 'all'
+    )
+
 
     // Modal 닫기
     const closeCreateTeamModal = (e) =>{
@@ -55,8 +59,9 @@ const CreateTeamModal = ({setOpenModal, modalBackground, setUpdateTeamList, cate
             return;
         }
 
-            if(title.trim() === "" || content.trim() === "" || chooseCategory.trim() === ""){
+            if(title.trim() === "" || chooseCategory.trim() === ""){
                 errorAlert("모든 정보를 기입 해야합니다.");
+                return;
             }
 
             axios.post(`${apiUrl}/api/teams`, {
@@ -99,7 +104,7 @@ const CreateTeamModal = ({setOpenModal, modalBackground, setUpdateTeamList, cate
                 <div className="team-category">
                     <h3>팀 카테고리</h3>
                     <div className="categories">
-                        {categories.map((category, index) => (
+                        {newCategories.map((category, index) => (
                             <button type="button" key={index}
                                 className={`category ${chooseCategory === category.key ? "active" : ""}`} 
                                 onClick={() => setChooseCategory(category.key)}>

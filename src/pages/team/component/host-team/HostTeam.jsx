@@ -9,7 +9,7 @@ const HostTeam = ({setOpenModal, updateTeamList, findCategoryLabel}) =>{
 
     const [teamList, setTeamList] = useState([]);
     const [updateSearchTeamList, setUpdateSearchTeamList] = useState(true);
-    const { auth } = useContext(GlobalContext);
+    const { auth, errorAlert } = useContext(GlobalContext);
 
     useEffect(()=>{
 
@@ -22,7 +22,6 @@ const HostTeam = ({setOpenModal, updateTeamList, findCategoryLabel}) =>{
                 Authorization : `Bearer ${auth.accessToken}`,
             }
         }).then((response)=>{
-            console.log(response.data.items);
             setTeamList(response.data.items);
         }).catch((error)=>{
             console.log(error);
@@ -30,6 +29,12 @@ const HostTeam = ({setOpenModal, updateTeamList, findCategoryLabel}) =>{
     }, [updateSearchTeamList, updateTeamList, auth])
 
     const openCreateTeamModal = () =>{
+
+        if(!auth?.accessToken){
+            errorAlert("로그인 후 이용가능합니다.");
+            return;
+        }
+
         setOpenModal(true);
     }
 

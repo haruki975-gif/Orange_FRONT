@@ -265,7 +265,7 @@ const Calender = () => {
     }, [auth.accessToken]);
 
     return (
-        <>
+        <div id="my-calendar">
             <TabNav />
 
             <FullCalendar
@@ -310,7 +310,7 @@ const Calender = () => {
                     onDelete={handleDeleteEvent}
                 />
             )}
-        </>
+        </div>
     );
 };
 
