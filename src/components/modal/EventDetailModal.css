@@ -40,7 +40,7 @@
 
 .modal-actions {
     display: flex;
-    gap: 10px;
+    gap: 16px;
     align-items: center;
     margin-bottom: 20px;
 }
@@ -53,8 +53,8 @@
     cursor: pointer;
     padding: 5px;
     border-radius: 4px;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -103,7 +103,8 @@
 }
 
 .title-input {
-    width: 100%;
+    width: 90%;
+    height: 40px;
     padding: 12px 10px;
     border: 2px solid #ffffff;
     border-radius: 8px;
@@ -114,7 +115,7 @@
 }
 
 .title-input:focus {
-    border-color: #0056b3;
+    border-color: #ffca89;
 }
 
 .form-row {
@@ -140,7 +141,7 @@
 }
 
 .date-input:focus {
-    border-color: #007bff;
+    border: 2px solid #ffca89;
 }
 
 .time-display {
@@ -169,7 +170,7 @@
 }
 
 .description-textarea:focus {
-    border-color: #007bff;
+    border: 2px solid #ffca89;
 }
 
 .description-textarea::placeholder {
