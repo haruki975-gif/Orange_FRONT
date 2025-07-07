@@ -1,6 +1,6 @@
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import { useNavigate, useLocation } from 'react-router-dom';
-
+import "./TabNav.css";
 
 function TabNav() {
     const navi = useNavigate();
@@ -18,7 +18,10 @@ function TabNav() {
                 </div>
 
                 <div className="tab-menu">
-                    <div className={`calendar active`} onClick={() => navi('/calendar')}>
+                    <div
+                        className={`calendar ${current === "/calendar" ? "active" : ""}`}
+                        onClick={() => navi('/calendar')}
+                    >
                         <ViewAgendaIcon
                             style={{
                                 width: '18px',
@@ -27,10 +30,13 @@ function TabNav() {
                                 fill: current === "/calendar" ? "#FF8C00" : "gray"
                             }}
                         />
-
                         <h3>캘린더</h3>
                     </div>
-                    <div className={`dashboard`} onClick={() => navi('/dashboard')}>
+
+                    <div
+                        className={`dashboard ${current === "/dashboard" ? "active" : ""}`}
+                        onClick={() => navi('/dashboard')}
+                    >
                         <ViewAgendaIcon
                             style={{
                                 width: '18px',
@@ -39,7 +45,6 @@ function TabNav() {
                                 fill: current === "/dashboard" ? "#FF8C00" : "gray"
                             }}
                         />
-
                         <h3>대시보드</h3>
                     </div>
                 </div>
