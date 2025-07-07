@@ -58,7 +58,7 @@ const TeamRoom = () =>{
                 teamId : id,
                 memberNo : member.memberNo,
                 memberName : member.memberName,
-            }, 
+            },
             headers : {
                 Authorization : `Bearer ${accessToken}`,
             }
@@ -68,7 +68,7 @@ const TeamRoom = () =>{
         }).catch((error)=>{
             errorAlert(error.response.data.message);
         })
-    } 
+    }
 
     const categories = [
         {key : "all", label : "전체"},
