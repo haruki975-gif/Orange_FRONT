@@ -158,7 +158,8 @@ const ChatRoom = () =>{
             {messages.map(message => (
                 <Message message={message} 
                     id={id} userNo={auth.userNo} 
-                    sendJsonMessage={sendJsonMessage} />
+                    sendJsonMessage={sendJsonMessage}
+                    key={message.messageId} />
             ))}
             <form className="input-message">
                 <div className="textarea-wrapper">

@@ -22,7 +22,6 @@ const HostTeam = ({setOpenModal, updateTeamList, findCategoryLabel}) =>{
                 Authorization : `Bearer ${auth.accessToken}`,
             }
         }).then((response)=>{
-            console.log(response.data.items);
             setTeamList(response.data.items);
         }).catch((error)=>{
             console.log(error);

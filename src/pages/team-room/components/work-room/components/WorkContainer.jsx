@@ -48,10 +48,6 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
             }
         ).then((response)=>{
             setWorkList(response.data.items);
-
-            if(column.columnValue == "done"){
-                console.log(response.data.items);
-            }
         }).catch((error)=>{
             console.log(error);
         })
@@ -106,7 +102,6 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
                 }
                 break;
             default : 
-                console.log(lastJsonMessage.userNo);
                 if(lastJsonMessage.requestUserNo == userNo && column.columnValue == 'todo'){
                     errorAlert(lastJsonMessage?.type); 
                 }
@@ -142,7 +137,8 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
                         lastJsonMessage={lastJsonMessage}
                         column={column}
                         id={id}
-                        userNo={userNo}/>
+                        userNo={userNo}
+                        key={work.workId}/>
                 ))}
             </div>
             

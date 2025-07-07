@@ -117,7 +117,6 @@ const Main = () =>{
     
         // 이벤트 삭제 핸들러
         const handleDeleteEvent = (eventId) => {
-            console.log("Deleting event: ", eventId);
             setScheduleTitle(prevEvents =>
                 prevEvents.filter(event => event.id !== parseInt(eventId))
             );
@@ -162,7 +161,6 @@ const Main = () =>{
             });
     
             setScheduleTitle(updatedEvents);
-            console.log("이동된 일정 시작:", newStartDateStr);
         };
     
     
@@ -177,8 +175,6 @@ const Main = () =>{
                 startDate: null,
                 dueDate: selectedDate,
             };
-    
-            console.log("새로 추가된 일정:", NewEvent); // 디버깅용
     
     
             setScheduleTitle(prevEvents => [...prevEvents, NewEvent]);

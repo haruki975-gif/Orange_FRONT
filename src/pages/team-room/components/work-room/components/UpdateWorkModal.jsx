@@ -76,7 +76,6 @@ const UpdateWorkModal = ({setOpenUpdateModal, modalBackground, prevWork, teamMem
                             <Calendar
                                 value={updateEndDate}
                                 onChange={(date) => {
-                                    console.log(date);
                                     setUpdateEndDate(date);
                                     setCalendarOpen(false);
                                 }}
