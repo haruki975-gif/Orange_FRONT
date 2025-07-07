@@ -67,7 +67,7 @@
     border: 1px solid #BCBCBC;
     border-radius: 10px;
     background-color: #f9f9f9;
-    cursor: pointer;
+    pointer-events: none;
 }
 
 .modal-container input[type="file"]::file-selector-button {
@@ -80,10 +80,12 @@
     margin-right: 12px;
     cursor: pointer;
     transition: background-color 0.2s ease;
+    pointer-events: auto;
 }
 
 .modal-container input[type="file"]::file-selector-button:hover {
     background-color: #b5ddff;
+    color: yellow;
 }
 
 .modal-container .submit-btn {
@@ -104,9 +106,10 @@
 
 .modal-container .submit-btn:hover {
     transform: scale(1.05);
+    color: yellow;
 }
 
-.close-btn {
+.modal-container .close-btn {
     position: absolute;
     top: 80px;
     right: 80px;
@@ -121,6 +124,11 @@
     font-size: 16px;
     font-weight: bold;
     border: none;
+}
+
+.modal-container .close-btn:hover {
+    color: red;
+    background-color: #fdd; /* 연한 빨강 배경 */
 }
 
 /* ✅ 반응형 대응 (모바일, 태블릿) */

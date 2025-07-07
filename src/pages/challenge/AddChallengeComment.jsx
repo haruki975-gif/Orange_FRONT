@@ -32,7 +32,7 @@ const AddChallengeComment = ({ postId, onCommentAdded }) => {
             }
         ).then((response) => {
             console.log(response);
-            // if (onCommentAdded) onCommentAdded();
+            if (onCommentAdded) onCommentAdded();
         }).catch((err) => {
             console.log(err);
             errorAlert("댓글 등록에 실패했습니다.");

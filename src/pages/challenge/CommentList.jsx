@@ -4,11 +4,13 @@ import "./CommentList.css";
 const CommentList = ({ comments = [], onDelete, onEdit }) => {
     const [editId, setEditId] = useState(null);
     const [editContent, setEditContent] = useState("");
+    const [editImage, setEditImage] = useState(null);
 
     const handleEditSave = (id) => {
-        onEdit(id, editContent);
+        onEdit(id, editContent, editImage);
         setEditId(null);
         setEditContent("");
+        setEditImage(null);
     };
 
     return (
@@ -20,6 +22,11 @@ const CommentList = ({ comments = [], onDelete, onEdit }) => {
                             <textarea
                                 value={editContent}
                                 onChange={(e) => setEditContent(e.target.value)}
+                            />
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setEditImage(e.target.files[0])}
                             />
                             <div className="comment-actions">
                                 <button onClick={() => handleEditSave(comment.commentNo)}>저장</button>
@@ -37,6 +44,7 @@ const CommentList = ({ comments = [], onDelete, onEdit }) => {
                                     onClick={() => {
                                         setEditId(comment.commentNo);
                                         setEditContent(comment.commentContent);
+                                        setEditImage(null); //
                                     }}
                                 >
                                     수정

@@ -15,7 +15,8 @@ const FindChallenge = () => {
     const [comments, setComments] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-
+    const itemsPerPage = 10;
+    
     useEffect(() => {
         const accessToken = sessionStorage.getItem("accessToken");
 
@@ -73,9 +74,18 @@ const FindChallenge = () => {
         );
     };
 
-    const handleCommentEdit = (commentId, newContent) => {
+    const handleCommentEdit = (commentId, newContent, newImage) => {
+        const formData = new FormData();
+        formData.append("content", newContent);
+        if (newImage) formData.append("file", newImage);
+
         toast.promise(
-            axios.patch(`${apiURL}/api/challenge/comment/${commentId}`, { content: newContent }).then(() => {
+            axios.patch(`${apiURL}/api/challenge/comment/${commentId}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+                },
+            }).then(() => {
                 loadComments(selectedPost.challengeNo);
             }),
             {
@@ -99,12 +109,8 @@ const FindChallenge = () => {
                 </thead>
                 <tbody>
                     {posts.map((post, idx) => (
-                        <tr
-                            key={post.challengeNo}
-                            onClick={() => handlePostClick(post)}
-                            className={selectedPost?.challengeNo === post.challengeNo ? "selected" : ""}
-                        >
-                            <td>{(totalPages - currentPage) * posts.length + (idx + 1)}</td>
+                        <tr key={post.challengeNo} onClick={() => handlePostClick(post)}>
+                            <td>{(currentPage - 1) * itemsPerPage + (posts.length - idx)}</td>
                             <td className="title">{post.challengeTitle}</td>
                             <td>{post.challengeAuthor}</td>
                             <td>{post.challengeDate}</td>
@@ -126,6 +132,7 @@ const FindChallenge = () => {
                     <img src={selectedPost.challengeFileUrl}/>
                     {isLoggedIn ? (
                         <AddChallengeComment
+                            key={selectedPost.challengeNo}
                             postId={selectedPost.challengeNo}
                             onCommentAdded={() => loadComments(selectedPost.challengeNo)}
                         />
@@ -136,7 +143,7 @@ const FindChallenge = () => {
                         <CommentList
                             comments={Array.isArray(comments) ? comments : []} // 절대 안전
                             onDelete={(id) => handleCommentDelete(id)}
-                            onEdit={(id, text) => handleCommentEdit(id, text)}
+                            onEdit={(id, text, image) => handleCommentEdit(id, text, image)}
                             showAuthor
                         />
                     )}

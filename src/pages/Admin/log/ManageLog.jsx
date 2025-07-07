@@ -9,7 +9,7 @@ const ManageLog = () => {
     const [logs, setLogs] = useState([]);
     const { auth, errorAlert } = useContext(GlobalContext);
     const [totalCount, setTotalCount] = useState(0);
-    const itemsPerPage = 5;
+    const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const startIdx = (currentPage - 1) * itemsPerPage;
