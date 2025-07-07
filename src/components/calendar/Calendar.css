@@ -1,75 +1,55 @@
-
-.fc-toolbar-chunk{
+#my-calendar .fc-toolbar-chunk{
     margin-top: 5px;
     margin-right: 20px;
     margin-left: 20px;
 }
-
 /* 년, 월 제목 */
-.fc .fc-toolbar-title{
+#my-calendar .fc .fc-toolbar-title{
     margin-left: 0px;
 }
-
-.fc .fc-daygrid-day-top {
+#my-calendar .fc .fc-daygrid-day-top {
     display: flex;
     flex-direction: inherit;
 }
-
-
-
 /* 날짜 셀에 마우스 올렸을 때 배경색 효과 */
-.fc-daygrid-day:hover {
-  background-color: #e1e1e1;
+#my-calendar .fc-daygrid-day:hover {
+  background-color: #E1E1E1;
   cursor: pointer;
 }
-
 /* 날짜 클릭했을 때 배경색 */
-.fc .fc-highlight{
-    background-color: #fff3e6;
+#my-calendar .fc .fc-highlight{
+    background-color: #FFF3E6;
 }
-
-
-
-.fc-h-event .fc-event-title-container{
+#my-calendar .fc-h-event .fc-event-title-container{
     flex-grow: 1;
     flex-shrink: 1;
     min-width: 0px;
-    background-color: #73aeff;
+    background-color: #73AEFF;
     border-radius: 2px;
 }
-
-.fc-h-event  .fc-event-title-container:hover {
-    background-color: #62a4ff;
+#my-calendar .fc-h-event  .fc-event-title-container:hover {
+    background-color: #62A4FF;
 }
-
-
-.fc-event{
-    border-color: #73aeff;
+#my-calendar .fc-event{
+    border-color: #73AEFF;
 }
-
-.fc-event :hover{
-    border-color: #62a4ff;
+#my-calendar .fc-event :hover{
+    border-color: #62A4FF;
 }
-
-
-.fc-daygrid-event {
+#my-calendar .fc-daygrid-event {
     margin-bottom: 2px;
 }
-
-.fc.fc-media-screen.fc-direction-ltr.fc-theme-standard {
+#my-calendar .fc.fc-media-screen.fc-direction-ltr.fc-theme-standard {
     margin-left: -211px;
     margin-top: -59px;
     margin-right: -209px;
 }
-
-.fc .fc-view-harness {
+#my-calendar .fc .fc-view-harness {
     flex-grow: 1;
     position: relative;
     top: 10px;
 }
-
-
-.fc .fc-toolbar.fc-header-toolbar {
+#my-calendar .fc .fc-toolbar.fc-header-toolbar {
     margin-bottom: 1.5em;
     background-color: white;
     height: 64px;
@@ -81,13 +61,11 @@
 
 /* 비로그인 캘린더 스타일 */
 /* 예: Calendar.css */
-
 .calendar-wrapper.blur {
   filter: blur(4px);
   pointer-events: none;
   user-select: none;
 }
-
 .login-overlay {
   position: fixed;
   top: 0;
@@ -100,7 +78,6 @@
   justify-content: center;
   align-items: center;
 }
-
 .login-modal {
   background: white;
   padding: 40px 30px;
@@ -108,7 +85,6 @@
   text-align: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
-
 .login-button {
   margin-top: 20px;
   padding: 10px 24px;
@@ -120,5 +96,5 @@
   cursor: pointer;
 }
 .login-button:hover {
-  background-color: #e09f50;
+  background-color: #E09F50;
 }

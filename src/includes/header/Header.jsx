@@ -9,10 +9,12 @@ import { FaUserCircle } from "react-icons/fa";
 
 const Header = () => {
   const [openAlertModal, setOpenAlertModal] = useState(false);
-  const { logout, auth } = useContext(GlobalContext);
+  const { logout, auth, errorAlert } = useContext(GlobalContext);
   const navi = useNavigate();
   const [profileImage, setProfileImage] = useState(null); // 서버에서 불러온 이미지
   const apiUrl = URL_CONFIG.API_URL;
+  const [applicantList, setApplicantList] = useState([]);
+  const [updateApplicantList, setUpdateApplicantList] = useState(true);
 
   /* 프로필 이미지 조회 */
   useEffect(() => {
@@ -62,6 +64,26 @@ const Header = () => {
       });
   };
 
+  // 팀 신청 목록 조회
+  useEffect(() => {
+    if (!auth.accessToken) {
+      return;
+    }
+
+    axios
+      .get(`${apiUrl}/api/teams/member`, {
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+      })
+      .then((response) => {
+        setApplicantList(response.data.items);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [openAlertModal, updateApplicantList, auth]);
+
   return (
     <header id="main-header">
       <div className="logo">
@@ -73,7 +95,16 @@ const Header = () => {
         {auth.userId ? (
           // 로그인 됨
           <>
-            <div className="alert" onClick={() => setOpenAlertModal(true)}>
+            <div
+              className={`alert ${applicantList.length !== 0 ? "active" : ""}`}
+              onClick={() => {
+                if (!auth?.accessToken) {
+                  errorAlert("로그인 후 이용 가능합니다.");
+                  return;
+                }
+                setOpenAlertModal(true);
+              }}
+            >
               <img src="/img/icon/bell.png" alt="" />
             </div>
             <div className="user">
@@ -119,6 +150,8 @@ const Header = () => {
       <AlertComponent
         setOpenAlertModal={setOpenAlertModal}
         openAlertModal={openAlertModal}
+        applicantList={applicantList}
+        setUpdateApplicantList={setUpdateApplicantList}
       />
     </header>
   );

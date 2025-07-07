@@ -8,7 +8,7 @@ import { GlobalContext } from "../../../../../components/context/GlobalContext";
 
 
 const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, sendJsonMessage, lastJsonMessage, id, userNo}) => {
-    const { errorAlert } = useContext(GlobalContext); 
+    const { auth, errorAlert } = useContext(GlobalContext); 
     const accessToken = sessionStorage.getItem("accessToken");
     const apiUrl = URL_CONFIG.API_URL;
 
@@ -36,10 +36,14 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
 
 
     useEffect(()=>{
+        if(!auth?.accessToken){
+            return;
+        }
+
         axios.get(`${apiUrl}/api/works?teamId=${id}&status=${column.columnValue}`,
             {
                 headers : {
-                    Authorization : `Bearer ${accessToken}`,
+                    Authorization : `Bearer ${auth.accessToken}`,
                 }
             }
         ).then((response)=>{
@@ -47,7 +51,7 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
         }).catch((error)=>{
             console.log(error);
         })
-    }, [id]);
+    }, [id, auth]);
 
     useEffect(()=>{
 
@@ -98,7 +102,6 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
                 }
                 break;
             default : 
-                console.log(lastJsonMessage.userNo);
                 if(lastJsonMessage.requestUserNo == userNo && column.columnValue == 'todo'){
                     errorAlert(lastJsonMessage?.type); 
                 }
@@ -134,7 +137,8 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
                         lastJsonMessage={lastJsonMessage}
                         column={column}
                         id={id}
-                        userNo={userNo}/>
+                        userNo={userNo}
+                        key={work.workId}/>
                 ))}
             </div>
             

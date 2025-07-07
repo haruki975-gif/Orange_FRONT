@@ -30,6 +30,7 @@ import ManageLog from "./pages/Admin/log/ManageLog";
 // 대시보드, 캘린더
 import Calender from './components/calendar/Calendar'
 import DashBoard from './components/dashBoard/DashBoard'
+import Main from "./pages/main/Main";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -42,7 +43,7 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<h1 style={{ margin: "400px" }}>메인페이지</h1>}
+            element={<Main/>}
           ></Route>
           {/* member */}
           <Route path="/signup" element={<Signup />} />
