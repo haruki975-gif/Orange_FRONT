@@ -2,9 +2,9 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import "./CommentForm.css";
 
-const CommentForm = ({ onSubmit, buttonLabel = "댓글 작성", allowImage = true }) => {
+const CommentForm = ({ onSubmit, buttonLabel = "댓글 작성", allowImage = true, image, setImage }) => {
     const [content, setContent] = useState("");
-    const [image, setImage] = useState(null);
+    
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {

@@ -42,7 +42,7 @@ const SetChallenge = ({ isModalOpen, setIsModalOpen }) => {
         }
 
         toast.promise(
-        axios.post(`${apiURL}/api/admin/challenge`, formData, {
+        axios.post(`${apiURL}/api/challenge`, formData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
                 "Content-Type": "multipart/form-data",

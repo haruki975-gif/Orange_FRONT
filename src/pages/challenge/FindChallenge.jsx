@@ -40,7 +40,11 @@ const FindChallenge = () => {
     }, [currentPage]);
 
     const loadComments = (postId) => {
-        axios.get(`${apiURL}/api/challenge/comment?postId=${postId}`)
+        axios.get(`${apiURL}/api/challenge/comment?postId=${postId}`, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+            },
+        })
             .then(res => {
                 console.log("댓글 응답:", [...res.data]);
                 setComments(Array.isArray(res.data) ? [...res.data] : (res.data.comments || []));
@@ -119,6 +123,7 @@ const FindChallenge = () => {
                 <div className="challenge-detail">
                     <h2>{selectedPost.challengeTitle}</h2>
                     <p>{selectedPost.challengeContent}</p>
+                    <img src={selectedPost.challengeFileUrl}/>
                     {isLoggedIn ? (
                         <AddChallengeComment
                             postId={selectedPost.challengeNo}

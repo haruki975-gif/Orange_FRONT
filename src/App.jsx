@@ -26,7 +26,6 @@ import Challenge from "./pages/Admin/challenge/Challenge";
 import Log from "./pages/Admin/log/Log";
 import ManageLog from "./pages/Admin/log/ManageLog";
 import FindChallenge from "./pages/challenge/FindChallenge";
-import AdminRoute from "./pages/Admin/AdminRoute";
 
 
 // 대시보드, 캘린더
@@ -72,49 +71,37 @@ function App() {
           <Route
             path="/admin/user"
             element={
-              <AdminRoute>
-                <User />
-              </AdminRoute>
+              <User />
             }
           />
           <Route
             path="/admin/user/:id"
             element={
-              <AdminRoute>
-                <FindUser />
-              </AdminRoute>
+              <FindUser />
             }
           />
           <Route
             path="/admin/user/manage"
             element={
-              <AdminRoute>
-                <ManageUser />
-              </AdminRoute>
+              <ManageUser />
             }
           />
           <Route
             path="/admin/challenge"
             element={
-              <AdminRoute>
-                <Challenge />
-              </AdminRoute>
+              <Challenge />
             }
           />
           <Route
             path="/admin/log"
             element={
-              <AdminRoute>
-                <Log />
-              </AdminRoute>
+              <Log />
             }
           />
           <Route
             path="/admin/log/:id"
             element={
-              <AdminRoute>
-                <ManageLog />
-              </AdminRoute>
+              <ManageLog />
             }
           />
         </Routes>
