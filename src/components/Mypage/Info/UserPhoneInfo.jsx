@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useDuplicateCheck } from "../../Member/Signup/js/useDuplicateCheck";
 import { validationRules } from "../../Member/Signup/js/validationRules";
+import { GlobalContext } from "../../context/GlobalContext";
 
 const UserPhoneInfo = ({
   formData,
@@ -11,20 +12,19 @@ const UserPhoneInfo = ({
 }) => {
   const [originalPhone, setOriginalPhone] = useState(""); // 기존 연락처
   const [isLoaded, setIsLoaded] = useState(false);
-  const userNo = sessionStorage.getItem("userNo");
-  const token = sessionStorage.getItem("accessToken");
+  const { auth } = useContext(GlobalContext);
   const apiUrl = URL_CONFIG.API_URL;
 
   useEffect(() => {
+    if (!auth.userNo || !auth.accessToken) return;
     axios
-      .get(`${apiUrl}/api/info/phone/${userNo}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      .get(`${apiUrl}/api/info/phone/${auth.userNo}`, {
+        headers: { Authorization: `Bearer ${auth.accessToken}` },
       })
       .then((res) => {
         const phone = res.data.items[0] || "";
         setOriginalPhone(phone);
         setFormData((prev) => ({ ...prev, userPhone: phone }));
-        sessionStorage.setItem("userPhone", phone);
         setIsLoaded(true);
       })
       .catch(() => {
@@ -33,7 +33,7 @@ const UserPhoneInfo = ({
           userPhone: "연락처 조회에 실패했습니다.",
         }));
       });
-  }, [userNo]);
+  }, [auth.userNo, auth.accessToken]);
 
   const handleChange = (e) => {
     const value = e.target.value;

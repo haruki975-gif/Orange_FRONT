@@ -33,7 +33,6 @@ const Step1UserCheck = ({
     axios
       .get(`${apiUrl}/api/members/find-pw/step1/${userId}`)
       .then((response) => {
-        console.log("아이디 조회 성공", response);
         const items = response.data.items;
 
         if (Array.isArray(items) && items.length > 0 && items[0].userId) {
@@ -44,8 +43,6 @@ const Step1UserCheck = ({
         }
       })
       .catch((error) => {
-        console.log("아이디 조회 실패", error);
-
         if (
           error.response &&
           error.response.data &&

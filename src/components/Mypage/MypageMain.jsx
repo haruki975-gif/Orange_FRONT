@@ -24,7 +24,7 @@ const MypageMain = () => {
         navi("/");
       })
       .catch((error) => {
-        console.log("로그아웃 실패 또는 토큰 만료", error);
+        // console.log("로그아웃 실패 또는 토큰 만료", error);
         sessionStorage.clear();
         alert("로그아웃 되었습니다.");
         navi("/");
@@ -35,7 +35,11 @@ const MypageMain = () => {
     <div className="mypage-container">
       <div className="mypage-header">
         <div className="user-info">
-          <FaUser size={55} color="#555" />
+          <img
+            src="/img/로고_마이페이지.png"
+            alt=""
+            style={{ width: "55px", height: "55px" }}
+          />
           <div>
             <div className="user-id">{userId}</div>
             <div className="user-welcome">

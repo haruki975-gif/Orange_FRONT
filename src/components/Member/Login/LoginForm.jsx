@@ -11,7 +11,6 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useContext(GlobalContext);
   const apiUrl = URL_CONFIG.API_URL;
-  const navi = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -31,19 +30,16 @@ function Login() {
       })
       .then((response) => {
         const userInfo = response.data.items[0];
-        login(userInfo.accessToken, userInfo.refreshToken,
-              userInfo.userNo, userInfo.userId,
-              userInfo.userName, userInfo.userRole);
+        login(
+          userInfo.accessToken,
+          userInfo.refreshToken,
+          userInfo.userNo,
+          userInfo.userId,
+          userInfo.userName,
+          userInfo.userRole
+        );
 
-        // 로그인 상태 변경 이벤트
-        window.dispatchEvent(new Event("loginStateChanged"));
         alert(`${userInfo.userName}님 환영합니다.`);
-
-        if (userInfo.userRole === "ADMIN") {
-          navi("/admin");
-        } else {
-          navi("/");
-        }
       })
       .catch((error) => {
         console.log("로그인 오류", error);
@@ -62,8 +58,7 @@ function Login() {
       })
       .finally(() => {
         setIsLoading(false);
-    });
-
+      });
   };
 
   return (

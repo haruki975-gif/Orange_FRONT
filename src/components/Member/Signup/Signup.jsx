@@ -125,12 +125,12 @@ function Signup() {
     axios
       .post(`${apiUrl}/api/members`, requestData)
       .then((response) => {
-        console.log("회원가입 성공:", response.data);
+        // console.log("회원가입 성공:", response.data);
         alert("회원가입이 완료되었습니다.");
         navi("/login");
       })
       .catch((error) => {
-        console.error("회원가입 실패:", error);
+        // console.error("회원가입 실패:", error);
         alert("회원가입에 실패했습니다.");
       });
   };
