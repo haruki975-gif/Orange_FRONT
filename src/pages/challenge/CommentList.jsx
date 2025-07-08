@@ -5,75 +5,122 @@ const CommentList = ({ comments = [], onDelete, onEdit }) => {
     const [editId, setEditId] = useState(null);
     const [editContent, setEditContent] = useState("");
     const [editImage, setEditImage] = useState(null);
-    
+    const [editingLoadingId, setEditingLoadingId] = useState(null);
+
+    // 현재 로그인한 사용자 번호 가져오기
+    const userNo = Number(sessionStorage.getItem("userNo"));
 
     const handleEditSave = (id) => {
-        onEdit(id, editContent, editImage);
-        setEditId(null);
-        setEditContent("");
-        setEditImage(null);
+        const result = onEdit(id, editContent, editImage);
+        if (!result || typeof result.then !== "function") {
+            return;
+        }
+
+        setEditingLoadingId(id);
+
+        result
+            .then(() => {
+                setEditId(null);
+                setEditContent("");
+                setEditImage(null);
+                return true;
+            })
+            .catch(() => {
+                alert("수정 실패");
+            })
+            .finally(() => {
+                setEditingLoadingId(null);
+            });
     };
 
     return (
         <div className="comment-list">
-        {comments.map((comment) => (
-            <div key={comment.commentNo} className="comment-item">
-            {editId === comment.commentNo ? (
-                <>
-                  <textarea
-                    value={editContent}
-                    onChange={(e) => setEditContent(e.target.value)}
-                  />
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setEditImage(e.target.files[0])}
-                  />
-                  <div className="comment-actions">
-                    <button className="save-btn" onClick={() => handleEditSave(comment.commentNo)}>저장</button>
-                    <button className="cancel-btn" onClick={() => setEditId(null)}>취소</button>
-                  </div>
-                </>
-            ) : (
-            <div className="comment-box">
-                <div className="comment-header">
-                    <p className="comment-content">{comment.commentContent}</p>
-                    <span className="comment-meta">
-                        {comment.commentWriter}
-                        ({new Date(comment.createDate).toLocaleString("ko-KR", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                        })})
-                    </span>
-                </div>
-                  
-                {/* 이미지 */}
-                {comment.commentFileUrl && (
-                    <div className="comment-image-wrapper">
-                        <img src={comment.commentFileUrl} alt="첨부 이미지" className="comment-image" />
-                    </div>
-                )}
+            {comments.map((comment) => (
+                <div key={comment.commentNo} className="comment-item">
+                    {editId === comment.commentNo ? (
+                        <>
+                            <textarea
+                                value={editContent}
+                                onChange={(e) => setEditContent(e.target.value)}
+                                disabled={editingLoadingId === comment.commentNo}
+                            />
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setEditImage(e.target.files[0])}
+                                disabled={editingLoadingId === comment.commentNo}
+                            />
+                            <div className="comment-actions">
+                                <button
+                                    className="save-btn"
+                                    onClick={() => handleEditSave(comment.commentNo)}
+                                    disabled={editingLoadingId === comment.commentNo}
+                                >
+                                    {editingLoadingId === comment.commentNo ? "저장 중..." : "저장"}
+                                </button>
+                                <button
+                                    className="cancel-btn"
+                                    onClick={() => setEditId(null)}
+                                    disabled={editingLoadingId === comment.commentNo}
+                                >
+                                    취소
+                                </button>
+                            </div>
+                        </>
+                    ) : (
+                        <div className="comment-box">
+                            <div className="comment-header">
+                                <p className="comment-content">{comment.commentContent}</p>
+                                <span className="comment-meta">
+                                    <span className="comment-writer">{comment.commentWriter}</span>
+                                    ({new Date(comment.createDate).toLocaleString("ko-KR", {
+                                        year: "numeric",
+                                        month: "2-digit",
+                                        day: "2-digit",
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                    })})
+                                </span>
+                            </div>
 
-                {/* 버튼 */}
-                <div className="comment-actions">
-                    <button className="edit-btn" onClick={() => {
-                        setEditId(comment.commentNo);
-                        setEditContent(comment.commentContent);
-                        setEditImage(null);
-                    }}>
-                        수정
-                    </button>
+                            {/* 이미지 렌더링 */}
+                            {comment.commentFileUrl && (
+                                <div className="comment-image-wrapper">
+                                    <img
+                                        src={comment.commentFileUrl}
+                                        alt="첨부 이미지"
+                                        className="comment-image"
+                                    />
+                                </div>
+                            )}
 
-                    <button className="delete-btn" onClick={() => onDelete(comment.commentNo)}>
-                        삭제
-                    </button>
+                            {/* 수정/삭제 버튼은 본인만 보이게 */}
+                            {comment.commentWriterNo === userNo && (
+                                <div className="comment-actions">
+                                    <button
+                                        className="edit-btn"
+                                        onClick={() => {
+                                            setEditId(comment.commentNo);
+                                            setEditContent(comment.commentContent);
+                                            setEditImage(null);
+                                        }}
+                                    >
+                                        수정
+                                    </button>
+                                    <button
+                                        className="delete-btn"
+                                        onClick={() => {
+                                            if (window.confirm("댓글을 삭제하시겠습니까?")){
+                                                onDelete(comment.commentNo)
+                                            }}}
+                                    >
+                                        삭제
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
-            </div>
-            )}
-            </div>
             ))}
         </div>
     );
