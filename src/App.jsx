@@ -25,6 +25,7 @@ import { GlobalProvider } from "./components/context/GlobalContext";
 import Challenge from "./pages/Admin/challenge/Challenge";
 import Log from "./pages/Admin/log/Log";
 import ManageLog from "./pages/Admin/log/ManageLog";
+import FindChallenge from "./pages/challenge/FindChallenge";
 
 
 // 대시보드, 캘린더
@@ -66,15 +67,50 @@ function App() {
 
           <Route path='/calendar' element={<Calender />} />
           <Route path='/dashboard' element={<DashBoard />} />
+          
+          {/* challenge */}
+          <Route path="/challenge/:id" element={<FindChallenge />} />
+
 
           {/* Admin Page */}
-            <Route path="/admin/user" element={<User />} />
-            <Route path="/admin/user/list" element={<FindUser />} />
-            <Route path="/admin/user/manage" element={<ManageUser />} />
-            <Route path="/admin/challenge" element={<Challenge />} />
-            <Route path="/admin/log" element={<Log />} />
-            <Route path="/admin/log/list" element={<ManageLog />} />
-          </Routes>
+          <Route
+            path="/admin/user"
+            element={
+              <User />
+            }
+          />
+          <Route
+            path="/admin/user/:id"
+            element={
+              <FindUser />
+            }
+          />
+          <Route
+            path="/admin/user/manage"
+            element={
+              <ManageUser />
+            }
+          />
+          <Route
+            path="/admin/challenge"
+            element={
+              <Challenge />
+            }
+          />
+          <Route
+            path="/admin/log"
+            element={
+              <Log />
+            }
+          />
+          <Route
+            path="/admin/log/:id"
+            element={
+              <ManageLog />
+            }
+          />
+        </Routes>
+
           <ToastContainer
             position="top-right"
             autoClose={5000}

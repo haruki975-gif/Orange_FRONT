@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import Menu from "./components/menu/Menu";
 import Tab from "./components/tab/Tab";
 import "./side.css";
 import axios from "axios";
@@ -75,7 +74,7 @@ const Side = () =>{
                 {"name" : "챌린지방", 
                 "icon" : "/img/icon/journal-frame.png"},
         "subMenu" : [],
-        "path" : "/challenge/list"
+        "path" : "/challenge/:id"
     }
     const admin = {
         "main" : 
@@ -104,11 +103,14 @@ const Side = () =>{
     return(
         <div id="side">
             <div className="menus">
-                <Tab menu={myCalendar} />
-                <Tab menu={myTeam} />
-                <Tab menu={findTeam} />
-                <Tab menu={challenges} />
-                <Tab menu={admin} />
+
+                <Tab menu={myCalendar}/>
+                <Tab menu={myTeam}/>
+                <Tab menu={findTeam}/>
+                <Tab menu={challenges}/>
+
+                {/* ✅ 관리자일 때만 관리자 탭 렌더링 */}
+                {auth?.accessToken && auth.userRole === "ROLE_ADMIN" && <Tab menu={admin} />}
 
             </div>
         </div>
