@@ -44,3 +44,7 @@
 .auth-btn:hover {
   background-color: #555;
 }
+
+.logList-table-wrapper {
+    text-align: center;
+}

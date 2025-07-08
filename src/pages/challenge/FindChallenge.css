@@ -1,6 +1,6 @@
 .challenge-board {
     padding: 20px;
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -17,13 +17,41 @@
     text-align: center;
 }
 
+.challenge-table td:first-child,
+.challenge-table td:last-child { 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 글 번호 */
+.challenge-table td:first-child {
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 60px;     /* 최소 너비 확보 */
+  text-align: center;
+}
+
+/* 작성일 */
+.challenge-table th:last-child,
+.challenge-table td:last-child {
+  width: 120px;
+}
+
 .challenge-table .title {
-    text-align: left;
-    cursor: pointer;
+  font-weight: bold;
+  text-align: left;
+  cursor: pointer;
+  transition: font-size 0.2s ease;
 }
 
 .challenge-table tr:hover {
     background-color: #f5f5f5;
+}
+
+.challenge-table tr:hover .title {
+  font-size: 1.1em;
 }
 
 .challenge-table .selected {
