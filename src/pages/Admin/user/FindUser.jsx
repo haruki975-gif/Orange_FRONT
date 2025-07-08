@@ -1,72 +1,50 @@
 import "../AdminTab.css";
 import "./Style_User.css";
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { GlobalContext } from "../../../components/context/GlobalContext";
 import Pagination from "../../../components/UI/Pagination";
-import { useState } from "react";
 
 const FindUser = () => {
-    const dummyData = [
-        {
-          id: "nin****",
-          name: "김*남",
-          phone: "010-****-5844",
-          email: "bab***@naver.com",
-          address: "경기도 성남시 **구 정자***\n**동 **아파트",
-          date: "2025/06/19",
-          status: "활동중",
-        },
-        {
-          id: "cho****",
-          name: "최*서",
-          phone: "010-****-5844",
-          email: "cho***@naver.com",
-          address: "경기도 성남시 **구 정자***\n**동 **아파트",
-          date: "2025/06/18",
-          status: "활동중",
-        },
-        {
-          id: "lee****",
-          name: "이*빈",
-          phone: "010-****-5844",
-          email: "bin***@naver.com",
-          address: "경기도 성남시 **구 정자***\n**동 **아파트",
-          date: "2025/06/16",
-          status: "활동중",
-        },
-        {
-          id: "kim****",
-          name: "김*수",
-          phone: "010-****-5844",
-          email: "soo***@naver.com",
-          address: "경기도 성남시 **구 정자***\n**동 **아파트",
-          date: "2025/06/14",
-          status: "활동중",
-        },
-        {
-          id: "yo****",
-          name: "김*윤",
-          phone: "010-****-5844",
-          email: "dsf***@naver.com",
-          address: "경기도 성남시 **구 정자***\n**동 **아파트",
-          date: "2025/06/13",
-          status: "활동중",
-        },
-        {
-          id: "jun****",
-          name: "정*리",
-          phone: "010-****-5844",
-          email: "dsf***@naver.com",
-          address: "경기도 성남시 **구 정자***\n**동 **아파트",
-          date: "2025/06/03",
-          status: "활동중",
-        },
-    ];
-
-    const itemsPerPage = 5;
+    const apiURL = URL_CONFIG.API_URL;
+    const { auth, errorAlert } = useContext(GlobalContext);
+    const [members, setMembers] = useState([]);
+    const [totalCount, setTotalCount] = useState(0);
+    const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(1);
+    const totalPages = Math.ceil(totalCount / itemsPerPage);
+    const formatDate = (dateStr) => {
+        if (!dateStr) return "";
+        const d = new Date(dateStr);
+        const pad = (n) => n.toString().padStart(2, '0');
+        
+        return (
+            d.getFullYear().toString().slice(2) + "/" +
+            pad(d.getMonth() + 1) + "/" +
+            pad(d.getDate()) + " " +
+            pad(d.getHours()) + ":" +
+            pad(d.getMinutes()) + ":" +
+            pad(d.getSeconds())
+        );
+    };
 
-    const totalPages = Math.ceil(dummyData.length / itemsPerPage);
-    const startIdx = (currentPage - 1) * itemsPerPage;
-    const currentData = dummyData.slice(startIdx, startIdx + itemsPerPage);
+    useEffect(() => {
+        if (!auth?.accessToken) return;
+
+        axios.get(`${apiURL}/api/admin/members?page=${currentPage}&size=${itemsPerPage}`, {
+            headers: {
+                Authorization: `Bearer ${auth.accessToken}`,
+            },
+        })
+        .then((res) => {
+            setMembers(res.data.members);
+            setTotalCount(res.data.total);
+        })
+        .catch((err) => {
+            console.error("회원 목록 조회 실패:", err);
+            errorAlert("회원 목록을 불러오지 못했습니다.");
+        });
+    }, [auth?.accessToken, currentPage]);
 
     return (
         <div className="userList-table-wrapper">
@@ -83,17 +61,21 @@ const FindUser = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentData.map((user, idx) => (
-                        <tr key={idx}>
-                            <td>{user.id}</td>
-                            <td>{user.name}</td>
-                            <td>{user.phone}</td>
-                            <td>{user.email}</td>
-                            <td style={{ whiteSpace: "pre-line" }}>{user.address}</td>
-                            <td>{user.date}</td>
-                            <td>{user.status}</td>
-                        </tr>
-                    ))}
+                    {members.length === 0 ? (
+                        <tr><td colSpan="7">회원이 없습니다.</td></tr>
+                    ) : (
+                        members.map((user, idx) => (
+                            <tr key={user.userId || idx}>
+                                <td>{user.userId}</td>
+                                <td>{user.userName}</td>
+                                <td>{user.userPhone}</td>
+                                <td>{user.userEmail}</td>
+                                <td style={{ whiteSpace: "pre-line" }}>{user.userAddress1}</td>
+                                <td>{formatDate(user.joinDate)}</td>
+                                <td>{user.userStatus === 'Y' ? '활동중' : '정지'}</td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </table>
 

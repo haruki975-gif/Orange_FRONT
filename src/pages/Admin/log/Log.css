@@ -1,0 +1,46 @@
+.admin-auth-wrapper {
+  width: 320px;
+  margin: 50px auto;
+  text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.auth-info {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  margin-bottom: 6px;
+}
+
+.auth-error {
+  font-size: 12px;
+  color: #e74c3c; /* 빨간색 */
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.auth-btn:hover {
+  background-color: #555;
+}

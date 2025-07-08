@@ -1,147 +1,78 @@
 import "../AdminTab.css";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState, useContext } from "react";
+import { GlobalContext } from "../../../components/context/GlobalContext";
 import Pagination from "../../../components/UI/Pagination";
 
 const ManageLog = () => {
-    /* 더미데이터 */
-    const dummyData = [
-        {
-          id: "nin****",
-          name: "김*남",
-          ip: "192.168.***.***",
-          event_value: "My Page",
-          prev_dt: "2025-06-19 15:16:44",
-          dt: "2025-06-20 18:25:32",
-        },
-        {
-          id: "nin****",
-          name: "김*남",
-          ip: "192.168.***.***",
-          event_value: "Login : sca",
-          prev_dt: "NULL",
-          dt: "2025-06-19 15:16:44",
-        },
-        {
-          id: "bin****",
-          name: "이*빈",
-          ip: "192.168.***.***",
-          event_value: "My Page",
-          prev_dt: "2025-06-14 05:22:13",
-          dt: "2025-06-16 21:35:02",
-        },
-        {
-          id: "kim****",
-          name: "김*수",
-          ip: "192.168.***.***",
-          event_value: "My Page",
-          prev_dt: "2025-06-11 12:12:31",
-          dt: "2025-06-15 18:15:32",
-        },
-        {
-          id: "bin****",
-          name: "이*빈",
-          ip: "192.168.***.***",
-          event_value: "My Page",
-          prev_dt: "NULL",
-          dt: "2025-06-14 05:22:13",
-        },
-        {
-          id: "kim****",
-          name: "김*수",
-          ip: "192.168.***.***",
-          event_value: "My Page",
-          prev_dt: "2025-06-11 08:16:23",
-          dt: "2025-06-11 12:12:31",
-        },
-        {
-          id: "cho****",
-          name: "최*서",
-          ip: "192.168.***.***",
-          event_value: "My Page",
-          prev_dt: "2025-05-29 22:25:34",
-          dt: "2025-06-03 18:25:32",
-        },
-        {
-          id: "kim****",
-          name: "김*수",
-          ip: "192.168.***.***",
-          event_value: "My Page",
-          prev_dt: "2025-06-11 08:16:23",
-          dt: "2025-06-11 12:12:31",
-        },
-        {
-          id: "kim****",
-          name: "김*수",
-          ip: "192.168.***.***",
-          event_value: "My Page",
-          prev_dt: "2025-06-11 08:16:23",
-          dt: "2025-06-11 12:12:31",
-        },
-        {
-          id: "kim****",
-          name: "김*수",
-          ip: "192.168.***.***",
-          event_value: "My Page",
-          prev_dt: "2025-06-11 08:16:23",
-          dt: "2025-06-11 12:12:31",
-        },
-        {
-          id: "kim****",
-          name: "김*수",
-          ip: "192.168.***.***",
-          event_value: "My Page",
-          prev_dt: "2025-06-11 08:16:23",
-          dt: "2025-06-11 12:12:31",
-        },
-        {
-          id: "kim****",
-          name: "김*수",
-          ip: "192.168.***.***",
-          event_value: "My Page",
-          prev_dt: "2025-06-11 08:16:23",
-          dt: "2025-06-11 12:12:31",
-        },
-        {
-          id: "kim****",
-          name: "김*수",
-          ip: "192.168.***.***",
-          event_value: "My Page",
-          prev_dt: "2025-06-11 08:16:23",
-          dt: "2025-06-11 12:12:31",
-        },
-    ];
-
-    const itemsPerPage = 5;
+    const apiUrl = URL_CONFIG.API_URL;
+    const [logs, setLogs] = useState([]);
+    const { auth, errorAlert } = useContext(GlobalContext);
+    const [totalCount, setTotalCount] = useState(0);
+    const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(1);
-
-    const totalPages = Math.ceil(dummyData.length / itemsPerPage);
+    const [totalPages, setTotalPages] = useState(1);
     const startIdx = (currentPage - 1) * itemsPerPage;
-    const currentData = dummyData.slice(startIdx, startIdx + itemsPerPage);
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const yy = String(date.getFullYear()).slice(2);
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const dd = String(date.getDate()).padStart(2, '0');
+        const hh = String(date.getHours()).padStart(2, '0');
+        const mi = String(date.getMinutes()).padStart(2, '0');
+        const ss = String(date.getSeconds()).padStart(2, '0');
+
+        return `${yy}/${mm}/${dd} ${hh}:${mi}:${ss}`;
+    };
+
+    useEffect(() => {
+        if (!auth?.accessToken) return;
+
+        axios.get(`${apiUrl}/api/admin/log?page=${currentPage}&size=${itemsPerPage}`, {
+            headers: {
+                Authorization: `Bearer ${auth.accessToken}`,
+            },
+        })
+        .then((response) => {
+            setLogs(response.data.logs);
+            setTotalCount(response.data.total);
+            setTotalPages(Math.ceil(response.data.total / itemsPerPage));
+        })
+        .catch((error) => {
+            console.error("로그 목록 조회 실패:", error);
+            errorAlert("로그 목록을 불러오지 못했습니다.");
+        });
+    }, [auth?.accessToken, currentPage]);
 
     return (
         <div className="logList-table-wrapper">
+            <h2>로그 목록</h2>
             <table className="logList-table">
                 <thead>
                     <tr>
+                        <th>번호</th>
                         <th>ID</th>
                         <th>이름</th>
-                        <th>IP</th>
                         <th>Event_Value</th>
-                        <th>Prev_DT</th>
                         <th>DT</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {currentData.map((user, idx) => (
-                        <tr key={idx}>
-                            <td>{user.id}</td>
-                            <td>{user.name}</td>
-                            <td>{user.ip}</td>
-                            <td>{user.event_value}</td>
-                            <td>{user.prev_dt}</td>
-                            <td>{user.dt}</td>
-                        </tr>
-                    ))}
+                    {logs.length === 0 ? (
+                        <tr><td colSpan="5">로그가 없습니다.</td></tr>
+                    ) : (
+                        [...logs]
+                        .reverse() // 최신 로그가 위에 오도록 역순 정렬
+                        .map((log, index) => (
+                            <tr key={log.logNo}>
+                                <td>{totalCount - (startIdx + index)}</td>
+                                <td>{log.logUserId}</td>
+                                <td>{log.logUserName}</td>
+                                <td>{log.logValue}</td>
+                                <td>{formatDate(log.logDate)}</td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </table>
 
