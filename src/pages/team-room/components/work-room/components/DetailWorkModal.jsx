@@ -34,7 +34,7 @@ const DetailWorkModal = ({setOpenDetailModal, modalBackground, workDetail}) =>{
                     <h3>담당자</h3>
                     <div className="assignee-info">
                         <div className="user-profile">
-                            {work.assigneeProfile ? (
+                            {workDetail.assigneeProfile ? (
                                 <img src={workDetail.assigneeProfile} alt="" />
                             ) : (
                                 <FaUserCircle
