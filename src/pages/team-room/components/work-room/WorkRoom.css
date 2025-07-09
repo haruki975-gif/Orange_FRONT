@@ -263,10 +263,11 @@
     border-radius: 50%;
     margin-right: 8px;
     background-color: #D9D9D9;
+    overflow: hidden;
 }
 #team-room .work-modal .assignee .user-profile > img{
-    width: 20px;
-    height: 20px;
+    width: 100%;
+    height: 100%;
 }
 #team-room .work-modal .create-request-btn{
     margin-top: 10px;

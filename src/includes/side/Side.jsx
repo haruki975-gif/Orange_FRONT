@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import Tab from "./components/tab/Tab";
-import "./side.css";
+import "./Side.css";
 import axios from "axios";
 import { GlobalContext } from "../../components/context/GlobalContext";
 
