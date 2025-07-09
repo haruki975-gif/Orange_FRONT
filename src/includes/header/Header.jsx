@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import "./header.css";
+import "./Header.css";
 import AlertComponent from "./components/AlertComponent";
 import axios from "axios";
 import { GlobalContext } from "../../components/context/GlobalContext";
