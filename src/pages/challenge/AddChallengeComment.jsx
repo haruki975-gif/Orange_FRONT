@@ -1,5 +1,4 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 import CommentForm from "./CommentForm";
 import { useContext, useState } from "react";
 import { GlobalContext } from "../../components/context/GlobalContext";

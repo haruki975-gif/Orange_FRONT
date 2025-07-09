@@ -4,7 +4,8 @@ import { GlobalContext } from "../../components/context/GlobalContext";
 import CommentList from "./CommentList";
 
 const CommentSection = ({ postId }) => {
-    const { auth } = useContext(GlobalContext);
+    const { auth, userRole } = useContext(GlobalContext);
+    const isAdmin = userRole?.includes("ADMIN") || false;
     const [comments, setComments] = useState([]);
 
     const fetchComments = () => {
@@ -67,6 +68,7 @@ const CommentSection = ({ postId }) => {
                 comments={comments}
                 onDelete={handleDelete}
                 onEdit={handleEdit}
+                isAdmin={isAdmin}
             />
         </div>
     );
