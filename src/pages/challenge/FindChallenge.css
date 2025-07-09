@@ -1,6 +1,23 @@
+.challenge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 0px 0 8px 0; /* 위쪽 패딩만 4px로 줄임 */
+  border-bottom: 1px solid #ddd;
+}
+
+.challenge-header h2 {
+  margin: 0;       /* 위/아래 마진 모두 제거 */
+  padding-top: 0;  /* 혹시 padding 있으면 제거 */
+  font-size: 1.5rem;
+  font-weight: 700;
+  flex-grow: 1;
+}
+
 .challenge-board {
     padding: 20px;
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -17,13 +34,44 @@
     text-align: center;
 }
 
+.challenge-table td:first-child,
+.challenge-table td:last-child { 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 글 번호 */
+.challenge-table td:first-child {
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 60px;     /* 최소 너비 확보 */
+  text-align: center;
+}
+
+/* 작성일 */
+.challenge-table th:last-child,
+.challenge-table td:last-child {
+  width: 120px;
+}
+
 .challenge-table .title {
-    text-align: left;
-    cursor: pointer;
+  font-weight: bold;
+  text-align: left;
+  cursor: pointer;
+  transition: font-size 0.2s ease;
+}
+.challenge-table .title:hover {
+  font-size: 1.05rem;
 }
 
 .challenge-table tr:hover {
     background-color: #f5f5f5;
+}
+
+.challenge-table tr:hover .title {
+  font-size: 1.1em;
 }
 
 .challenge-table .selected {
@@ -37,7 +85,71 @@
     background: #fff;
 }
 
+.challenge-meta {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: black;
+}
+.challenge-meta strong {
+  font-weight: 700;
+}
+
+
 .challenge-detail h2 {
     margin-top: 0;
     font-size: 1.4rem;
+}
+
+.post-meta {
+  font-size: 0.9rem;
+  color: black;
+  text-align: right;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.post-meta div {
+  line-height: 1.3;
+}
+
+.post-meta strong {
+  font-weight: 600;
+}
+
+/* 종료된 챌린지 제목 */
+.completed-title {
+  color: gray;
+  font-weight: normal;
+  font-size: 1rem; /* 크기 고정 */
+  cursor: default; /* 클릭 안되게 */
+}
+.challenge-table .completed-title:hover {
+  font-size: 1rem; /* 커지지 않음 */
+}
+.completed-title:hover {
+  font-size: initial; /* hover 효과 없애기 */
+}
+
+.complete-btn {
+  background-color: #d32f2f;
+  color: white;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.complete-btn:hover {
+  background-color: #9a2424;
+}
+
+.login-required {
+  color: red;
+  font-weight: bold;
+  font-size: 1rem;
+  margin: 1em 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
 }

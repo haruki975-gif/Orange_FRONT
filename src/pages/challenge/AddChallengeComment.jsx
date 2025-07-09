@@ -15,16 +15,16 @@ const AddChallengeComment = ({ postId, onCommentAdded }) => {
         const formData = new FormData();
         formData.append("refBoardNo", postId);
         formData.append("commentContent", content);
-
-        console.log("이미지 파일:", image);
         if (image) formData.append("file", image);
         
 
         if(!auth?.accessToken){
-            return;
+            errorAlert("로그인이 필요합니다.");
+            return Promise.reject();
         }
-        axios.post(`${apiURL}/api/challenge/comment`, formData
-            , {
+        return axios
+            .post(`${apiURL}/api/challenge/comment`, formData,
+            {
                 headers: {
                     Authorization: `Bearer ${auth.accessToken}`,
                     "Content-Type": "multipart/form-data",

@@ -1,4 +1,5 @@
 import "../AdminTab.css";
+import "./Log.css";
 import axios from "axios";
 import { useEffect, useState, useContext } from "react";
 import { GlobalContext } from "../../../components/context/GlobalContext";

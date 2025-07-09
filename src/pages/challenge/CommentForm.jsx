@@ -2,52 +2,72 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import "./CommentForm.css";
 
-const CommentForm = ({ onSubmit, buttonLabel = "댓글 작성", allowImage = true, image, setImage }) => {
-    const [content, setContent] = useState("");
-    
-    const [loading, setLoading] = useState(false);
+const CommentForm = ({
+  onSubmit,               // ({ content, image }) => Promise
+  buttonLabel = "댓글 작성",
+  allowImage = true,
+  initialContent = "",    // 수정 시 사용
+  initialImage = null,    // 수정 시 사용
+}) => {
+  const [content, setContent] = useState(initialContent);
+  const [image, setImage] = useState(initialImage);
+  const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!content.trim()) return;
+  const handleFileChange = (e) => {
+    const selected = e.target.files[0];
+    setImage(selected);
+  };
 
-        const submitAction = async () => {
-            setLoading(true);
-            await onSubmit({ content, image });
-            setContent("");
-            setImage(null);
-            setLoading(false);
-        };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!content.trim()) return;
 
-        toast.promise(submitAction(), {
-            pending: "댓글 등록 중...",
-            success: "댓글이 등록되었습니다.",
-            error: "등록 실패. 다시 시도해주세요.",
-        });
-    };
+    setLoading(true);
+    onSubmit({ content, image })
+      .then(() => {
+        setContent("");
+        setImage(null);
+      })
+      .catch(() => {
+        alert("등록 실패");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
-    return (
-        <form className="comment-form" onSubmit={handleSubmit}>
-            <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="댓글을 입력하세요..."
-                required
-                disabled={loading}
-            />
-            {allowImage && (
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setImage(e.target.files[0])}
-                    disabled={loading}
-                />
-            )}
-            <button type="submit" disabled={loading}>
-                {loading ? "등록 중..." : buttonLabel}
-            </button>
-        </form>
-    );
+  return (
+    <form className="comment-form" onSubmit={handleSubmit}>
+      <textarea
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder="댓글을 입력하세요..."
+        required
+        disabled={loading}
+      />
+
+      {allowImage && (
+        <>
+          <label htmlFor="fileInput" className="file-label">
+            이미지 선택
+          </label>
+          <input
+            id="fileInput"
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+            disabled={loading}
+          />
+          {image && <div className="selected-image-name">{image.name}</div>}
+        </>
+      )}
+
+      <button type="submit" disabled={loading}>
+        {loading ? "등록 중..." : buttonLabel}
+      </button>
+    </form>
+  );
 };
 
 export default CommentForm;

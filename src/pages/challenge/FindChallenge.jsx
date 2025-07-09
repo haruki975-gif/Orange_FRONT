@@ -5,9 +5,12 @@ import "./FindChallenge.css";
 import CommentList from "./CommentList";
 import Pagination from "../../components/UI/Pagination";
 import AddChallengeComment from "./AddChallengeComment";
+import CompleteChallenge from "./CompleteChallenge";
 
 const apiURL = URL_CONFIG.API_URL;
 const isLoggedIn = true;
+const userRole = sessionStorage.getItem("userRole") || "";
+const isAdmin = userRole.includes("ADMIN");
 
 const FindChallenge = () => {
     const [posts, setPosts] = useState([]);
@@ -16,7 +19,7 @@ const FindChallenge = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const itemsPerPage = 10;
-    
+
     useEffect(() => {
         const accessToken = sessionStorage.getItem("accessToken");
 
@@ -31,6 +34,7 @@ const FindChallenge = () => {
         })
             .then(res => {
                 console.log("게시글 응답:", [...res.data]);
+                console.log("확인할게시글 응답:", res.data);
                 setPosts([...res.data] || []);
                 setTotalPages(res.data.totalPages || 1);
             })
@@ -48,6 +52,7 @@ const FindChallenge = () => {
         })
             .then(res => {
                 console.log("댓글 응답:", [...res.data]);
+                console.log("댓글 응답 데이터 확인:", res);
                 setComments(Array.isArray(res.data) ? [...res.data] : (res.data.comments || []));
             })
             .catch((err) => {
@@ -58,13 +63,20 @@ const FindChallenge = () => {
 
     const handlePostClick = (post) => {
         setSelectedPost(post);
+        console.log("선택된 게시글:", post);
         loadComments(post.challengeNo);
     };
 
-    const handleCommentDelete = (commentId) => {
+    const handleCommentDelete = (commentNo) => {
         toast.promise(
-            axios.delete(`${apiURL}/api/challenge/comment/${commentId}`).then(() => {
-                loadComments(selectedPost.challengeNo);
+            axios
+            .delete(`${apiURL}/api/challenge/comment/${commentNo}`, {
+              headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+              },
+            })
+            .then(() => {
+              loadComments(selectedPost.challengeNo);
             }),
             {
                 pending: "댓글 삭제 중...",
@@ -74,19 +86,29 @@ const FindChallenge = () => {
         );
     };
 
-    const handleCommentEdit = (commentId, newContent, newImage) => {
-        const formData = new FormData();
-        formData.append("content", newContent);
-        if (newImage) formData.append("file", newImage);
+    const handleCommentEdit = (commentNo, newContent, newImage) => {
+        const comment = comments.find((c) => c.commentNo === commentNo);
+        if (!comment) return;
 
-        toast.promise(
-            axios.patch(`${apiURL}/api/challenge/comment/${commentId}`, formData, {
+        const formData = new FormData();
+        formData.append("commentContent", newContent);
+        formData.append("refBoardNo", selectedPost.challengeNo);
+
+        // 새 이미지가 없다면 기존 이미지 URL을 다시 넘김
+        if (newImage) {
+            formData.append("file", newImage);
+        } else if (comment.commentFileUrl) {
+            formData.append("commentFileUrl", comment.commentFileUrl);
+        }
+
+        return toast.promise(
+            axios.put(`${apiURL}/api/challenge/comment/${commentNo}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
                 },
             }).then(() => {
-                loadComments(selectedPost.challengeNo);
+                return loadComments(selectedPost.challengeNo);
             }),
             {
                 pending: "댓글 수정 중...",
@@ -111,7 +133,10 @@ const FindChallenge = () => {
                     {posts.map((post, idx) => (
                         <tr key={post.challengeNo} onClick={() => handlePostClick(post)}>
                             <td>{(currentPage - 1) * itemsPerPage + (posts.length - idx)}</td>
-                            <td className="title">{post.challengeTitle}</td>
+                            {/* post.status 'N'이면 종료된 상태 */}
+                            <td className={`title ${post.status === "N" ? "completed-title" : ""}`}>
+                                {post.challengeTitle}
+                            </td>
                             <td>{post.challengeAuthor}</td>
                             <td>{post.challengeDate}</td>
                         </tr>
@@ -126,29 +151,59 @@ const FindChallenge = () => {
             />
 
             {selectedPost && (
-                <div className="challenge-detail">
-                    <h2>{selectedPost.challengeTitle}</h2>
-                    <p>{selectedPost.challengeContent}</p>
-                    <img src={selectedPost.challengeFileUrl}/>
-                    {isLoggedIn ? (
-                        <AddChallengeComment
-                            key={selectedPost.challengeNo}
-                            postId={selectedPost.challengeNo}
-                            onCommentAdded={() => loadComments(selectedPost.challengeNo)}
-                        />
-                    ) : (
-                        <p className="login-required">댓글 작성은 로그인 후 가능합니다.</p>
-                    )}
-                    {selectedPost && (
-                        <CommentList
-                            comments={Array.isArray(comments) ? comments : []} // 절대 안전
-                            onDelete={(id) => handleCommentDelete(id)}
-                            onEdit={(id, text, image) => handleCommentEdit(id, text, image)}
-                            showAuthor
-                        />
-                    )}
+          <div className="challenge-detail">
+            <div className="challenge-header">
+              <h2 className={selectedPost.completed ? "completed-title" : ""}>
+                {selectedPost.challengeTitle}
+              </h2>
+
+              {isAdmin && selectedPost.status === "Y" && (
+                <CompleteChallenge
+                  challengeNo={selectedPost.challengeNo}
+                  onCompleted={() => {
+                    toast.success("게시글이 종료되었습니다.");
+                    setSelectedPost(null);
+                    setCurrentPage(1); // 목록 새로고침 원할 때
+                  }}
+                />
+              )}
+              <div className="post-meta">
+                  <div>작성자 : <strong>{selectedPost.challengeAuthor}</strong></div>
+                  <div>작성일 : {selectedPost.challengeDate}</div>
                 </div>
+            </div>
+          
+            <p>{selectedPost.challengeContent}</p>
+            <img src={selectedPost.challengeFileUrl} />
+          
+            {isLoggedIn && selectedPost.status !== "N" ? (
+              <AddChallengeComment
+                key={selectedPost.challengeNo}
+                postId={selectedPost.challengeNo}
+                onCommentAdded={() => loadComments(selectedPost.challengeNo)}
+              />
+            ) : (
+              <p className="login-required">
+                  {selectedPost.status === "N" ? (
+                    <>
+                      🚫 종료된 게시글은 댓글 작성이 불가합니다.
+                    </>
+                  ) : (
+                    <>
+                      🚫 댓글 작성은 로그인 후 가능합니다.
+                    </>
+                  )}
+                </p>
             )}
+
+            <CommentList
+              comments={Array.isArray(comments) ? comments : []}
+              onDelete={(id) => handleCommentDelete(id)}
+              onEdit={(id, text, image) => handleCommentEdit(id, text, image)}
+              showAuthor
+            />
+          </div>
+        )}
         </div>
     );
 };
