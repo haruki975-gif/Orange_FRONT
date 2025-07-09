@@ -27,6 +27,25 @@
   flex: 1;
 }
 
+/* 삭제된 댓글 스타일 */
+.comment-content.deleted {
+  color: #d32f2f; /* 진한 빨간색 */
+  font-weight: 700;
+  position: relative;
+  padding-left: 24px; /* 이모티콘 공간 확보 */
+  cursor: default;
+}
+
+/* 이모티콘을 텍스트 앞에 추가하기 위해 before 사용 */
+.comment-content.deleted::before {
+  content: "⚠️";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 16px;
+  line-height: 1;
+}
+
 .comment-meta {
   color: #666;
   margin-left: 12px;

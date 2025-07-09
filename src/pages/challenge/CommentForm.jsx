@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
 import "./CommentForm.css";
 
 const CommentForm = ({
@@ -41,7 +40,7 @@ const CommentForm = ({
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="댓글을 입력하세요..."
+        placeholder="댓글을 입력해주세요"
         required
         disabled={loading}
       />

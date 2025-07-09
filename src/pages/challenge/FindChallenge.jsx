@@ -62,9 +62,19 @@ const FindChallenge = () => {
     };
 
     const handlePostClick = (post) => {
-        setSelectedPost(post);
-        console.log("선택된 게시글:", post);
-        loadComments(post.challengeNo);
+        const accessToken = sessionStorage.getItem("accessToken");
+
+        axios.get(`${apiURL}/api/challenge/${post.challengeNo}`, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then(res => {
+            setSelectedPost(res.data);
+            loadComments(post.challengeNo);
+        })
+        .catch(err => {
+            console.error("게시글 상세 조회 실패", err);
+            toast.error("게시글을 불러오지 못했습니다.");
+        });
     };
 
     const handleCommentDelete = (commentNo) => {
@@ -86,21 +96,22 @@ const FindChallenge = () => {
         );
     };
 
+    
     const handleCommentEdit = (commentNo, newContent, newImage) => {
         const comment = comments.find((c) => c.commentNo === commentNo);
         if (!comment) return;
-
+        
         const formData = new FormData();
         formData.append("commentContent", newContent);
         formData.append("refBoardNo", selectedPost.challengeNo);
-
+        
         // 새 이미지가 없다면 기존 이미지 URL을 다시 넘김
         if (newImage) {
             formData.append("file", newImage);
         } else if (comment.commentFileUrl) {
             formData.append("commentFileUrl", comment.commentFileUrl);
         }
-
+        
         return toast.promise(
             axios.put(`${apiURL}/api/challenge/comment/${commentNo}`, formData, {
                 headers: {
@@ -117,9 +128,22 @@ const FindChallenge = () => {
             }
         );
     };
+    
+    const formatDateTime = (dateString) => {
+        const date = new Date(dateString);
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, "0");
+        const dd = String(date.getDate()).padStart(2, "0");
+        const hh = String(date.getHours()).padStart(2, "0");
+        const min = String(date.getMinutes()).padStart(2, "0");
+
+        return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+    };
 
     return (
         <div className="challenge-board">
+            <h2>챌린지방</h2>
+            <br />
             <table className="challenge-table">
                 <thead>
                     <tr>
@@ -138,7 +162,7 @@ const FindChallenge = () => {
                                 {post.challengeTitle}
                             </td>
                             <td>{post.challengeAuthor}</td>
-                            <td>{post.challengeDate}</td>
+                            <td>{new Date(post.challengeDate).toISOString().slice(0, 10)}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -168,9 +192,10 @@ const FindChallenge = () => {
                 />
               )}
               <div className="post-meta">
-                  <div>작성자 : <strong>{selectedPost.challengeAuthor}</strong></div>
-                  <div>작성일 : {selectedPost.challengeDate}</div>
-                </div>
+                    <div>작성자 : <strong>{selectedPost.challengeAuthor}</strong></div>
+                    <div>작성일 : {formatDateTime(selectedPost.challengeDate)}</div>
+                    <div>조회수 : {selectedPost.challengeViews}</div>
+              </div>
             </div>
           
             <p>{selectedPost.challengeContent}</p>
@@ -183,16 +208,16 @@ const FindChallenge = () => {
                 onCommentAdded={() => loadComments(selectedPost.challengeNo)}
               />
             ) : (
-              <p className="login-required">
-                  {selectedPost.status === "N" ? (
-                    <>
-                      🚫 종료된 게시글은 댓글 작성이 불가합니다.
-                    </>
-                  ) : (
-                    <>
-                      🚫 댓글 작성은 로그인 후 가능합니다.
-                    </>
-                  )}
+                <p className="login-required">
+                    {selectedPost.status === "N" ? (
+                        <>
+                            🚫 종료된 게시글은 댓글 작성이 불가합니다.
+                        </>
+                    ) : (
+                        <>
+                            🚫 댓글 작성은 로그인 후 가능합니다.
+                        </>
+                    )}
                 </p>
             )}
 
