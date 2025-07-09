@@ -20,10 +20,10 @@ const ChatRoom = () =>{
 
     const [messages, setMessages] = useState([]);
     const [lastTimeStamp, setLastTimeStamp] = useState(null);
-
     const [sendMessage, setSendMessage] = useState("");
-
     const [isMine, setIsMine] = useState(false);
+    const [isScroll, setIsScroll] = useState(true);
+    const [prevScrollTop, setPrevScrollTop] = useState(0);
 
     const scrollRef = useRef();
 
@@ -32,7 +32,7 @@ const ChatRoom = () =>{
         if(!auth?.accessToken){
             return;
         }
-
+        setPrevScrollTop(scrollRef.current.scrollHeight);
         axios.get(`${apiUrl}/api/chat?teamId=${id}&lastTimeStamp=${lastTimeStamp || null}`,{
             headers : {
                 Authorization : `Bearer ${auth.accessToken}`,
@@ -40,10 +40,13 @@ const ChatRoom = () =>{
         }).then((response)=>{
             setMessages(prev=> [...response.data.items, ...prev]);
             setLastTimeStamp(response.data.items[0]?.sentDate || lastTimeStamp);
+            setIsScroll(prev => !prev);
         }).catch((error)=>{
             errorAlert(error.response.data?.message ?? "조회 실패");
         })
     };
+
+    
 
     // 페이지 로드 시 메시지 조회 함수 호출
     useEffect(()=>{
@@ -152,6 +155,15 @@ const ChatRoom = () =>{
         }
     };
 
+    // 메시지 추가 조회 성공 시 scroll위치 조정
+    useEffect(()=>{
+        if(messages?.length <= 20){
+            return;
+        }
+        
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight - prevScrollTop;
+    }, [isScroll]);
+
 
     return(
         <div className="chat-room" ref={scrollRef} onScroll={(e) => handleScroll(e)}>
@@ -167,12 +179,12 @@ const ChatRoom = () =>{
                         minRows={1}
                         maxRows={6}
                         className="input-textarea"
-                        placeholder={`${memberString}에게 메시지 보내기`}
+                        placeholder={`${memberString}에게 메시지 보내기 <ctrl + Enter>`}
                         value={sendMessage}
                         onChange={(e)=>{setSendMessage(e.target.value)}}
                         onKeyDown={(e) => e.ctrlKey && e.key === "Enter" && sendMessageHandler()}
                     />
-                    <button type="button" className="submit-btn" onClick={() => sendMessageHandler()}>
+                    <button type="button" className="send-btn" onClick={() => sendMessageHandler()}>
                         <img src="/img/icon/arrow-return-left.png" alt="" />
                     </button>
                 </div>
