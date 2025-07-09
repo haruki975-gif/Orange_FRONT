@@ -6,7 +6,7 @@ import { updateProfileImage } from "./js/updateProfileImage";
 import { FaUserCircle, FaCamera } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "../../Member/Form.css";
-import "./profileImage.css";
+import "./ProfileImage.css";
 import { GlobalContext } from "../../context/GlobalContext";
 
 const ProfileImage = () => {
