@@ -63,10 +63,9 @@ const ManageLog = () => {
                         <tr><td colSpan="5">로그가 없습니다.</td></tr>
                     ) : (
                         [...logs]
-                        .reverse() // 최신 로그가 위에 오도록 역순 정렬
                         .map((log, index) => (
                             <tr key={log.logNo}>
-                                <td>{totalCount - (startIdx + index)}</td>
+                                <td>{totalCount - ((currentPage - 1) * itemsPerPage + index)}</td>
                                 <td>{log.logUserId}</td>
                                 <td>{log.logUserName}</td>
                                 <td>{log.logValue}</td>
