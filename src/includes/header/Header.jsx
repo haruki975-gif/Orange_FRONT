@@ -87,8 +87,8 @@ const Header = () => {
   return (
     <header id="main-header">
       <div className="logo">
-        <h1>자동화 테스트</h1>
-        {/* <img src="/img/로고.png" alt="로고" onClick={() => navi("/")} /> */}
+        {/* <h1>자동화 테스트</h1> */}
+        <img src="/img/로고.png" alt="로고" onClick={() => navi("/")} />
       </div>
 
       {/* 로그인하면 바뀌는 부분 */}
