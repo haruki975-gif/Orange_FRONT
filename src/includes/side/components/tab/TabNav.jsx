@@ -8,7 +8,7 @@ function TabNav() {
     const current = location.pathname;
 
     return (
-        <div id="team-room">
+        <div id="tab-nav">
             <div className="header">
                 <div className="team-info">
                     <div className="left">

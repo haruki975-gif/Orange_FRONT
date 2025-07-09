@@ -1,4 +1,4 @@
-
+import { FaUserCircle } from "react-icons/fa";
 
 const DetailWorkModal = ({setOpenDetailModal, modalBackground, workDetail}) =>{
 
@@ -34,7 +34,14 @@ const DetailWorkModal = ({setOpenDetailModal, modalBackground, workDetail}) =>{
                     <h3>담당자</h3>
                     <div className="assignee-info">
                         <div className="user-profile">
-                            <img src="/img/icon/person-fill.png" alt="" />
+                            {work.assigneeProfile ? (
+                                <img src={workDetail.assigneeProfile} alt="" />
+                            ) : (
+                                <FaUserCircle
+                                    className="profile-icon"
+                                />
+                            )
+                        }
                         </div>
                         <p className="user-name">{workDetail.assigneeName}</p>
                     </div>
