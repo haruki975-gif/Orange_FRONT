@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import SearchTeamRow from "../team-row/searchTeamRow";
+import SearchTeamRow from "../team-row/SearchTeamRow";
 import axios from "axios";
 import { GlobalContext } from "../../../../components/context/GlobalContext";
 
