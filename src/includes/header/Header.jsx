@@ -137,7 +137,7 @@ const Header = () => {
           <>
             <div className="header-menu">
               <a className="login" onClick={() => navi("/login")}>
-                로그이인
+                로그인
               </a>
               <a className="signup" onClick={() => navi("/signup")}>
                 회원가입
