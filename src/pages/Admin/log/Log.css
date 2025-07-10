@@ -48,3 +48,16 @@
 .logList-table-wrapper {
     text-align: center;
 }
+
+.logList-table th,
+.logList-table td {
+  white-space: nowrap;   /* 줄바꿈 금지 */
+  text-align: center;    /* 숫자 정렬 깔끔하게 */
+  padding: 8px 12px;     /* 적당한 여백 */
+}
+
+/* 번호 컬럼 너비 고정 */
+.logList-table th:nth-child(1), 
+.logList-table td:nth-child(1) {
+  width: 70px;
+}

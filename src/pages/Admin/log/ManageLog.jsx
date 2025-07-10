@@ -48,6 +48,7 @@ const ManageLog = () => {
     return (
         <div className="logList-table-wrapper">
             <h2>로그 목록</h2>
+            <br />
             <table className="logList-table">
                 <thead>
                     <tr>
@@ -56,22 +57,36 @@ const ManageLog = () => {
                         <th>이름</th>
                         <th>Event_Value</th>
                         <th>DT</th>
+                        <th>Prev_DT</th>
                     </tr>
                 </thead>
                 <tbody>
                     {logs.length === 0 ? (
-                        <tr><td colSpan="5">로그가 없습니다.</td></tr>
+                        <tr><td colSpan="6">로그가 없습니다.</td></tr>
                     ) : (
                         [...logs]
-                        .map((log, index) => (
-                            <tr key={log.logNo}>
-                                <td>{totalCount - ((currentPage - 1) * itemsPerPage + index)}</td>
-                                <td>{log.logUserId}</td>
-                                <td>{log.logUserName}</td>
-                                <td>{log.logValue}</td>
-                                <td>{formatDate(log.logDate)}</td>
-                            </tr>
-                        ))
+                        .map((log, index) => {
+                            const userId = log.logUserId;
+                            let prevLog = null;
+                            for(let i = index + 1; i < logs.length; i++){
+                                if(logs[i].logUserId === userId){
+                                    prevLog = logs[i];
+                                    break;
+                                }
+                            }
+                            const prevDate = prevLog ? formatDate(prevLog.logDate) : 'NULL';
+                            
+                            return(
+                                <tr key={log.logNo}>
+                                    <td>{totalCount - ((currentPage - 1) * itemsPerPage + index)}</td>
+                                    <td>{log.logUserId}</td>
+                                    <td>{log.logUserName}</td>
+                                    <td>{log.logValue}</td>
+                                    <td>{formatDate(log.logDate)}</td>
+                                    <td>{prevDate}</td>
+                                </tr>
+                            );
+                        })
                     )}
                 </tbody>
             </table>

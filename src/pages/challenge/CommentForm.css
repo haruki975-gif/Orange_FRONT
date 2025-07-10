@@ -1,3 +1,10 @@
+.button-row {
+  display: flex;
+  justify-content: space-between; /* 첨부는 왼쪽, 등록은 오른쪽 */
+  align-items: center;
+  margin-top: 10px;
+}
+
 .comment-form {
   display: flex;
   flex-direction: column;
@@ -28,22 +35,50 @@
   box-shadow: 0 0 5px #1976d2aa;
 }
 
-
-.comment-form label.file-label {
-  display: inline-block;
-  background-color: #1976d2;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-  width: fit-content;
-  font-size: 14px;
+/* 파일 첨부 버튼 */
+.file-button {
+    min-width: 100px;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    user-select: none;
 }
 
-.comment-form label.file-label:hover {
+.file-button:hover:not(:disabled) {
   background-color: #145ea8;
+}
+
+.file-button:disabled {
+  background-color: #9e9e9e;
+  cursor: not-allowed;
+}
+
+.submit-button {
+    min-width: 100px;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    user-select: none;
 }
 
 .comment-form button {
@@ -75,5 +110,68 @@
   color: #555;
   margin-top: -8px;
   margin-bottom: 8px;
+  font-style: italic;
+}
+
+/* 이미지 미리보기 */
+.image-preview-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-top: 8px;
+  width: 150px;
+  height: 150px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+/* 미리보기 이미지 취소 버튼 */
+.remove-image-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 28px !important;
+  height: 28px !important;
+  background-color: red !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 50% !important;
+
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  font-family: sans-serif !important;
+  line-height: 1 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: inline-flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  cursor: pointer !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+
+  z-index: 1 !important;
+  transition: background-color 0.2s ease, transform 0.2s ease !important;
+}
+
+.remove-image-btn:hover {
+  background-color: darkred !important;
+  transform: scale(1.05);
+}
+
+/* 첨부파일명 */
+.selected-image-name {
+  font-size: 14px;
+  color: #555;
+  margin-top: 6px;
   font-style: italic;
 }
