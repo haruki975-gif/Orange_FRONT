@@ -42,6 +42,10 @@
 }
 
 /* 글 번호 */
+.challenge-table td {
+  white-space: nowrap;
+}
+
 .challenge-table td:first-child {
   white-space: nowrap !important;
   overflow: hidden;
@@ -53,7 +57,10 @@
 /* 작성일 */
 .challenge-table th:last-child,
 .challenge-table td:last-child {
-  width: 120px;
+  width: 160px; /* 넉넉하게 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .challenge-table .title {
@@ -64,6 +71,10 @@
 }
 .challenge-table .title:hover {
   font-size: 1.05rem;
+}
+
+.challenge-table .title:hover:not(.completed-title) {
+  font-size: 1.1em;
 }
 
 .challenge-table tr:hover {
@@ -116,12 +127,29 @@
   font-weight: 600;
 }
 
+/* 선택된 게시물 */
+.selected-post {
+  background-color: #e3f2fd; /* 연한 파란 배경 */
+  font-weight: 600;
+  cursor: default;
+}
+
+.selected-post:hover {
+  background-color: #e3f2fd; /* hover 시에도 색 유지 */
+}
+
+.eye-icon {
+  margin-right: 6px;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
 /* 종료된 챌린지 제목 */
 .completed-title {
+  font-size: 1rem !important;
+  cursor: default;
   color: gray;
   font-weight: normal;
-  font-size: 1rem; /* 크기 고정 */
-  cursor: default; /* 클릭 안되게 */
 }
 .challenge-table .completed-title:hover {
   font-size: 1rem; /* 커지지 않음 */

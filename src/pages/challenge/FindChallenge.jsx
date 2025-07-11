@@ -19,6 +19,7 @@ const FindChallenge = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const itemsPerPage = 10;
+    const [totalPosts, setTotalPosts] = useState(0);
 
     useEffect(() => {
         const accessToken = sessionStorage.getItem("accessToken");
@@ -33,10 +34,10 @@ const FindChallenge = () => {
             }
         })
             .then(res => {
-                console.log("게시글 응답:", [...res.data]);
-                console.log("확인할게시글 응답:", res.data);
-                setPosts([...res.data] || []);
-                setTotalPages(res.data.totalPages || 1);
+                const { challenges, totalPages, totalCount } = res.data;
+        setPosts(challenges);
+        setTotalPages(totalPages);
+        setTotalPosts(totalCount);
             })
             .catch(err => {
                 console.error("게시글 로딩 실패", err);
@@ -62,20 +63,31 @@ const FindChallenge = () => {
     };
 
     const handlePostClick = (post) => {
-        const accessToken = sessionStorage.getItem("accessToken");
+    const accessToken = sessionStorage.getItem("accessToken");
 
-        axios.get(`${apiURL}/api/challenge/${post.challengeNo}`, {
+    axios.get(`${apiURL}/api/challenge/${post.challengeNo}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(res => {
+        setSelectedPost(res.data);
+        loadComments(post.challengeNo);
+
+        // 게시글 클릭 → 상세 조회 → 전체 목록 다시 가져와서 조회수 반영
+        axios.get(`${apiURL}/api/challenge?page=${currentPage}`, {
             headers: { Authorization: `Bearer ${accessToken}` },
-        })
-        .then(res => {
-            setSelectedPost(res.data);
-            loadComments(post.challengeNo);
-        })
-        .catch(err => {
-            console.error("게시글 상세 조회 실패", err);
-            toast.error("게시글을 불러오지 못했습니다.");
+        }).then((res2) => {
+            const { challenges, totalPages, totalCount } = res2.data;
+            setPosts(challenges);
+            setTotalPages(totalPages);
+            setTotalPosts(totalCount);
         });
-    };
+    })
+    .catch(err => {
+        console.error("게시글 상세 조회 실패", err);
+        toast.error("게시글을 불러오지 못했습니다.");
+    });
+};
+
 
     const handleCommentDelete = (commentNo) => {
         toast.promise(
@@ -151,18 +163,25 @@ const FindChallenge = () => {
                         <th>제목</th>
                         <th>작성자</th>
                         <th>작성일</th>
+                        <th>조회수</th>
                     </tr>
                 </thead>
                 <tbody>
                     {posts.map((post, idx) => (
-                        <tr key={post.challengeNo} onClick={() => handlePostClick(post)}>
-                            <td>{(currentPage - 1) * itemsPerPage + (posts.length - idx)}</td>
+                        <tr
+                            key={post.challengeNo}
+                            onClick={() => handlePostClick(post)}
+                            className={selectedPost?.challengeNo === post.challengeNo ? "selected-post" : ""}
+                        >
+                            <td>{post.displayNo}</td>
                             {/* post.status 'N'이면 종료된 상태 */}
                             <td className={`title ${post.status === "N" ? "completed-title" : ""}`}>
+                                {selectedPost?.challengeNo === post.challengeNo && <span className="eye-icon">👁️ </span>}
                                 {post.challengeTitle}
                             </td>
                             <td>{post.challengeAuthor}</td>
                             <td>{new Date(post.challengeDate).toISOString().slice(0, 10)}</td>
+                            <td>{post.challengeViews}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -192,14 +211,16 @@ const FindChallenge = () => {
                 />
               )}
               <div className="post-meta">
-                    <div>작성자 : <strong>{selectedPost.challengeAuthor}</strong></div>
                     <div>작성일 : {formatDateTime(selectedPost.challengeDate)}</div>
+                    <div>작성자 : <strong>{selectedPost.challengeAuthor}</strong></div>
                     <div>조회수 : {selectedPost.challengeViews}</div>
               </div>
             </div>
           
+            {selectedPost.challengeFileUrl ? (
+            <img src={selectedPost.challengeFileUrl} alt="첨부 이미지" />
+            ) : null}
             <p>{selectedPost.challengeContent}</p>
-            <img src={selectedPost.challengeFileUrl} />
           
             {isLoggedIn && selectedPost.status !== "N" ? (
               <AddChallengeComment
