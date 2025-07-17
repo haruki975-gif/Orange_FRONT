@@ -63,30 +63,30 @@ const FindChallenge = () => {
     };
 
     const handlePostClick = (post) => {
-    const accessToken = sessionStorage.getItem("accessToken");
-
-    axios.get(`${apiURL}/api/challenge/${post.challengeNo}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-    })
-    .then(res => {
-        setSelectedPost(res.data);
-        loadComments(post.challengeNo);
-
-        // 게시글 클릭 → 상세 조회 → 전체 목록 다시 가져와서 조회수 반영
-        axios.get(`${apiURL}/api/challenge?page=${currentPage}`, {
+        const accessToken = sessionStorage.getItem("accessToken");
+        
+        axios.get(`${apiURL}/api/challenge/${post.challengeNo}`, {
             headers: { Authorization: `Bearer ${accessToken}` },
-        }).then((res2) => {
-            const { challenges, totalPages, totalCount } = res2.data;
-            setPosts(challenges);
-            setTotalPages(totalPages);
-            setTotalPosts(totalCount);
+        })
+        .then(res => {
+            setSelectedPost(res.data);
+            loadComments(post.challengeNo);
+        
+            // 게시글 클릭 → 상세 조회 → 전체 목록 다시 가져와서 조회수 반영
+            axios.get(`${apiURL}/api/challenge?page=${currentPage}`, {
+                headers: { Authorization: `Bearer ${accessToken}` },
+            }).then((res2) => {
+                const { challenges, totalPages, totalCount } = res2.data;
+                setPosts(challenges);
+                setTotalPages(totalPages);
+                setTotalPosts(totalCount);
+            });
+        })
+        .catch(err => {
+            console.error("게시글 상세 조회 실패", err);
+            toast.error("게시글을 불러오지 못했습니다.");
         });
-    })
-    .catch(err => {
-        console.error("게시글 상세 조회 실패", err);
-        toast.error("게시글을 불러오지 못했습니다.");
-    });
-};
+    };
 
 
     const handleCommentDelete = (commentNo) => {
