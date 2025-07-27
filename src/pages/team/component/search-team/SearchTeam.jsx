@@ -28,9 +28,6 @@ const SearchTeam = ({updateTeamList, categories, findCategoryLabel}) =>{
             userNo = -1;
         }
 
-        console.log(userNo);
-        console.log(lastTimeStamp);
-
         axios.get(`${apiUrl}/api/teams?category=${chooseCategory}&userNo=${userNo}&lastTimeStamp=${lastTimeStamp}`
         ).then((response)=>{
             const items = response.data.items;

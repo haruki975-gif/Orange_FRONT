@@ -131,7 +131,6 @@ const ChatRoom = () =>{
 
         const { scrollTop, scrollHeight, clientHeight } = element;
 
-
         if(scrollTop + clientHeight + 167 >= scrollHeight){
             element.scrollTop = scrollHeight;
         }

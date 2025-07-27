@@ -53,7 +53,7 @@ const CreateTeamModal = ({setOpenModal, modalBackground, setUpdateTeamList, cate
 
     // 팀생성 요청
     const createTeamHandler = () =>{
-        
+
         if(!auth?.userNo){
             errorAlert("로그인 후 이용 가능합니다.");
             return;
@@ -81,7 +81,6 @@ const CreateTeamModal = ({setOpenModal, modalBackground, setUpdateTeamList, cate
                 errorAlert(error.response.data.message);
                 closeCreateTeamModal()
             })
-        
     }
 
     return( 

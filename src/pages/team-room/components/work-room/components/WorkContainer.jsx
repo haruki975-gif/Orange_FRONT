@@ -25,7 +25,8 @@ const WorkContainer = ({column, openUpdateModalHandler, openDetailModalHandler, 
                 requestUserNo : userNo,
                 workId : item.work.workId,
                 status : column.columnValue,
-                prevStatus : item.work.status
+                prevStatus : item.work.status,
+                version : item.work.version
             }
 
             sendJsonMessage(updateWorkStatus);
